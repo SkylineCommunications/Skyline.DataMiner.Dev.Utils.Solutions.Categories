@@ -60,7 +60,7 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 	/// Represents a wrapper class for accessing a CategoryInstance DOM instance.
 	/// The <see cref="CategoryInstance"/> class provides simplified access to the data and functionality of the underlying DOM instance, allowing for easier manipulation and retrieval of data from DOM.
 	/// </summary>
-	public partial class CategoryInstance : DomInstanceBase
+	internal partial class CategoryInstance : DomInstanceBase
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CategoryInstance"/> class. Creates an empty <see cref="CategoryInstance"/> instance with default settings.
@@ -187,7 +187,7 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 	/// Represents a wrapper class for accessing a CategoryInfoSection section.
 	/// The <see cref="CategoryInfoSection"/> class provides simplified access to the data and functionality of the underlying DOM section, allowing for easier manipulation and retrieval of data from DOM.
 	/// </summary>
-	public partial class CategoryInfoSection : DomSectionBase
+	internal partial class CategoryInfoSection : DomSectionBase
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CategoryInfoSection"/> class. Creates an empty <see cref="CategoryInfoSection"/> object with default settings.
