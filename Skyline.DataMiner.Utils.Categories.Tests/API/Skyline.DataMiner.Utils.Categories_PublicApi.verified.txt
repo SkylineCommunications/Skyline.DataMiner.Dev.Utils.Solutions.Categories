@@ -10,6 +10,7 @@ namespace Skyline.DataMiner.Utils.Categories.API
     public class CategoriesApi
     {
         public CategoriesApi(Skyline.DataMiner.Net.IConnection connection) { }
+        public Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository Categories { get; }
         protected Skyline.DataMiner.Net.IConnection Connection { get; }
     }
 }
@@ -18,5 +19,324 @@ namespace Skyline.DataMiner.Utils.Categories.API.Extensions
     public static class ConnectionExtensions
     {
         public static Skyline.DataMiner.Utils.Categories.API.CategoriesApi GetCategoriesApi(this Skyline.DataMiner.Net.IConnection connection) { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Objects
+{
+    public readonly struct ApiObjectReference<T> : Skyline.DataMiner.Utils.Categories.API.Objects.IApiObjectReference, System.IEquatable<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T>>
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        public ApiObjectReference(System.Guid id) { }
+        public System.Guid ID { get; }
+        public static Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> Empty { get; }
+        public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public static System.Guid op_Implicit(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> reference) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> op_Implicit(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> apiObject) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> op_Implicit(System.Guid id) { }
+        public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> left, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> right) { }
+        public static bool operator ==(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> left, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> right) { }
+    }
+    public abstract class ApiObject<T> : Skyline.DataMiner.Utils.Categories.API.Objects.IApiObjectReference, System.IEquatable<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>>
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        protected ApiObject(Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase domInstance) { }
+        public System.DateTimeOffset CreatedAt { get; }
+        public string CreatedBy { get; }
+        public System.Guid ID { get; }
+        public System.DateTimeOffset LastModified { get; }
+        public string LastModifiedBy { get; }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T> Reference { get; }
+        public virtual bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> left, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> right) { }
+        public static bool operator ==(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> left, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T> right) { }
+    }
+    public class Category : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<Skyline.DataMiner.Utils.Categories.API.Objects.Category>
+    {
+        public Category() { }
+        public string Name { get; set; }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>? ParentCategory { get; set; }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult Validate() { }
+    }
+    public static class CategoryExposers
+    {
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.Category, System.Guid> ID;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.Category, string> Name;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.Category, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>?> ParentCategory;
+    }
+    public interface IApiObjectReference
+    {
+        System.Guid ID { get; }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Querying
+{
+    public class ApiRepositoryQueryExecutor<T, TResult> : System.Linq.Expressions.ExpressionVisitor
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        protected override System.Linq.Expressions.Expression VisitConstant(System.Linq.Expressions.ConstantExpression node) { }
+        protected override System.Linq.Expressions.Expression VisitMethodCall(System.Linq.Expressions.MethodCallExpression node) { }
+    }
+    public class ApiRepositoryQueryProvider<T> : System.Linq.IQueryProvider
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        public ApiRepositoryQueryProvider(Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<T> repository) { }
+        public Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<T> Repository { get; }
+        public System.Linq.IQueryable CreateQuery(System.Linq.Expressions.Expression expression) { }
+        public System.Linq.IQueryable<TElement> CreateQuery<TElement>(System.Linq.Expressions.Expression expression) { }
+        public object Execute(System.Linq.Expressions.Expression expression) { }
+        public TResult Execute<TResult>(System.Linq.Expressions.Expression expression) { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Repositories
+{
+    public class CategoryRepository : Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<Skyline.DataMiner.Utils.Categories.API.Objects.Category>
+    {
+        protected override Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinition { get; }
+        protected override Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        protected override Skyline.DataMiner.Utils.Categories.API.Objects.Category CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
+        protected override SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+        protected override void ValidateBeforeDelete(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> instances) { }
+        protected override void ValidateBeforeSave(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> instances) { }
+    }
+    public abstract class Repository<T>
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        protected Repository(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper helper, Skyline.DataMiner.Net.IConnection connection) { }
+        protected Skyline.DataMiner.Net.IConnection Connection { get; }
+        protected abstract Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinition { get; }
+        protected Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper Helper { get; }
+        public virtual long Count(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
+        public virtual long CountAll() { }
+        public virtual void Create(T instance) { }
+        protected virtual Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        protected abstract T CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance);
+        public virtual void CreateOrUpdate(System.Collections.Generic.IEnumerable<T> instances) { }
+        public virtual void CreateOrUpdate(T instance) { }
+        protected virtual void CreateOrUpdateWithoutValidation(System.Collections.Generic.IEnumerable<T> instances) { }
+        protected virtual SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+        protected virtual void CreateWithoutValidation(T instance) { }
+        public virtual void Delete(System.Collections.Generic.IEnumerable<T> instances) { }
+        public virtual void Delete(T instance) { }
+        protected virtual void DeleteWithoutValidation(System.Collections.Generic.IEnumerable<T> instances) { }
+        protected virtual void DeleteWithoutValidation(T instance) { }
+        public virtual System.Linq.IQueryable<T> Query() { }
+        public virtual System.Collections.Generic.IEnumerable<T> Read(SLDataGateway.API.Types.Querying.IQuery<T> query) { }
+        public virtual System.Collections.Generic.IEnumerable<T> Read(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
+        public virtual System.Collections.Generic.IDictionary<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T>, T> Read(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<T>> ids) { }
+        public virtual System.Collections.Generic.IDictionary<System.Guid, T> Read(System.Collections.Generic.IEnumerable<System.Guid> ids) { }
+        public virtual System.Collections.Generic.IDictionary<string, T> Read(System.Collections.Generic.IEnumerable<string> names) { }
+        public virtual T Read(System.Guid id) { }
+        public virtual T Read(string name) { }
+        public virtual System.Collections.Generic.IEnumerable<T> ReadAll() { }
+        public virtual System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> ReadAllPaged(long pageSize = 500) { }
+        public virtual System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> ReadPaged(SLDataGateway.API.Types.Querying.IQuery<T> query, long pageSize = 500) { }
+        public virtual System.Collections.Generic.IEnumerable<System.Collections.Generic.IEnumerable<T>> ReadPaged(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter, long pageSize = 500) { }
+        public Skyline.DataMiner.Utils.Categories.API.Subscriptions.RepositorySubscription<T> Subscribe() { }
+        public Skyline.DataMiner.Utils.Categories.API.Subscriptions.RepositorySubscription<T> Subscribe(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
+        protected virtual Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> TranslateFilter(Skyline.DataMiner.Net.Messages.SLDataGateway.ManagedFilterIdentifier managedFilter) { }
+        protected virtual Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> TranslateFullFilter(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
+        protected virtual SLDataGateway.API.Types.Querying.IOrderBy TranslateFullOrderBy(SLDataGateway.API.Types.Querying.IOrderBy order) { }
+        protected virtual SLDataGateway.API.Types.Querying.IOrderByElement TranslateOrderBy(SLDataGateway.API.Types.Querying.IOrderByElement orderByElement) { }
+        public virtual void Update(T instance) { }
+        protected virtual void UpdateWithoutValidation(T instance) { }
+        protected abstract void ValidateBeforeDelete(System.Collections.Generic.ICollection<T> instances);
+        protected abstract void ValidateBeforeSave(System.Collections.Generic.ICollection<T> instances);
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Subscriptions
+{
+    public sealed class ApiObjectsChangedEvent<T>
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        public ApiObjectsChangedEvent(System.Collections.Generic.IEnumerable<T> created, System.Collections.Generic.IEnumerable<T> updated, System.Collections.Generic.IEnumerable<T> deleted) { }
+        public System.Collections.Generic.IReadOnlyList<T> Created { get; }
+        public System.Collections.Generic.IReadOnlyList<T> Deleted { get; }
+        public System.Collections.Generic.IReadOnlyList<T> Updated { get; }
+        public override string ToString() { }
+    }
+    public sealed class RepositorySubscription<T> : System.IDisposable
+        where T : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<T>
+    {
+        public Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<T> Repository { get; }
+        public event System.EventHandler<Skyline.DataMiner.Utils.Categories.API.Subscriptions.ApiObjectsChangedEvent<T>> Changed;
+        public void Dispose() { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Tools
+{
+    public static class FilterElementFactory
+    {
+        public static Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> Create<T>(Skyline.DataMiner.Net.Messages.SLDataGateway.DynamicListExposer<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance, T> exposer, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        public static Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> Create<T>(Skyline.DataMiner.Net.Messages.SLDataGateway.DynamicListExposer<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance, object> exposer, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        public static Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> Create<T>(Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance, T> exposer, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        public static Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> Create<T>(Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance, object> exposer, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+    }
+    public static class NameUtil
+    {
+        public static bool Validate(string name, out string error) { }
+    }
+    public static class OrderByElementFactory
+    {
+        public static SLDataGateway.API.Types.Querying.IOrderByElement Create(Skyline.DataMiner.Net.Messages.SLDataGateway.FieldExposer exposer, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.API.Validation
+{
+    public class ValidationError
+    {
+        public ValidationError(string message) { }
+        public ValidationError(string message, object instance, string propertyName) { }
+        public object Instance { get; }
+        public string Message { get; }
+        public string PropertyName { get; }
+    }
+    public class ValidationResult
+    {
+        public ValidationResult() { }
+        public ValidationResult(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Validation.ValidationError> errors) { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Validation.ValidationError> Errors { get; }
+        public bool IsValid { get; }
+        public void AddError(string message) { }
+        public void AddError(string message, object instance, string propertyName) { }
+        public void AddError<T>(string message, T instance, System.Linq.Expressions.Expression<System.Func<T, object>> expression) { }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForInstance(object instance) { }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForProperty(string propertyName) { }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForProperty(object instance, string propertyName) { }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForProperty<T>(System.Linq.Expressions.Expression<System.Func<T, object>> expression) { }
+        public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForProperty<T>(T instance, System.Linq.Expressions.Expression<System.Func<T, object>> expression) { }
+        public void Merge(Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult result) { }
+        public void ThrowIfInvalid() { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.DOM.Interfaces
+{
+    public interface IDomDefinitionInfo
+    {
+        Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinition Definition { get; }
+        System.Collections.Generic.IEnumerable<Skyline.DataMiner.Net.Sections.CustomSectionDefinition> SectionDefinitions { get; }
+    }
+    public interface IDomModuleInfo
+    {
+        System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.DOM.Interfaces.IDomDefinitionInfo> Definitions { get; }
+        string ModuleId { get; }
+        Skyline.DataMiner.Net.Apps.Modules.ModuleSettings ModuleSettings { get; }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.DOM.Model
+{
+    public class CategoryInfoSection : Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase
+    {
+        public CategoryInfoSection() { }
+        public CategoryInfoSection(Skyline.DataMiner.Net.Sections.Section section) { }
+        public string Name { get; set; }
+        public System.Guid? ParentCategory { get; set; }
+        public Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInfoSection Clone() { }
+        public Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInfoSection Duplicate() { }
+        protected override Skyline.DataMiner.Net.Sections.Section InternalToSection() { }
+    }
+    public class CategoryInstance : Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase
+    {
+        public CategoryInstance() { }
+        public CategoryInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
+        public CategoryInstance(System.Guid id) { }
+        public Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInfoSection CategoryInfo { get; set; }
+        public Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInstance Clone() { }
+        public Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInstance Duplicate() { }
+        protected override sealed void InitializeProperties() { }
+        protected override sealed Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance InternalToInstance() { }
+        public override sealed void Save(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper helper) { }
+        public static Skyline.DataMiner.Utils.Categories.DOM.Model.CategoryInstance op_Explicit(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance instance) { }
+    }
+    public abstract class DomInstanceBase : System.IEquatable<Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase>
+    {
+        protected DomInstanceBase(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId definitionId) { }
+        protected DomInstanceBase(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
+        protected DomInstanceBase(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId definitionId, System.Guid id) { }
+        public System.DateTimeOffset CreatedAt { get; }
+        public string CreatedBy { get; }
+        public Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinitionId { get; }
+        public Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstanceId ID { get; }
+        public System.DateTimeOffset LastModified { get; }
+        public string LastModifiedBy { get; }
+        public string ModuleId { get; }
+        public string Name { get; }
+        public string StatusId { get; }
+        protected Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance { get; set; }
+        protected virtual void AfterLoad() { }
+        protected virtual void AfterToInstance() { }
+        protected virtual void BeforeToInstance() { }
+        public void Delete(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper helper) { }
+        public void Delete(System.Func<Skyline.DataMiner.Net.Messages.DMSMessage[], Skyline.DataMiner.Net.Messages.DMSMessage[]> messageHandler) { }
+        public bool Equals(Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        protected abstract void InitializeProperties();
+        protected abstract Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance InternalToInstance();
+        public abstract void Save(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper helper);
+        public void Save(System.Func<Skyline.DataMiner.Net.Messages.DMSMessage[], Skyline.DataMiner.Net.Messages.DMSMessage[]> messageHandler) { }
+        public Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance ToInstance() { }
+        public static Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance op_Implicit(Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase instance) { }
+        public static bool operator !=(Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase left, Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase right) { }
+        public static bool operator ==(Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase left, Skyline.DataMiner.Utils.Categories.DOM.Model.DomInstanceBase right) { }
+    }
+    public abstract class DomSectionBase : System.IEquatable<Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase>
+    {
+        protected Skyline.DataMiner.Net.Sections.Section section;
+        protected DomSectionBase(Skyline.DataMiner.Net.Sections.SectionDefinition definition) { }
+        protected DomSectionBase(Skyline.DataMiner.Net.Sections.SectionDefinitionID id) { }
+        protected DomSectionBase(Skyline.DataMiner.Net.Sections.Section section, Skyline.DataMiner.Net.Sections.SectionDefinitionID id) { }
+        public Skyline.DataMiner.Net.Sections.SectionID ID { get; }
+        public bool IsEmpty { get; }
+        public Skyline.DataMiner.Net.Sections.SectionDefinitionID SectionDefinitionID { get; }
+        protected virtual void AfterLoad() { }
+        protected virtual void AfterToSection() { }
+        protected virtual void BeforeToSection() { }
+        public bool Equals(Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        protected virtual Skyline.DataMiner.Net.Sections.Section InternalToSection() { }
+        public virtual Skyline.DataMiner.Net.Sections.Section ToSection() { }
+        public override string ToString() { }
+        public static Skyline.DataMiner.Net.Sections.SectionDefinitionID op_Implicit(Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase sectionBase) { }
+        public static Skyline.DataMiner.Net.Sections.SectionDefinition op_Implicit(Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase sectionBase) { }
+        public static bool operator !=(Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase left, Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase right) { }
+        public static bool operator ==(Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase left, Skyline.DataMiner.Utils.Categories.DOM.Model.DomSectionBase right) { }
+    }
+    public static class SlcCategoriesIds
+    {
+        public const string ModuleId = "(slc)categories";
+        public static class Behaviors { }
+        public static class Definitions
+        {
+            public static Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId Category { get; }
+        }
+        public static class Enums { }
+        public static class Sections
+        {
+            public static class CategoryInfo
+            {
+                public static Skyline.DataMiner.Net.Sections.SectionDefinitionID Id { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID Name { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID ParentCategory { get; }
+            }
+        }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
+{
+    public static class DomModuleInstaller
+    {
+        public static void Install(System.Func<Skyline.DataMiner.Net.Messages.DMSMessage[], Skyline.DataMiner.Net.Messages.DMSMessage[]> messageHandler, Skyline.DataMiner.Utils.Categories.DOM.Interfaces.IDomModuleInfo domModuleInfo, System.Action<string> logAction) { }
+    }
+    public static class FilterQueryExecutor
+    {
+        public static long CountFilteredItems<TId, TFilter>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, long> filterCountResolver) { }
+        public static System.Collections.Generic.IEnumerable<TResult> RetrieveFilteredItems<TId, TFilter, TResult>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, System.Collections.Generic.IEnumerable<TResult>> filterResolver) { }
     }
 }
