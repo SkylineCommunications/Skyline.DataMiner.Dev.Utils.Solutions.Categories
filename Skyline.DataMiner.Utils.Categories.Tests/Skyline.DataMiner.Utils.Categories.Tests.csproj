@@ -29,6 +29,9 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Utils.Categories.Automation.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Utils.Categories.GQI.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Utils.Categories.Protocol.csproj" />
 	</ItemGroup>
 
 </Project>
