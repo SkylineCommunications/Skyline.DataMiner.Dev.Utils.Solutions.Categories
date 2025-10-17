@@ -12,6 +12,8 @@ namespace Skyline.DataMiner.Utils.Categories.API
         public CategoriesApi(Skyline.DataMiner.Net.IConnection connection) { }
         public Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository Categories { get; }
         protected Skyline.DataMiner.Net.IConnection Connection { get; }
+        public string GetVersion() { }
+        public bool IsInstalled() { }
     }
 }
 namespace Skyline.DataMiner.Utils.Categories.API.Extensions
@@ -211,6 +213,16 @@ namespace Skyline.DataMiner.Utils.Categories.API.Validation
         public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult ForProperty<T>(T instance, System.Linq.Expressions.Expression<System.Func<T, object>> expression) { }
         public void Merge(Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult result) { }
         public void ThrowIfInvalid() { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.DOM.Definitions
+{
+    public class SlcCategoriesDomModule : Skyline.DataMiner.Utils.Categories.DOM.Interfaces.IDomModuleInfo
+    {
+        public SlcCategoriesDomModule() { }
+        public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.DOM.Interfaces.IDomDefinitionInfo> Definitions { get; }
+        public string ModuleId { get; }
+        public Skyline.DataMiner.Net.Apps.Modules.ModuleSettings ModuleSettings { get; }
     }
 }
 namespace Skyline.DataMiner.Utils.Categories.DOM.Interfaces

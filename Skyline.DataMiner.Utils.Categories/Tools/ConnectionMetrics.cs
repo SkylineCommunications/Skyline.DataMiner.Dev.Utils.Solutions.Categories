@@ -1,0 +1,90 @@
+﻿namespace Skyline.DataMiner.Utils.Categories.Tools
+{
+	using System;
+	using System.Collections.Generic;
+
+	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
+	using Skyline.DataMiner.Net.Messages;
+
+	internal class ConnectionMetrics : IDisposable
+	{
+		private readonly object _lock = new object();
+		private readonly ConnectionInterceptor _connection;
+
+		public ConnectionMetrics(ConnectionInterceptor connection)
+		{
+			_connection = connection ?? throw new ArgumentNullException(nameof(connection));
+
+			_connection.MessagesProcessed += OnMessagesProcessed;
+		}
+
+		public ulong NumberOfRequests { get; private set; }
+
+		public ulong NumberOfDomRequests { get; private set; }
+
+		public ulong NumberOfDomInstancesRetrieved { get; private set; }
+
+		public TimeSpan TotalRequestDuration { get; private set; }
+
+		public TimeSpan MaxRequestDuration { get; private set; }
+
+		public TimeSpan AvgRequestDuration =>
+			NumberOfRequests > 0
+				? TimeSpan.FromTicks(TotalRequestDuration.Ticks / (long)NumberOfRequests)
+				: TimeSpan.Zero;
+
+		public void Dispose()
+		{
+			_connection.MessagesProcessed -= OnMessagesProcessed;
+		}
+
+		private void OnMessagesProcessed(object sender, ConnectionInterceptor.ProcessedMessages e)
+		{
+			lock (_lock)
+			{
+				NumberOfRequests += (ulong)e.Requests.Count;
+				TotalRequestDuration += e.Duration;
+
+				if (e.Duration > MaxRequestDuration)
+				{
+					MaxRequestDuration = e.Duration;
+				}
+
+				UpdateDomMetrics(e.Requests);
+				UpdateDomMetrics(e.Responses);
+			}
+		}
+
+		private void UpdateDomMetrics(IEnumerable<DMSMessage> messages)
+		{
+			foreach (var message in messages)
+			{
+				switch (message)
+				{
+					case ManagerStoreReadRequest<DomInstance> _:
+					case ManagerStoreCreateRequest<DomInstance> _:
+					case ManagerStoreUpdateRequest<DomInstance> _:
+					case ManagerStoreCountRequest<DomInstance> _:
+					case ManagerStoreBulkCreateOrUpdateRequest<DomInstance> _:
+					case ManagerStoreBulkDeleteRequest<DomInstance> _:
+					case ManagerStoreStartPagingRequest<DomInstance> _:
+					case ManagerStoreNextPagingRequest<DomInstance> _:
+						NumberOfDomRequests++;
+						break;
+
+					case ManagerStorePagingResponse<DomInstance> m:
+						NumberOfDomInstancesRetrieved += (ulong)(m.Objects?.Count ?? 0);
+						break;
+
+					case ManagerStoreCountResponse<DomInstance> m:
+						NumberOfDomInstancesRetrieved += (ulong)(m.Objects?.Count ?? 0);
+						break;
+
+					case ManagerStoreCrudResponse<DomInstance> m:
+						NumberOfDomInstancesRetrieved += (ulong)(m.Objects?.Count ?? 0);
+						break;
+				}
+			}
+		}
+	}
+}
