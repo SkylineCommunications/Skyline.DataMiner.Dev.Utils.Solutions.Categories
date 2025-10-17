@@ -7,7 +7,6 @@
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
-	using Skyline.DataMiner.Utils.Categories.UnitTesting;
 
 	[TestClass]
 	public sealed class Api_Subscriptions

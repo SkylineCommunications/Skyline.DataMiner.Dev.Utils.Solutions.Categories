@@ -28,7 +28,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.UnitTesting\Skyline.DataMiner.Utils.Categories.UnitTesting.csproj" />
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
 	</ItemGroup>
 

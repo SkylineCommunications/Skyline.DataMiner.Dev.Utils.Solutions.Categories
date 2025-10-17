@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.UnitTesting
+﻿namespace Skyline.DataMiner.Utils.Categories.Tests
 {
 	using Skyline.DataMiner.Utils.Categories.API;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;

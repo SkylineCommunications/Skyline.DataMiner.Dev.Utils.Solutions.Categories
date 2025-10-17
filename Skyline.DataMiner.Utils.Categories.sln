@@ -7,8 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Cat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Tests", "Skyline.DataMiner.Utils.Categories.Tests\Skyline.DataMiner.Utils.Categories.Tests.csproj", "{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.UnitTesting", "Skyline.DataMiner.Utils.Categories.UnitTesting\Skyline.DataMiner.Utils.Categories.UnitTesting.csproj", "{4464D190-C2B8-49DD-BE21-865B67A6882D}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Automation", "Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Utils.Categories.Automation.csproj", "{47D3C5C5-04D0-4425-827D-BA7C08290DDE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Protocol", "Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Utils.Categories.Protocol.csproj", "{E7787DC6-47F2-462E-A3DE-22B9EBE9C5D2}"
@@ -29,10 +27,6 @@ Global
 		{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4464D190-C2B8-49DD-BE21-865B67A6882D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4464D190-C2B8-49DD-BE21-865B67A6882D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4464D190-C2B8-49DD-BE21-865B67A6882D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4464D190-C2B8-49DD-BE21-865B67A6882D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{47D3C5C5-04D0-4425-827D-BA7C08290DDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{47D3C5C5-04D0-4425-827D-BA7C08290DDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47D3C5C5-04D0-4425-827D-BA7C08290DDE}.Release|Any CPU.ActiveCfg = Release|Any CPU

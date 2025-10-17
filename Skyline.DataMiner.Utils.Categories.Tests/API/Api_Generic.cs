@@ -6,7 +6,6 @@
 	using Skyline.DataMiner.Utils.Categories.DOM.Definitions;
 	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 	using Skyline.DataMiner.Utils.Categories.Tools;
-	using Skyline.DataMiner.Utils.Categories.UnitTesting;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
 
 	[TestClass]
