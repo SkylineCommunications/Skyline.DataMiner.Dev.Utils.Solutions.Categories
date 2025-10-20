@@ -28,6 +28,7 @@
 
 		public IEnumerable<IDomDefinitionInfo> Definitions { get; } = new IDomDefinitionInfo[]
 		{
+			new ScopeDefinition(),
 			new CategoryDefinition(),
 		};
 	}

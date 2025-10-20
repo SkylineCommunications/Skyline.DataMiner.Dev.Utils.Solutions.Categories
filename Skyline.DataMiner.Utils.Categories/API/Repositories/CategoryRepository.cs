@@ -7,6 +7,7 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
+	using Skyline.DataMiner.Utils.Categories.API.Extensions;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
@@ -22,6 +23,44 @@
 		}
 
 		protected internal override DomDefinitionId DomDefinition => Category.DomDefinition;
+
+		public IEnumerable<Category> GetByScope(ApiObjectReference<Scope> scope)
+		{
+			if (scope == ApiObjectReference<Scope>.Empty)
+			{
+				return [];
+			}
+
+			var filter = new ANDFilterElement<DomInstance>(
+				DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
+				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope).Equal(scope.ID));
+
+			return Read(filter);
+		}
+
+		public IEnumerable<Category> GetChildCategories(ApiObjectReference<Category> parentCategory)
+		{
+			if (parentCategory == ApiObjectReference<Category>.Empty)
+			{
+				return [];
+			}
+
+			var filter = new ANDFilterElement<DomInstance>(
+				DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
+				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory).Equal(parentCategory.ID));
+
+			return Read(filter);
+		}
+
+		public CategoryWithChildren GetTree()
+		{
+			return ReadAll().GetTree();
+		}
+
+		public CategoryWithChildren GetTree(ApiObjectReference<Scope> scope)
+		{
+			return GetByScope(scope).GetTree();
+		}
 
 		protected internal override Category CreateInstance(DomInstance domInstance)
 		{

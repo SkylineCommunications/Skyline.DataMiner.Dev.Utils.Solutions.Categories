@@ -20,6 +20,7 @@
 			SlcCategoriesHelper = new SlcCategoriesHelper(connection);
 
 			Categories = new CategoryRepository(SlcCategoriesHelper, connection);
+			Scopes = new ScopeRepository(SlcCategoriesHelper, connection);
 		}
 
 		protected internal IConnection Connection { get; }
@@ -27,6 +28,8 @@
 		internal SlcCategoriesHelper SlcCategoriesHelper { get; }
 
 		public CategoryRepository Categories { get; }
+
+		public ScopeRepository Scopes { get; }
 
 		public bool IsInstalled()
 		{

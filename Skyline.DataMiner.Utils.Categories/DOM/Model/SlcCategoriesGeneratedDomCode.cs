@@ -12,7 +12,7 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Sections;
 
-	public static class SlcCategoriesIds
+	internal static class SlcCategoriesIds
 	{
 		public const string ModuleId = "(slc)categories";
 		public static class Enums
@@ -21,18 +21,36 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 
 		public static class Sections
 		{
+			public static class CategoryItem
+			{
+				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("2ae55ec4-695d-4605-b4f4-a219ccfd1637"))
+				{ ModuleId = "(slc)categories" };
+				public static FieldDescriptorID ModuleID { get; } = new FieldDescriptorID(new Guid("9f694734-ce4e-4bf1-b22a-9bdca55f0da1"));
+				public static FieldDescriptorID InstanceID { get; } = new FieldDescriptorID(new Guid("cb6a5cae-5522-43e7-990f-493b4d77f9be"));
+			}
+
+			public static class ScopeInfo
+			{
+				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("63e9aabd-f09a-4c46-9dff-1167f6d456d3"))
+				{ ModuleId = "(slc)categories" };
+				public static FieldDescriptorID Name { get; } = new FieldDescriptorID(new Guid("5d75a4ad-05b8-4770-9266-97afddcb62bb"));
+			}
+
 			public static class CategoryInfo
 			{
 				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("5816d327-e025-4f2f-a404-fd0685a6d047"))
 				{ ModuleId = "(slc)categories" };
 				public static FieldDescriptorID Name { get; } = new FieldDescriptorID(new Guid("68bea0c6-e645-4605-ad7e-31ea31802d77"));
 				public static FieldDescriptorID ParentCategory { get; } = new FieldDescriptorID(new Guid("fdc3efdc-cd13-4e9e-bf31-7aeb58702813"));
+				public static FieldDescriptorID Scope { get; } = new FieldDescriptorID(new Guid("285f102e-7a6a-46b0-98ea-67d3affdb14c"));
 			}
 		}
 
 		public static class Definitions
 		{
 			public static DomDefinitionId Category { get; } = new DomDefinitionId(new Guid("51561163-340a-4953-97e0-bec5418fb559"))
+			{ ModuleId = "(slc)categories" };
+			public static DomDefinitionId Scope { get; } = new DomDefinitionId(new Guid("e8e3d37b-0db4-4ef8-83ec-7d36db215e13"))
 			{ ModuleId = "(slc)categories" };
 		}
 
@@ -93,6 +111,11 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 		}
 
 		/// <summary>
+		/// Gets or sets the CategoryItem section of the DOM Instance.
+		/// </summary>
+		public IList<CategoryItemSection> CategoryItem { get; private set; }
+
+		/// <summary>
 		/// Gets or sets the CategoryInfo section of the DOM Instance.
 		/// </summary>
 		public CategoryInfoSection CategoryInfo { get; set; }
@@ -132,6 +155,11 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 		protected sealed override DomInstance InternalToInstance()
 		{
 			domInstance.Sections.Clear();
+			foreach (var item in CategoryItem)
+			{
+				domInstance.Sections.Add(item.ToSection());
+			}
+
 			domInstance.Sections.Add(CategoryInfo.ToSection());
 			return domInstance;
 		}
@@ -153,6 +181,7 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 
 		protected sealed override void InitializeProperties()
 		{
+			CategoryItem = domInstance.Sections.Where(section => section.SectionDefinitionID.Equals(SlcCategoriesIds.Sections.CategoryItem.Id)).Select(section => new CategoryItemSection(section)).ToList();
 			var _categoryInfo = domInstance.Sections.FirstOrDefault(section => section.SectionDefinitionID.Equals(SlcCategoriesIds.Sections.CategoryInfo.Id));
 			if (_categoryInfo is null)
 			{
@@ -161,6 +190,115 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 			else
 			{
 				CategoryInfo = new CategoryInfoSection(_categoryInfo);
+			}
+		}
+	}
+
+	/// <summary>
+	/// Represents a wrapper class for accessing a ScopeInstance DOM instance.
+	/// The <see cref="ScopeInstance"/> class provides simplified access to the data and functionality of the underlying DOM instance, allowing for easier manipulation and retrieval of data from DOM.
+	/// </summary>
+	internal partial class ScopeInstance : DomInstanceBase
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopeInstance"/> class. Creates an empty <see cref="ScopeInstance"/> instance with default settings.
+		/// </summary>
+		public ScopeInstance() : base(SlcCategoriesIds.Definitions.Scope)
+		{
+			InitializeProperties();
+			AfterLoad();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopeInstance"/> class. Creates an empty <see cref="ScopeInstance"/> instance with default settings and a specific ID.
+		/// </summary>
+		public ScopeInstance(Guid id) : base(SlcCategoriesIds.Definitions.Scope, id)
+		{
+			InitializeProperties();
+			AfterLoad();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopeInstance"/> class using the specified <paramref name="domInstance"/> for initializing the object.
+		/// </summary>
+		/// <param name="domInstance">The <see cref="DomInstance"/> object that provides data for initializing the <see cref="ScopeInstance"/>. If the section is <c>null</c>, the constructor will not perform any initialization.</param>
+		public ScopeInstance(DomInstance domInstance) : base(domInstance)
+		{
+			if (!domInstance.DomDefinitionId.Equals(SlcCategoriesIds.Definitions.Scope))
+				throw new ArgumentException($"The given domInstance, is not of type '{nameof(SlcCategoriesIds.Definitions.Scope)}'", nameof(domInstance));
+			InitializeProperties();
+			AfterLoad();
+		}
+
+		/// <summary>
+		/// Gets or sets the ScopeInfo section of the DOM Instance.
+		/// </summary>
+		public ScopeInfoSection ScopeInfo { get; set; }
+
+		public static explicit operator ScopeInstance(DomInstance instance)
+		{
+			return new ScopeInstance(instance);
+		}
+
+		/// <summary>
+		/// Creates a deep copy of the current <see cref="ScopeInstance"/>.
+		/// </summary>
+		/// <returns>A new <see cref="ScopeInstance"/> object that is a deep copy of this instance.</returns>
+		public ScopeInstance Clone()
+		{
+			return new ScopeInstance((DomInstance)this.ToInstance().Clone());
+		}
+
+		/// <summary>
+		/// Creates a duplicate of the current <see cref="ScopeInstance"/> with a new id.
+		/// </summary>
+		/// <returns>A new <see cref="ScopeInstance"/> object that is a copy of this instance but with a different id.</returns>
+		public ScopeInstance Duplicate()
+		{
+			var instance = (DomInstance)this.ToInstance().Clone();
+			instance.ID = new DomInstanceId(Guid.NewGuid())
+			{ ModuleId = ModuleId };
+			foreach (var section in instance.Sections)
+			{
+				section.ID = new Skyline.DataMiner.Net.Sections.SectionID(Guid.NewGuid());
+			}
+
+			return new ScopeInstance(instance);
+		}
+
+		/// <inheritdoc />
+		protected sealed override DomInstance InternalToInstance()
+		{
+			domInstance.Sections.Clear();
+			domInstance.Sections.Add(ScopeInfo.ToSection());
+			return domInstance;
+		}
+
+		/// <inheritdoc />
+		public sealed override void Save(DomHelper helper)
+		{
+			var exist = helper.DomInstances.Read(DomInstanceExposers.Id.Equal(domInstance.ID)).FirstOrDefault();
+			var instance = ToInstance();
+			if (exist == null)
+			{
+				domInstance = helper.DomInstances.Create(instance);
+			}
+			else
+			{
+				domInstance = helper.DomInstances.Update(instance);
+			}
+		}
+
+		protected sealed override void InitializeProperties()
+		{
+			var _scopeInfo = domInstance.Sections.FirstOrDefault(section => section.SectionDefinitionID.Equals(SlcCategoriesIds.Sections.ScopeInfo.Id));
+			if (_scopeInfo is null)
+			{
+				ScopeInfo = new ScopeInfoSection();
+			}
+			else
+			{
+				ScopeInfo = new ScopeInfoSection(_scopeInfo);
 			}
 		}
 	}
@@ -182,6 +320,235 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 	using Skyline.DataMiner.Net.Apps.Sections.Sections;
 	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Net.Sections;
+
+	/// <summary>
+	/// Represents a wrapper class for accessing a CategoryItemSection section.
+	/// The <see cref="CategoryItemSection"/> class provides simplified access to the data and functionality of the underlying DOM section, allowing for easier manipulation and retrieval of data from DOM.
+	/// </summary>
+	internal partial class CategoryItemSection : DomSectionBase
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CategoryItemSection"/> class. Creates an empty <see cref="CategoryItemSection"/> object with default settings.
+		/// </summary>
+		public CategoryItemSection() : base(SlcCategoriesIds.Sections.CategoryItem.Id)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="CategoryItemSection"/> class using the specified <paramref name="section"/> for initializing the object.
+		/// </summary>
+		/// <param name="section">The <see cref="Section"/> object that provides data for initializing the <see cref="CategoryItemSection"/>. If the section is <c>null</c>, the constructor will not perform any initialization.</param>
+		public CategoryItemSection(Section section) : base(section, SlcCategoriesIds.Sections.CategoryItem.Id)
+		{
+		}
+
+		/// <summary>
+		/// Gets or sets the ModuleID field of the DOM Instance.
+		/// </summary>
+		/// <remarks>
+		/// When retrieving the value:
+		/// <list type="bullet">
+		/// <item>If the field has been set, it will return the value.</item>
+		/// <item>If the field is not set it will return <see langword="null"/>.</item>
+		/// </list>
+		/// When setting the value:
+		/// <list type="bullet">
+		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
+		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
+		/// </list>
+		/// </remarks>
+		public String ModuleID
+		{
+			get
+			{
+				var wrapper = section.GetValue<String>(SlcCategoriesIds.Sections.CategoryItem.ModuleID);
+				if (wrapper != null)
+				{
+					return (String)wrapper.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					section.RemoveFieldValueById(SlcCategoriesIds.Sections.CategoryItem.ModuleID);
+				}
+				else
+				{
+					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryItem.ModuleID, (String)value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the InstanceID field of the DOM Instance.
+		/// </summary>
+		/// <remarks>
+		/// When retrieving the value:
+		/// <list type="bullet">
+		/// <item>If the field has been set, it will return the value.</item>
+		/// <item>If the field is not set it will return <see langword="null"/>.</item>
+		/// </list>
+		/// When setting the value:
+		/// <list type="bullet">
+		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
+		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
+		/// </list>
+		/// </remarks>
+		public String InstanceID
+		{
+			get
+			{
+				var wrapper = section.GetValue<String>(SlcCategoriesIds.Sections.CategoryItem.InstanceID);
+				if (wrapper != null)
+				{
+					return (String)wrapper.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					section.RemoveFieldValueById(SlcCategoriesIds.Sections.CategoryItem.InstanceID);
+				}
+				else
+				{
+					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryItem.InstanceID, (String)value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates a deep copy of the current <see cref="CategoryItemSection"/>.
+		/// </summary>
+		/// <returns>A new <see cref="CategoryItemSection"/> object that is a deep copy of this section.</returns>
+		public CategoryItemSection Clone()
+		{
+			return new CategoryItemSection((Section)this.ToSection().Clone());
+		}
+
+		/// <summary>
+		/// Creates a duplicate of the current <see cref="CategoryItemSection"/> with a new id.
+		/// </summary>
+		/// <returns>A new <see cref="CategoryItemSection"/> object that is a copy of this section but with a different id.</returns>
+		public CategoryItemSection Duplicate()
+		{
+			var section = (Section)this.ToSection().Clone();
+			section.ID = new SectionID(Guid.NewGuid());
+			return new CategoryItemSection(section);
+		}
+
+		/// <inheritdoc />
+		protected override Section InternalToSection()
+		{
+			if (section.GetValue<String>(SlcCategoriesIds.Sections.CategoryItem.ModuleID) == null)
+				throw new InvalidOperationException("'ModuleID' is required. Please fill it in before saving, or mark it as optional with the DOM Editor.");
+			return section;
+		}
+	}
+
+	/// <summary>
+	/// Represents a wrapper class for accessing a ScopeInfoSection section.
+	/// The <see cref="ScopeInfoSection"/> class provides simplified access to the data and functionality of the underlying DOM section, allowing for easier manipulation and retrieval of data from DOM.
+	/// </summary>
+	internal partial class ScopeInfoSection : DomSectionBase
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopeInfoSection"/> class. Creates an empty <see cref="ScopeInfoSection"/> object with default settings.
+		/// </summary>
+		public ScopeInfoSection() : base(SlcCategoriesIds.Sections.ScopeInfo.Id)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ScopeInfoSection"/> class using the specified <paramref name="section"/> for initializing the object.
+		/// </summary>
+		/// <param name="section">The <see cref="Section"/> object that provides data for initializing the <see cref="ScopeInfoSection"/>. If the section is <c>null</c>, the constructor will not perform any initialization.</param>
+		public ScopeInfoSection(Section section) : base(section, SlcCategoriesIds.Sections.ScopeInfo.Id)
+		{
+		}
+
+		/// <summary>
+		/// Gets or sets the Name field of the DOM Instance.
+		/// </summary>
+		/// <remarks>
+		/// When retrieving the value:
+		/// <list type="bullet">
+		/// <item>If the field has been set, it will return the value.</item>
+		/// <item>If the field is not set it will return <see langword="null"/>.</item>
+		/// </list>
+		/// When setting the value:
+		/// <list type="bullet">
+		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
+		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
+		/// </list>
+		/// </remarks>
+		public String Name
+		{
+			get
+			{
+				var wrapper = section.GetValue<String>(SlcCategoriesIds.Sections.ScopeInfo.Name);
+				if (wrapper != null)
+				{
+					return (String)wrapper.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					section.RemoveFieldValueById(SlcCategoriesIds.Sections.ScopeInfo.Name);
+				}
+				else
+				{
+					section.AddOrUpdateValue(SlcCategoriesIds.Sections.ScopeInfo.Name, (String)value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Creates a deep copy of the current <see cref="ScopeInfoSection"/>.
+		/// </summary>
+		/// <returns>A new <see cref="ScopeInfoSection"/> object that is a deep copy of this section.</returns>
+		public ScopeInfoSection Clone()
+		{
+			return new ScopeInfoSection((Section)this.ToSection().Clone());
+		}
+
+		/// <summary>
+		/// Creates a duplicate of the current <see cref="ScopeInfoSection"/> with a new id.
+		/// </summary>
+		/// <returns>A new <see cref="ScopeInfoSection"/> object that is a copy of this section but with a different id.</returns>
+		public ScopeInfoSection Duplicate()
+		{
+			var section = (Section)this.ToSection().Clone();
+			section.ID = new SectionID(Guid.NewGuid());
+			return new ScopeInfoSection(section);
+		}
+
+		/// <inheritdoc />
+		protected override Section InternalToSection()
+		{
+			if (section.GetValue<String>(SlcCategoriesIds.Sections.ScopeInfo.Name) == null)
+				throw new InvalidOperationException("'Name' is required. Please fill it in before saving, or mark it as optional with the DOM Editor.");
+			return section;
+		}
+	}
 
 	/// <summary>
 	/// Represents a wrapper class for accessing a CategoryInfoSection section.
@@ -291,6 +658,49 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 		}
 
 		/// <summary>
+		/// Gets or sets the Scope field of the DOM Instance.
+		/// </summary>
+		/// <remarks>
+		/// When retrieving the value:
+		/// <list type="bullet">
+		/// <item>If the field has been set, it will return the value.</item>
+		/// <item>If the field is not set it will return <see langword="null"/>.</item>
+		/// </list>
+		/// When setting the value:
+		/// <list type="bullet">
+		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
+		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
+		/// </list>
+		/// </remarks>
+		public Guid? Scope
+		{
+			get
+			{
+				var wrapper = section.GetValue<Guid>(SlcCategoriesIds.Sections.CategoryInfo.Scope);
+				if (wrapper != null)
+				{
+					return (Guid?)wrapper.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					section.RemoveFieldValueById(SlcCategoriesIds.Sections.CategoryInfo.Scope);
+				}
+				else
+				{
+					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryInfo.Scope, (Guid)value);
+				}
+			}
+		}
+
+		/// <summary>
 		/// Creates a deep copy of the current <see cref="CategoryInfoSection"/>.
 		/// </summary>
 		/// <returns>A new <see cref="CategoryInfoSection"/> object that is a deep copy of this section.</returns>
@@ -319,4 +729,3 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 		}
 	}
 }
-
