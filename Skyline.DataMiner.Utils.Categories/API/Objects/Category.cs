@@ -83,6 +83,8 @@
 			}
 		}
 
+		public bool IsRootCategory => ParentCategory == ApiObjectReference<Category>.Empty;
+
 		public IEnumerable<Category> GetChildCategories(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
@@ -107,8 +109,7 @@
 				result.AddError($"Scope is mandatory.", this, x => x.Scope);
 			}
 
-			if (ParentCategory != ApiObjectReference<Category>.Empty &&
-				RootCategory == ApiObjectReference<Category>.Empty)
+			if (!IsRootCategory && RootCategory == ApiObjectReference<Category>.Empty)
 			{
 				result.AddError("A root category is required when a parent category is assigned.", this, x => x.RootCategory);
 			}
