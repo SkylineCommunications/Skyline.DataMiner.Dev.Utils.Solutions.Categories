@@ -17,8 +17,11 @@
 			// Arrange
 			var api = new CategoriesApiMock();
 
-			var categoryX = new Category { Name = "Category X" };
-			var categoryY = new Category { Name = "Category Y" };
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.Create(scope);
+
+			var categoryX = new Category { Name = "Category X", Scope = scope };
+			var categoryY = new Category { Name = "Category Y", Scope = scope };
 
 			var receivedEvents = new List<ApiObjectsChangedEvent<Category>>();
 
@@ -45,8 +48,11 @@
 			// Arrange
 			var api = new CategoriesApiMock();
 
-			var categoryX = new Category { Name = "Category X" };
-			var categoryY = new Category { Name = "Category Y" };
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.Create(scope);
+
+			var categoryX = new Category { Name = "Category X", Scope = scope };
+			var categoryY = new Category { Name = "Category Y", Scope = scope };
 
 			var receivedEvents = new List<ApiObjectsChangedEvent<Category>>();
 
@@ -77,7 +83,10 @@
 			// Arrange
 			var api = new CategoriesApiMock();
 
-			var category = new Category { Name = "Category X" };
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.Create(scope);
+
+			var category = new Category { Name = "Category X", Scope = scope };
 			api.Categories.Create(category);
 
 			var receivedEvents = new List<ApiObjectsChangedEvent<Category>>();
@@ -103,7 +112,10 @@
 			// Arrange
 			var api = new CategoriesApiMock();
 
-			var category = new Category { Name = "Category X" };
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.Create(scope);
+
+			var category = new Category { Name = "Category X", Scope = scope };
 			api.Categories.Create(category);
 
 			var receivedEvents = new List<ApiObjectsChangedEvent<Category>>();

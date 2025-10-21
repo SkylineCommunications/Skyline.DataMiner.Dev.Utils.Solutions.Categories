@@ -38,6 +38,20 @@
 			return Read(filter);
 		}
 
+		public IEnumerable<Category> GetByRootCategory(ApiObjectReference<Category> rootCategory)
+		{
+			if (rootCategory == ApiObjectReference<Category>.Empty)
+			{
+				return [];
+			}
+
+			var filter = new ANDFilterElement<DomInstance>(
+				DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
+				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.RootCategory).Equal(rootCategory.ID));
+
+			return Read(filter);
+		}
+
 		public IEnumerable<Category> GetChildCategories(ApiObjectReference<Category> parentCategory)
 		{
 			if (parentCategory == ApiObjectReference<Category>.Empty)

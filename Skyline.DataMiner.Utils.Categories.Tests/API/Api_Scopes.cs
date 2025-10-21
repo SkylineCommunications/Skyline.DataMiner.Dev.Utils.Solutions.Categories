@@ -17,8 +17,8 @@
 			api.Scopes.CreateOrUpdate([scope1, scope2]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope1 };
-			var category11 = new Category { Name = "Category 1.1", ParentCategory = category1, Scope = scope1 };
-			var category12 = new Category { Name = "Category 1.2", ParentCategory = category1, Scope = scope1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
+			var category12 = new Category { Name = "Category 1.2", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
 			api.Categories.CreateOrUpdate([category1, category11, category12]);
 
 			scope1.GetCategoriesTree(api.Categories).Should().BeEquivalentTo(

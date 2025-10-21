@@ -47,8 +47,11 @@
 		{
 			var api = new CategoriesApiMock();
 
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
 			// doesn't throw exception
-			var category = new Category { Name = "Category 1" };
+			var category = new Category { Name = "Category 1", Scope = scope };
 			api.Categories.Create(category);
 
 			category.Name = "Category 2";
@@ -56,7 +59,7 @@
 
 			// create item with same name
 			var ex = Assert.Throws<InvalidOperationException>(
-				() => { api.Categories.Create(new Category { Name = "Category 2" }); });
+				() => { api.Categories.Create(new Category { Name = "Category 2", Scope = scope }); });
 			Assert.AreEqual("Cannot save categories. The following names are already in use: Category 2", ex.Message);
 		}
 	}
