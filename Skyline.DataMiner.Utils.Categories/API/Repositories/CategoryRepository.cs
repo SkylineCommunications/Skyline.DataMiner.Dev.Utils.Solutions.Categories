@@ -66,6 +66,39 @@
 			return Read(filter);
 		}
 
+		public IEnumerable<Category> GetDescendantCategories(ApiObjectReference<Category> parentCategory)
+		{
+			if (parentCategory == ApiObjectReference<Category>.Empty)
+			{
+				yield break;
+			}
+
+			var queue = new Queue<Category>();
+			var visited = new HashSet<ApiObjectReference<Category>>();
+
+			foreach (var child in GetChildCategories(parentCategory))
+			{
+				queue.Enqueue(child);
+			}
+
+			while (queue.Count > 0)
+			{
+				var current = queue.Dequeue();
+
+				if (!visited.Add(current))
+				{
+					continue;
+				}
+
+				yield return current;
+
+				foreach (var child in GetChildCategories(current))
+				{
+					queue.Enqueue(child);
+				}
+			}
+		}
+
 		public CategoryWithChildren GetTree()
 		{
 			return ReadAll().GetTree();

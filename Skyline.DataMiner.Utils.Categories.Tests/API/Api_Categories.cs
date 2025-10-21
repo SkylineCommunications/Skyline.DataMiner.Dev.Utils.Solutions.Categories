@@ -66,6 +66,26 @@
 		}
 
 		[TestMethod]
+		public void Api_Categories_GetDescendantCategories()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category121 = new Category { Name = "Category 1.2.1", Scope = scope, ParentCategory = category12, RootCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11, category12, category121]);
+
+			api.Categories.GetDescendantCategories(category1).Should().BeEquivalentTo([category11, category12, category121]);
+
+			// other way to do the same
+			category1.GetDescendantCategories(api.Categories).Should().BeEquivalentTo([category11, category12, category121]);
+		}
+
+		[TestMethod]
 		public void Api_Categories_GetTree()
 		{
 			var api = new CategoriesApiMock();
