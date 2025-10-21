@@ -30,6 +30,7 @@
 		{
 			new ScopeDefinition(),
 			new CategoryDefinition(),
+			new CategoryItemDefinition(),
 		};
 	}
 }

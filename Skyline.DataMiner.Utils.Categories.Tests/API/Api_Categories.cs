@@ -8,35 +8,6 @@
 	public sealed class Api_Categories
 	{
 		[TestMethod]
-		public void Api_Categories_Items()
-		{
-			var api = new CategoriesApiMock();
-
-			var scope = new Scope { Name = "Scope 1" };
-			api.Scopes.Create(scope);
-
-			var items = new[]
-			{
-				new CategoryItem { ModuleId = "Module A", InstanceId = "Instance 1" },
-				new CategoryItem { ModuleId = "Module B", InstanceId = "Instance 2" },
-			};
-
-			var category = new Category
-			{
-				Name = "Category 1",
-				Scope = scope,
-				Items = items,
-			};
-			api.Categories.Create(category);
-
-			var retrieved = api.Categories.Query().Single(x => x.Name == "Category 1");
-			retrieved.Items.Should().BeEquivalentTo(items);
-
-			retrieved.ContainsItem("Module A", "Instance 1").Should().BeTrue();
-			retrieved.ContainsItem("Module X", "Instance Y").Should().BeFalse();
-		}
-
-		[TestMethod]
 		public void Api_Categories_GetByScope()
 		{
 			var api = new CategoriesApiMock();

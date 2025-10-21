@@ -11,6 +11,7 @@ namespace Skyline.DataMiner.Utils.Categories.API
     {
         public CategoriesApi(Skyline.DataMiner.Net.IConnection connection) { }
         public Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository Categories { get; }
+        public Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryItemRepository CategoryItems { get; }
         protected Skyline.DataMiner.Net.IConnection Connection { get; }
         public Skyline.DataMiner.Utils.Categories.API.Repositories.ScopeRepository Scopes { get; }
         public string GetVersion() { }
@@ -66,14 +67,10 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
     {
         public static readonly Skyline.DataMiner.Utils.Categories.API.Objects.Category DefaultRootCategory;
         public Category() { }
-        public System.Collections.Generic.IList<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> Items { get; set; }
         public string Name { get; set; }
         public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>? ParentCategory { get; set; }
         public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope>? Scope { get; set; }
-        public bool AddItem(string moduleId, string instanceId) { }
-        public bool ContainsItem(string moduleId, string instanceId) { }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetChildCategories(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
-        public bool RemoveItem(string moduleId, string instanceId) { }
         public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult Validate() { }
     }
     public static class CategoryExposers
@@ -83,19 +80,19 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.Category, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>?> ParentCategory;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.Category, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope>?> Scope;
     }
-    public sealed class CategoryItem : System.IEquatable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>
+    public class CategoryItem : Skyline.DataMiner.Utils.Categories.API.Objects.ApiObject<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>
     {
         public CategoryItem() { }
-        public CategoryItem(string moduleId, string instanceId) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> Category { get; set; }
         public string InstanceId { get; set; }
         public string ModuleId { get; set; }
-        public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem other) { }
-        public override bool Equals(object obj) { }
-        public override int GetHashCode() { }
-        public override string ToString() { }
-        public void Validate() { }
-        public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem right) { }
-        public static bool operator ==(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem right) { }
+    }
+    public static class CategoryItemExposers
+    {
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>?> Category;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, System.Guid> ID;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, string> InstanceId;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, string> ModuleId;
     }
     public class CategoryWithChildren : Skyline.DataMiner.Utils.Categories.API.Objects.Category
     {
@@ -140,6 +137,15 @@ namespace Skyline.DataMiner.Utils.Categories.API.Querying
 }
 namespace Skyline.DataMiner.Utils.Categories.API.Repositories
 {
+    public class CategoryItemRepository : Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>
+    {
+        protected override Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinition { get; }
+        protected override Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
+        protected override Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
+        protected override SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+        protected override void ValidateBeforeDelete(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
+        protected override void ValidateBeforeSave(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
+    }
     public class CategoryRepository : Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<Skyline.DataMiner.Utils.Categories.API.Objects.Category>
     {
         protected override Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinition { get; }
@@ -296,6 +302,43 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Interfaces
         Skyline.DataMiner.Net.Apps.Modules.ModuleSettings ModuleSettings { get; }
     }
 }
+namespace Skyline.DataMiner.Utils.Categories.DOM.Model
+{
+    public static class SlcCategoriesIds
+    {
+        public const string ModuleId = "(slc)categories";
+        public static class Behaviors { }
+        public static class Definitions
+        {
+            public static Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId Category { get; }
+            public static Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId CategoryItem { get; }
+            public static Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId Scope { get; }
+        }
+        public static class Enums { }
+        public static class Sections
+        {
+            public static class CategoryInfo
+            {
+                public static Skyline.DataMiner.Net.Sections.SectionDefinitionID Id { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID Name { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID ParentCategory { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID Scope { get; }
+            }
+            public static class CategoryItemInfo
+            {
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID Category { get; }
+                public static Skyline.DataMiner.Net.Sections.SectionDefinitionID Id { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID InstanceID { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID ModuleID { get; }
+            }
+            public static class ScopeInfo
+            {
+                public static Skyline.DataMiner.Net.Sections.SectionDefinitionID Id { get; }
+                public static Skyline.DataMiner.Net.Sections.FieldDescriptorID Name { get; }
+            }
+        }
+    }
+}
 namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
 {
     public static class DomModuleInstaller
@@ -304,7 +347,6 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
     }
     public static class FilterQueryExecutor
     {
-        public static long CountFilteredItems<TId, TFilter>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, long> filterCountResolver) { }
         public static System.Collections.Generic.IEnumerable<TResult> RetrieveFilteredItems<TId, TFilter, TResult>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, System.Collections.Generic.IEnumerable<TResult>> filterResolver) { }
     }
 }

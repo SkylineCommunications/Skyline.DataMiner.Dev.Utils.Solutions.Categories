@@ -1,50 +1,58 @@
 ﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
 {
 	using System;
-	using System.Collections.Generic;
 
+	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
 
-	public sealed class CategoryItem : IEquatable<CategoryItem>
+	public class CategoryItem : ApiObject<CategoryItem>
 	{
-		public CategoryItem()
+		private readonly CategoryItemInstance _domInstance;
+
+		public CategoryItem() : this(new CategoryItemInstance())
 		{
-			DomSection = new CategoryItemSection();
 		}
 
-		public CategoryItem(string moduleId, string instanceId) : this()
+		internal CategoryItem(CategoryItemInstance domInstance) : base(domInstance)
 		{
-			if (String.IsNullOrWhiteSpace(moduleId))
+			_domInstance = domInstance ?? throw new ArgumentNullException(nameof(domInstance));
+		}
+
+		internal CategoryItem(DomInstance domInstance) : this(new CategoryItemInstance(domInstance))
+		{
+		}
+
+		internal static DomDefinitionId DomDefinition => SlcCategoriesIds.Definitions.CategoryItem;
+
+		public ApiObjectReference<Category> Category
+		{
+			get
 			{
-				throw new ArgumentException($"'{nameof(moduleId)}' cannot be null or whitespace.", nameof(moduleId));
+				if (_domInstance.CategoryItemInfo.Category.HasValue)
+				{
+					return _domInstance.CategoryItemInfo.Category.Value;
+				}
+
+				return ApiObjectReference<Category>.Empty;
 			}
 
-			if (String.IsNullOrWhiteSpace(instanceId))
+			set
 			{
-				throw new ArgumentException($"'{nameof(instanceId)}' cannot be null or whitespace.", nameof(instanceId));
+				_domInstance.CategoryItemInfo.Category = value;
 			}
-
-			ModuleId = moduleId;
-			InstanceId = instanceId;
 		}
-
-		internal CategoryItem(CategoryItemSection domSection)
-		{
-			DomSection = domSection ?? throw new ArgumentNullException(nameof(domSection));
-		}
-
-		internal CategoryItemSection DomSection { get; }
 
 		public string ModuleId
 		{
 			get
 			{
-				return DomSection.ModuleID;
+				return _domInstance.CategoryItemInfo.ModuleID;
 			}
 
 			set
 			{
-				DomSection.ModuleID = value;
+				_domInstance.CategoryItemInfo.ModuleID = value;
 			}
 		}
 
@@ -52,57 +60,21 @@
 		{
 			get
 			{
-				return DomSection.InstanceID;
+				return _domInstance.CategoryItemInfo.InstanceID;
 			}
 
 			set
 			{
-				DomSection.InstanceID = value;
+				_domInstance.CategoryItemInfo.InstanceID = value;
 			}
 		}
+	}
 
-		public void Validate()
-		{
-			if (String.IsNullOrWhiteSpace(ModuleId))
-			{
-				throw new InvalidOperationException($"{nameof(ModuleId)} cannot be null or whitespace.");
-			}
-
-			if (String.IsNullOrWhiteSpace(InstanceId))
-			{
-				throw new InvalidOperationException($"{nameof(InstanceId)} cannot be null or whitespace.");
-			}
-		}
-
-		public override string ToString()
-		{
-			return $"{InstanceId} ({ModuleId})";
-		}
-
-		public override bool Equals(object obj)
-		{
-			return Equals(obj as CategoryItem);
-		}
-
-		public bool Equals(CategoryItem other)
-		{
-			return other is not null &&
-				   EqualityComparer<CategoryItemSection>.Default.Equals(DomSection, other.DomSection);
-		}
-
-		public override int GetHashCode()
-		{
-			return EqualityComparer<CategoryItemSection>.Default.GetHashCode(DomSection);
-		}
-
-		public static bool operator ==(CategoryItem left, CategoryItem right)
-		{
-			return EqualityComparer<CategoryItem>.Default.Equals(left, right);
-		}
-
-		public static bool operator !=(CategoryItem left, CategoryItem right)
-		{
-			return !(left == right);
-		}
+	public static class CategoryItemExposers
+	{
+		public static readonly Exposer<CategoryItem, Guid> ID = new(x => x.ID, nameof(CategoryItem.ID));
+		public static readonly Exposer<CategoryItem, ApiObjectReference<Category>?> Category = new(x => x.Category, nameof(CategoryItem.Category));
+		public static readonly Exposer<CategoryItem, string> ModuleId = new(x => x.ModuleId, nameof(CategoryItem.ModuleId));
+		public static readonly Exposer<CategoryItem, string> InstanceId = new(x => x.InstanceId, nameof(CategoryItem.InstanceId));
 	}
 }

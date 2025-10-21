@@ -39,7 +39,7 @@
 			// deleting scope that is still in use throws exception
 			var ex = Assert.Throws<InvalidOperationException>(
 				() => { api.Scopes.Delete(scope); });
-			Assert.AreEqual("One or more scopes are still in use", ex.Message);
+			Assert.AreEqual("Cannot delete scopes: One or more scopes are still in use", ex.Message);
 		}
 
 		[TestMethod]

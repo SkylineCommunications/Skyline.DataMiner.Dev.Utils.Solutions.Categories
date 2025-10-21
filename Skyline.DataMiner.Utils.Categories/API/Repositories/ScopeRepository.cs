@@ -40,7 +40,14 @@
 
 		protected override void ValidateBeforeDelete(ICollection<Scope> instances)
 		{
-			CheckIfStillInUse(instances);
+			try
+			{
+				CheckIfStillInUse(instances);
+			}
+			catch (Exception ex)
+			{
+				throw new InvalidOperationException($"Cannot delete scopes: {ex.Message}", ex);
+			}
 		}
 
 		protected internal override FilterElement<DomInstance> CreateFilter(string fieldName, Comparer comparer, object value)
@@ -91,7 +98,8 @@
 					DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
 					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope).Equal(s.ID));
 
-			var count = FilterQueryExecutor.CountFilteredItems(instances, CreateFilter, Helper.DomInstances.Count);
+			var filter = new ORFilterElement<DomInstance>(instances.Select(CreateFilter).ToArray());
+			var count = Helper.DomInstances.Count(filter);
 
 			if (count > 0)
 			{

@@ -34,7 +34,6 @@
 		public IEnumerable<CustomSectionDefinition> SectionDefinitions { get; } = new[]
 		{
 			GetCategoryInfoSectionDefinition(),
-			GetCategoryItemSectionDefinition(),
 		};
 
 		private static CustomSectionDefinition GetCategoryInfoSectionDefinition()
@@ -72,35 +71,6 @@
 					Name = "Scope",
 					DomDefinitionIds = { SlcCategoriesIds.Definitions.Scope },
 					IsOptional = true,
-				});
-
-			return sectionDefinition;
-		}
-
-		private static CustomSectionDefinition GetCategoryItemSectionDefinition()
-		{
-			var sectionDefinition = new CustomSectionDefinition
-			{
-				ID = SlcCategoriesIds.Sections.CategoryItem.Id,
-				Name = "Category Item",
-			};
-
-			sectionDefinition.AddOrReplaceFieldDescriptor(
-				new FieldDescriptor
-				{
-					FieldType = typeof(string),
-					ID = SlcCategoriesIds.Sections.CategoryItem.ModuleID,
-					Name = "Module ID",
-					IsOptional = false,
-				});
-
-			sectionDefinition.AddOrReplaceFieldDescriptor(
-				new FieldDescriptor
-				{
-					FieldType = typeof(string),
-					ID = SlcCategoriesIds.Sections.CategoryItem.InstanceID,
-					Name = "Instance ID",
-					IsOptional = false,
 				});
 
 			return sectionDefinition;
