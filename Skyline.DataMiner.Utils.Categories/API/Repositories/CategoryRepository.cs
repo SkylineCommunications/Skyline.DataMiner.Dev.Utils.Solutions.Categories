@@ -78,23 +78,19 @@
 
 			foreach (var child in GetChildCategories(parentCategory))
 			{
-				queue.Enqueue(child);
+				if (visited.Add(child))
+					queue.Enqueue(child);
 			}
 
 			while (queue.Count > 0)
 			{
 				var current = queue.Dequeue();
-
-				if (!visited.Add(current))
-				{
-					continue;
-				}
-
 				yield return current;
 
 				foreach (var child in GetChildCategories(current))
 				{
-					queue.Enqueue(child);
+					if (visited.Add(child))
+						queue.Enqueue(child);
 				}
 			}
 		}

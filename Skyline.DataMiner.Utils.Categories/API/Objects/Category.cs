@@ -44,11 +44,16 @@
 			}
 		}
 
-		public ApiObjectReference<Category>? RootCategory
+		public ApiObjectReference<Category> RootCategory
 		{
 			get
 			{
-				return _domInstance.CategoryInfo.RootCategory;
+				if (_domInstance.CategoryInfo.RootCategory.HasValue)
+				{
+					return _domInstance.CategoryInfo.RootCategory.Value;
+				}
+
+				return ApiObjectReference<Category>.Empty;
 			}
 
 			set
@@ -70,11 +75,16 @@
 			}
 		}
 
-		public ApiObjectReference<Scope>? Scope
+		public ApiObjectReference<Scope> Scope
 		{
 			get
 			{
-				return _domInstance.CategoryInfo.Scope;
+				if (_domInstance.CategoryInfo.Scope.HasValue)
+				{
+					return _domInstance.CategoryInfo.Scope.Value;
+				}
+
+				return ApiObjectReference<Scope>.Empty;
 			}
 
 			set

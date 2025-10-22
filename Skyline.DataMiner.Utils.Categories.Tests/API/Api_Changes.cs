@@ -42,7 +42,7 @@
 		}
 
 		[TestMethod]
-		public Task NoPublicApiChanges_GQI()
+		public Task Api_NoPublicApiChanges_GQI()
 		{
 			var assemblyName = "Skyline.DataMiner.Utils.Categories.GQI";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();

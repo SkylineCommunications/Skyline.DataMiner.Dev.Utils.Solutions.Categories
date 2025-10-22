@@ -67,6 +67,21 @@
 			_parentByChild[child] = parent;
 		}
 
+		public void AddOrUpdate(TParent parent, TChild child)
+		{
+			if (parent == null)
+				throw new ArgumentNullException(nameof(parent));
+			if (child == null)
+				throw new ArgumentNullException(nameof(child));
+
+			if (ContainsChild(child))
+			{
+				RemoveChild(child);
+			}
+
+			Add(parent, child);
+		}
+
 		public IEnumerable<TChild> GetChildren(TParent parent)
 		{
 			if (parent == null)
