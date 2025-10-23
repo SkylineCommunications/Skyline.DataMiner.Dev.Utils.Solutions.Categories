@@ -8,7 +8,7 @@
 
 	public static class CategoryExtensions
 	{
-		public static CategoryWithChildren GetTree(this IEnumerable<Category> categories)
+		public static CategoryWithChildren ToTree(this IEnumerable<Category> categories)
 		{
 			if (categories is null)
 			{
@@ -22,16 +22,18 @@
 
 			foreach (var category in categoriesCollection)
 			{
-				if (category.ParentCategory.HasValue)
+				if (!category.ParentCategory.HasValue)
 				{
-					if (!parentChildMap.TryGetValue(category.ParentCategory.Value, out var childrenList))
-					{
-						childrenList = new List<Category>();
-						parentChildMap[category.ParentCategory.Value] = childrenList;
-					}
-
-					childrenList.Add(category);
+					continue;
 				}
+
+				if (!parentChildMap.TryGetValue(category.ParentCategory.Value, out var childrenList))
+				{
+					childrenList = new List<Category>();
+					parentChildMap[category.ParentCategory.Value] = childrenList;
+				}
+
+				childrenList.Add(category);
 			}
 
 			// Create CategoryWithChildren instances

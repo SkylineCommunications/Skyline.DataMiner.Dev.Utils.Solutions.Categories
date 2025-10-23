@@ -97,12 +97,12 @@
 
 		public CategoryWithChildren GetTree()
 		{
-			return ReadAll().GetTree();
+			return ReadAll().ToTree();
 		}
 
 		public CategoryWithChildren GetTree(ApiObjectReference<Scope> scope)
 		{
-			return GetByScope(scope).GetTree();
+			return GetByScope(scope).ToTree();
 		}
 
 		protected internal override Category CreateInstance(DomInstance domInstance)
