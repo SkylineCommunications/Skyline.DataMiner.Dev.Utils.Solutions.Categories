@@ -100,23 +100,23 @@
 			api.Categories.CreateOrUpdate([category1, category11, category12]);
 
 			api.Categories.GetTree().Should().BeEquivalentTo(
-				new CategoryWithChildren(
+				new CategoryNode(
 					category1,
 					[
-						new CategoryWithChildren(category11, []),
-						new CategoryWithChildren(category12, []),
+						new CategoryNode(category11),
+						new CategoryNode(category12),
 					]));
 
 			api.Categories.GetTree(scope1).Should().BeEquivalentTo(
-				new CategoryWithChildren(
+				new CategoryNode(
 					category1,
 					[
-						new CategoryWithChildren(category11, []),
-						new CategoryWithChildren(category12, []),
+						new CategoryNode(category11),
+						new CategoryNode(category12),
 					]));
 
 			api.Categories.GetTree(scope2).Should().BeEquivalentTo(
-				new CategoryWithChildren(Category.DefaultRootCategory, []));
+				new CategoryNode(Category.DefaultRootCategory));
 		}
 	}
 }

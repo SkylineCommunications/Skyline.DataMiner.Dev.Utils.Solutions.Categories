@@ -19,18 +19,25 @@
 			var category1 = new Category { Name = "Category 1", Scope = scope1 };
 			var category11 = new Category { Name = "Category 1.1", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
 			var category12 = new Category { Name = "Category 1.2", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
-			api.Categories.CreateOrUpdate([category1, category11, category12]);
+			var category121 = new Category { Name = "Category 1.2.1", Scope = scope1, ParentCategory = category12, RootCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11, category12, category121]);
 
-			scope1.GetCategoriesTree(api.Categories).Should().BeEquivalentTo(
-				new CategoryWithChildren(
+			var scope1Tree = scope1.GetCategoriesTree(api.Categories);
+			var scope2Tree = scope2.GetCategoriesTree(api.Categories);
+
+			scope1Tree.Should().BeEquivalentTo(
+				new CategoryNode(
 					category1,
 					[
-						new CategoryWithChildren(category11, []),
-						new CategoryWithChildren(category12, []),
+						new CategoryNode(category11),
+						new CategoryNode(category12,
+						[
+							new CategoryNode(category121),
+						]),
 					]));
 
-			scope2.GetCategoriesTree(api.Categories).Should().BeEquivalentTo(
-				new CategoryWithChildren(Category.DefaultRootCategory, []));
+			scope2Tree.Should().BeEquivalentTo(
+				new CategoryNode(Category.DefaultRootCategory));
 		}
 	}
 }

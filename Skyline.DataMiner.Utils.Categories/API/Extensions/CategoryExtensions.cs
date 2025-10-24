@@ -5,10 +5,11 @@
 	using System.Linq;
 
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
+	using Skyline.DataMiner.Utils.Categories.Tools;
 
 	public static class CategoryExtensions
 	{
-		public static CategoryWithChildren ToTree(this IEnumerable<Category> categories)
+		public static CategoryNode ToTree(this IEnumerable<Category> categories)
 		{
 			if (categories is null)
 			{
@@ -18,36 +19,29 @@
 			var categoriesCollection = categories as ICollection<Category> ?? categories.ToList();
 
 			// Build parent-child map
-			var parentChildMap = new Dictionary<ApiObjectReference<Category>, List<Category>>();
+			var parentChildMap = new OneToManyMapping<ApiObjectReference<Category>, Category>();
 
 			foreach (var category in categoriesCollection)
 			{
-				if (!category.ParentCategory.HasValue)
+				if (category.ParentCategory.HasValue)
 				{
-					continue;
+					parentChildMap.Add(category.ParentCategory.Value, category);
 				}
-
-				if (!parentChildMap.TryGetValue(category.ParentCategory.Value, out var childrenList))
-				{
-					childrenList = new List<Category>();
-					parentChildMap[category.ParentCategory.Value] = childrenList;
-				}
-
-				childrenList.Add(category);
 			}
 
-			// Create CategoryWithChildren instances
-			var categoriesWithChildren = categoriesCollection
-				.Select(c =>
-				{
-					parentChildMap.TryGetValue(c, out var children);
-					return new CategoryWithChildren(c, children ?? Enumerable.Empty<Category>());
-				})
-				.ToList();
+			// Recursive local function to build the tree structure
+			CategoryNode BuildTreeNode(Category category)
+			{
+				var children = parentChildMap.GetChildren(category);
+
+				var childNodes = children.Select(BuildTreeNode).ToList();
+				return new CategoryNode(category, childNodes);
+			}
 
 			// Find the root categories (those without a parent)
-			var rootCategories = categoriesWithChildren
+			var rootCategories = categoriesCollection
 				.Where(c => !c.ParentCategory.HasValue)
+				.Select(BuildTreeNode)
 				.ToList();
 
 			// If there's only one root category, return it directly
@@ -57,7 +51,7 @@
 			}
 
 			// Create a dummy root category to hold multiple root categories
-			return new CategoryWithChildren(Category.DefaultRootCategory, rootCategories);
+			return new CategoryNode(Category.DefaultRootCategory, rootCategories);
 		}
 	}
 }

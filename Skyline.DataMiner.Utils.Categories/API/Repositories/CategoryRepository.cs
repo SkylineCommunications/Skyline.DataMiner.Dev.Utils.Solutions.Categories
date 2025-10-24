@@ -95,12 +95,12 @@
 			}
 		}
 
-		public CategoryWithChildren GetTree()
+		public CategoryNode GetTree()
 		{
 			return ReadAll().ToTree();
 		}
 
-		public CategoryWithChildren GetTree(ApiObjectReference<Scope> scope)
+		public CategoryNode GetTree(ApiObjectReference<Scope> scope)
 		{
 			return GetByScope(scope).ToTree();
 		}

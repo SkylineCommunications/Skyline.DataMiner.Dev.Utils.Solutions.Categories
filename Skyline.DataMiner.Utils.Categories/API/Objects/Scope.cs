@@ -52,7 +52,7 @@
 			return categoryRepository.GetByScope(this);
 		}
 
-		public CategoryWithChildren GetCategoriesTree(CategoryRepository categoryRepository)
+		public CategoryNode GetCategoriesTree(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{

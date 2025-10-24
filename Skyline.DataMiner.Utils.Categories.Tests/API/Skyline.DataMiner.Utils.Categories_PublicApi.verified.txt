@@ -43,7 +43,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Extensions
 {
     public static class CategoryExtensions
     {
-        public static Skyline.DataMiner.Utils.Categories.API.Objects.CategoryWithChildren ToTree(this System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categories) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode ToTree(this System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categories) { }
     }
     public static class ConnectionExtensions
     {
@@ -121,9 +121,18 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, string> InstanceId;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem, string> ModuleId;
     }
-    public class CategoryWithChildren : Skyline.DataMiner.Utils.Categories.API.Objects.Category
+    public class CategoryNode : System.IEquatable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode>
     {
-        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> Children { get; }
+        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category) { }
+        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> children) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.Category Category { get; }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> Children { get; }
+        public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode other) { }
+        public override bool Equals(object obj) { }
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode right) { }
+        public static bool operator ==(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode right) { }
     }
     public interface IApiObjectReference
     {
@@ -134,7 +143,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public Scope() { }
         public string Name { get; set; }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetCategories(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
-        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryWithChildren GetCategoriesTree(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode GetCategoriesTree(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
         public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult Validate() { }
     }
     public static class ScopeExposers
@@ -183,8 +192,8 @@ namespace Skyline.DataMiner.Utils.Categories.API.Repositories
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetByScope(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scope) { }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetChildCategories(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategory) { }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetDescendantCategories(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategory) { }
-        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryWithChildren GetTree() { }
-        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryWithChildren GetTree(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scope) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode GetTree() { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode GetTree(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scope) { }
         protected override void ValidateBeforeDelete(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> instances) { }
         protected override void ValidateBeforeSave(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> instances) { }
     }
@@ -354,5 +363,12 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
     public static class FilterQueryExecutor
     {
         public static System.Collections.Generic.IEnumerable<TResult> RetrieveFilteredItems<TId, TFilter, TResult>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, System.Collections.Generic.IEnumerable<TResult>> filterResolver) { }
+    }
+}
+namespace Skyline.DataMiner.Utils.Categories.Tools
+{
+    public static class HashCode
+    {
+        public static int GetOrderIndependentHashCode<T>(this System.Collections.Generic.IEnumerable<T> items, System.Collections.Generic.IEqualityComparer<T> comparer = null) { }
     }
 }
