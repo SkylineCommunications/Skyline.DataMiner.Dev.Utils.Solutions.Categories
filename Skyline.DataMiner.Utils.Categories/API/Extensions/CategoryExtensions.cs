@@ -4,11 +4,14 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
+	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.Tools;
 
 	public static class CategoryExtensions
 	{
+		private static readonly NaturalSortComparer _naturalSortComparer = new();
+
 		public static CategoryNode ToTree(this IEnumerable<Category> categories)
 		{
 			if (categories is null)
@@ -32,15 +35,18 @@
 			// Recursive local function to build the tree structure
 			CategoryNode BuildTreeNode(Category category)
 			{
-				var children = parentChildMap.GetChildren(category);
+				var childNodes = parentChildMap.GetChildren(category)
+					.OrderBy(c => c.Name, _naturalSortComparer)
+					.Select(BuildTreeNode)
+					.ToList();
 
-				var childNodes = children.Select(BuildTreeNode).ToList();
 				return new CategoryNode(category, childNodes);
 			}
 
 			// Find the root categories (those without a parent)
 			var rootCategories = categoriesCollection
 				.Where(c => !c.ParentCategory.HasValue || !parentChildMap.ContainsParent(c.ParentCategory.Value))
+				.OrderBy(c => c.Name, _naturalSortComparer)
 				.Select(BuildTreeNode)
 				.ToList();
 
