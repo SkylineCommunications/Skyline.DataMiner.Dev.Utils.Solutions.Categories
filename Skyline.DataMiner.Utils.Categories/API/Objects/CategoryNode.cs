@@ -43,10 +43,10 @@
 		{
 			unchecked
 			{
-				int hash = -17;
+				int hash = 17;
 
-				hash = (hash * -31) + EqualityComparer<Category>.Default.GetHashCode(Category);
-				hash = (hash * -31) + HashCode.GetOrderIndependentHashCode(Children);
+				hash = (hash * 31) + EqualityComparer<Category>.Default.GetHashCode(Category);
+				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(Children);
 
 				return hash;
 			}
