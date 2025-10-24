@@ -58,7 +58,7 @@
 
 			set
 			{
-				_domInstance.CategoryInfo.RootCategory = value;
+				_domInstance.CategoryInfo.RootCategory = value != ApiObjectReference<Category>.Empty ? value : null;
 			}
 		}
 
@@ -71,7 +71,7 @@
 
 			set
 			{
-				_domInstance.CategoryInfo.ParentCategory = value;
+				_domInstance.CategoryInfo.ParentCategory = value != ApiObjectReference<Category>.Empty ? value : null;
 			}
 		}
 
@@ -89,7 +89,7 @@
 
 			set
 			{
-				_domInstance.CategoryInfo.Scope = value;
+				_domInstance.CategoryInfo.Scope = value != ApiObjectReference<Scope>.Empty ? value : null;
 			}
 		}
 

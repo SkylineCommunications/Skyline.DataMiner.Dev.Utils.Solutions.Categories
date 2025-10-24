@@ -169,7 +169,7 @@
 					_scopeCategoriesMapping.AddOrUpdate(item.Scope, item);
 
 					// Add to parent-child mapping if it has a parent category
-					if (item.ParentCategory.HasValue)
+					if (item.ParentCategory != ApiObjectReference<Category>.Empty)
 					{
 						_parentCategoriesMapping.AddOrUpdate(item.ParentCategory.Value, item);
 					}

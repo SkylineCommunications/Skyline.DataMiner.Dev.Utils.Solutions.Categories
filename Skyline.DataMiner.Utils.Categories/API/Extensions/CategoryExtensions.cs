@@ -23,7 +23,7 @@
 
 			foreach (var category in categoriesCollection)
 			{
-				if (category.ParentCategory.HasValue)
+				if (category.ParentCategory != ApiObjectReference<Category>.Empty)
 				{
 					parentChildMap.Add(category.ParentCategory.Value, category);
 				}
@@ -40,7 +40,7 @@
 
 			// Find the root categories (those without a parent)
 			var rootCategories = categoriesCollection
-				.Where(c => !c.ParentCategory.HasValue)
+				.Where(c => !c.ParentCategory.HasValue || !parentChildMap.ContainsParent(c.ParentCategory.Value))
 				.Select(BuildTreeNode)
 				.ToList();
 
