@@ -96,6 +96,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> RootCategory { get; set; }
         public Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> Scope { get; set; }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetChildCategories(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
+        public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetChildItems(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryItemRepository categoryItemRepository) { }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetDescendantCategories(Skyline.DataMiner.Utils.Categories.API.Repositories.CategoryRepository categoryRepository) { }
         public Skyline.DataMiner.Utils.Categories.API.Validation.ValidationResult Validate() { }
     }
@@ -124,9 +125,12 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
     public class CategoryNode : System.IEquatable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode>
     {
         public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category) { }
-        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> children) { }
+        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> childItems) { }
+        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> childCategories) { }
+        public CategoryNode(Skyline.DataMiner.Utils.Categories.API.Objects.Category category, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> childCategories, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> childItems) { }
         public Skyline.DataMiner.Utils.Categories.API.Objects.Category Category { get; }
-        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> Children { get; }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> ChildCategories { get; }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> ChildItems { get; }
         public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode other) { }
         public override bool Equals(object obj) { }
         public override int GetHashCode() { }
@@ -179,6 +183,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Repositories
         protected override Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
         protected override Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
         protected override SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+        public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategory) { }
         protected override void ValidateBeforeDelete(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
         protected override void ValidateBeforeSave(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
     }

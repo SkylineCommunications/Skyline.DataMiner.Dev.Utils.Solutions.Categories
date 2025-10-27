@@ -21,6 +21,20 @@
 
 		protected internal override DomDefinitionId DomDefinition => CategoryItem.DomDefinition;
 
+		public IEnumerable<CategoryItem> GetChildItems(ApiObjectReference<Category> parentCategory)
+		{
+			if (parentCategory == ApiObjectReference<Category>.Empty)
+			{
+				return [];
+			}
+
+			var filter = new ANDFilterElement<DomInstance>(
+				DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.CategoryItem.Id),
+				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.Category).Equal(parentCategory.ID));
+
+			return Read(filter);
+		}
+
 		protected internal override CategoryItem CreateInstance(DomInstance domInstance)
 		{
 			return new CategoryItem(domInstance);

@@ -8,23 +8,34 @@
 
 	public class CategoryNode : IEquatable<CategoryNode>
 	{
-		public CategoryNode(Category category, IEnumerable<CategoryNode> children)
+		public CategoryNode(Category category, IEnumerable<CategoryNode> childCategories, IEnumerable<CategoryItem> childItems)
 		{
 			Category = category ?? throw new ArgumentNullException(nameof(category));
-			Children = (children ?? []).ToList();
+			ChildCategories = (childCategories ?? []).ToList();
+			ChildItems = (childItems ?? []).ToList();
 		}
 
-		public CategoryNode(Category category) : this(category, [])
+		public CategoryNode(Category category, IEnumerable<CategoryNode> childCategories) : this(category, childCategories, [])
+		{
+		}
+
+		public CategoryNode(Category category, IEnumerable<CategoryItem> childItems) : this(category, [], childItems)
+		{
+		}
+
+		public CategoryNode(Category category) : this(category, [], [])
 		{
 		}
 
 		public Category Category { get; }
 
-		public IReadOnlyCollection<CategoryNode> Children { get; }
+		public IReadOnlyCollection<CategoryNode> ChildCategories { get; }
+
+		public IReadOnlyCollection<CategoryItem> ChildItems { get; }
 
 		public override string ToString()
 		{
-			return $"Category: {Category}, Children count: {Children.Count}";
+			return $"CategoryNode(Category: {Category}, ChildCategories: {ChildCategories.Count}, ChildItems: {ChildItems.Count})";
 		}
 
 		public override bool Equals(object obj)
@@ -36,7 +47,8 @@
 		{
 			return other is not null &&
 				   EqualityComparer<Category>.Default.Equals(Category, other.Category) &&
-				   Children.ToHashSet().SetEquals(other.Children);
+				   ChildCategories.ToHashSet().SetEquals(other.ChildCategories) &&
+				   ChildItems.ToHashSet().SetEquals(other.ChildItems);
 		}
 
 		public override int GetHashCode()
@@ -46,7 +58,8 @@
 				int hash = 17;
 
 				hash = (hash * 31) + EqualityComparer<Category>.Default.GetHashCode(Category);
-				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(Children);
+				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(ChildCategories);
+				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(ChildItems);
 
 				return hash;
 			}

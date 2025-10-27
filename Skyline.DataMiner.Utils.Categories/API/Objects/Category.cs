@@ -115,6 +115,16 @@
 			return categoryRepository.GetDescendantCategories(this);
 		}
 
+		public IEnumerable<CategoryItem> GetChildItems(CategoryItemRepository categoryItemRepository)
+		{
+			if (categoryItemRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryItemRepository));
+			}
+
+			return categoryItemRepository.GetChildItems(this);
+		}
+
 		public ValidationResult Validate()
 		{
 			var result = new ValidationResult();
