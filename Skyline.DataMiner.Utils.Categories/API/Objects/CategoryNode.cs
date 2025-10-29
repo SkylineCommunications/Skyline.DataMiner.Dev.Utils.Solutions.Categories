@@ -13,6 +13,11 @@
 			Category = category ?? throw new ArgumentNullException(nameof(category));
 			ChildCategories = (childCategories ?? []).ToList();
 			ChildItems = (childItems ?? []).ToList();
+
+			foreach (var childCategory in ChildCategories)
+			{
+				childCategory.SetParent(this);
+			}
 		}
 
 		public CategoryNode(Category category, IEnumerable<CategoryNode> childCategories) : this(category, childCategories, [])
@@ -26,6 +31,8 @@
 		public CategoryNode(Category category) : this(category, [], [])
 		{
 		}
+
+		public CategoryNode Parent { get; private set; }
 
 		public Category Category { get; }
 
@@ -64,6 +71,27 @@
 			return GetDescendantCategories().SelectMany(c => c.ChildItems)
 				.Concat(ChildItems)
 				.ToList();
+		}
+
+		public bool TryFindCategory(ApiObjectReference<Category> categoryId, out CategoryNode category)
+		{
+			if (Category == categoryId)
+			{
+				category = this;
+				return true;
+			}
+
+			foreach (var descendant in GetDescendantCategories())
+			{
+				if (descendant.Category == categoryId)
+				{
+					category = descendant;
+					return true;
+				}
+			}
+
+			category = null;
+			return false;
 		}
 
 		public override string ToString()
@@ -106,6 +134,16 @@
 		public static bool operator !=(CategoryNode left, CategoryNode right)
 		{
 			return !(left == right);
+		}
+
+		private void SetParent(CategoryNode parent)
+		{
+			if (Parent != null && Parent != parent)
+			{
+				throw new InvalidOperationException("Parent has already been set.");
+			}
+
+			Parent = parent;
 		}
 	}
 }

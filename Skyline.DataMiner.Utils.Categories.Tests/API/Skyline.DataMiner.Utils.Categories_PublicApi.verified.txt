@@ -139,12 +139,14 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public Skyline.DataMiner.Utils.Categories.API.Objects.Category Category { get; }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> ChildCategories { get; }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> ChildItems { get; }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode Parent { get; }
         public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode other) { }
         public override bool Equals(object obj) { }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> GetDescendantCategories() { }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetDescendantItems() { }
         public override int GetHashCode() { }
         public override string ToString() { }
+        public bool TryFindCategory(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categoryId, out Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode category) { }
         public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode right) { }
         public static bool operator ==(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode right) { }
     }
