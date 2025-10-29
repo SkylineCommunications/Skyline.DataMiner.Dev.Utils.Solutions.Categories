@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Linq;
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
@@ -33,6 +34,108 @@
 				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.Category).Equal(parentCategory.ID));
 
 			return Read(filter);
+		}
+
+		public void UpdateChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> newItems)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (newItems == null)
+			{
+				throw new ArgumentNullException(nameof(newItems));
+			}
+
+			foreach (var item in newItems.Where(x => x.Category == ApiObjectReference<Category>.Empty))
+			{
+				item.Category = category;
+			}
+
+			if (newItems.Any(x => x.Category != category))
+			{
+				throw new InvalidOperationException("All new items must belong to the specified category.");
+			}
+
+			var newItemsLookup = newItems.ToLookup(item => (item.ModuleId, item.InstanceId));
+
+			var existingItems = GetChildItems(category).ToList();
+			var itemsToDelete = existingItems.Where(item => !newItemsLookup.Contains((item.ModuleId, item.InstanceId))).ToList();
+
+			Delete(itemsToDelete);
+			CreateOrUpdate(newItems);
+		}
+
+		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToAdd)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (itemsToAdd == null)
+			{
+				throw new ArgumentNullException(nameof(itemsToAdd));
+			}
+
+			foreach (var item in itemsToAdd.Where(x => x.Category == ApiObjectReference<Category>.Empty))
+			{
+				item.Category = category;
+			}
+
+			if (itemsToAdd.Any(x => x.Category != category))
+			{
+				throw new InvalidOperationException("All items to add must belong to the specified category.");
+			}
+
+			// Get existing items to avoid duplicates
+			var existingItems = GetChildItems(category).ToList();
+			var existingItemsLookup = existingItems.ToLookup(item => (item.ModuleId, item.InstanceId));
+
+			// Filter out items that already exist in the category
+			var newItemsToAdd = itemsToAdd.Where(item => !existingItemsLookup.Contains((item.ModuleId, item.InstanceId))).ToList();
+
+			if (newItemsToAdd.Any())
+			{
+				CreateOrUpdate(newItemsToAdd);
+			}
+		}
+
+		public void DeleteChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToDelete)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (itemsToDelete == null)
+			{
+				throw new ArgumentNullException(nameof(itemsToDelete));
+			}
+
+			foreach (var item in itemsToDelete.Where(x => x.Category == ApiObjectReference<Category>.Empty))
+			{
+				item.Category = category;
+			}
+
+			if (itemsToDelete.Any(x => x.Category != category))
+			{
+				throw new InvalidOperationException("All items to delete must belong to the specified category.");
+			}
+
+			Delete(itemsToDelete);
+		}
+
+		public void DeleteChildItems(ApiObjectReference<Category> category)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			var existingItems = GetChildItems(category).ToList();
+			Delete(existingItems);
 		}
 
 		protected internal override CategoryItem CreateInstance(DomInstance domInstance)

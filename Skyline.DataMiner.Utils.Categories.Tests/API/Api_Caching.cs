@@ -66,6 +66,104 @@
 		}
 
 		[TestMethod]
+		public void Api_Caching_GetChildItems()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			api.Categories.CreateOrUpdate([category1]);
+
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1", Category = category1 };
+			var item12 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 2", Category = category1 };
+			api.CategoryItems.CreateOrUpdate([item11, item12]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			cache.GetChildItems(category1).Should().BeEquivalentTo([item11, item12]);
+		}
+
+		[TestMethod]
+		public void Api_Caching_GetDescendantItems()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			// Create a category hierarchy: Category 1 -> Category 1.1 -> Category 1.1.1
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11, RootCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11, category111]);
+
+			// Create items at different levels
+			var item1 = new CategoryItem { ModuleId = "My Module", InstanceId = "Instance 1", Category = category1 };
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "Instance 1.1", Category = category11 };
+			var item111 = new CategoryItem { ModuleId = "My Module", InstanceId = "Instance 1.1.1", Category = category111 };
+			api.CategoryItems.CreateOrUpdate([item1, item11, item111]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			// GetDescendantItems should return ALL items from category1 and its descendants
+			cache.GetDescendantItems(category1).Should().BeEquivalentTo([item1, item11, item111]);
+
+			// GetDescendantItems on category11 should only return items from category11 and its descendants
+			cache.GetDescendantItems(category11).Should().BeEquivalentTo([item11, item111]);
+
+			// GetDescendantItems on leaf category should only return its own items
+			cache.GetDescendantItems(category111).Should().BeEquivalentTo([item111]);
+		}
+
+		[TestMethod]
+		public void Api_Caching_GetSubtree()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11, category12]);
+
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1", Category = category1 };
+			var item111 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 11", Category = category11 };
+			var item112 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 12", Category = category11 };
+			api.CategoryItems.CreateOrUpdate([item11, item111, item112]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			var subtree = cache.GetSubtree(category1);
+
+			var expectedSubtree = new CategoryNode(
+				category1,
+				[
+					new CategoryNode(
+						category11,
+						[],
+						[item111, item112]
+					),
+					new CategoryNode(
+						category12,
+						[],
+						[]
+					)
+				],
+				[item11]);
+
+			subtree.Should().BeEquivalentTo(expectedSubtree);
+			subtree.GetDescendantCategories().Select(x => x.Category).Should().BeEquivalentTo([category11, category12]);
+			subtree.GetDescendantItems().Should().BeEquivalentTo([item11, item111, item112]);
+		}
+
+		[TestMethod]
 		public void Api_Caching_Subscription()
 		{
 			var api = new CategoriesApiMock();

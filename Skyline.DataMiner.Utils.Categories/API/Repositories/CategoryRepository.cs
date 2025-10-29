@@ -68,29 +68,24 @@
 
 		public IEnumerable<Category> GetDescendantCategories(ApiObjectReference<Category> parentCategory)
 		{
-			if (parentCategory == ApiObjectReference<Category>.Empty)
-			{
-				yield break;
-			}
+			var stack = new Stack<Category>();
+			var visited = new HashSet<Category>();
 
-			var queue = new Queue<Category>();
-			var visited = new HashSet<ApiObjectReference<Category>>();
-
-			foreach (var child in GetChildCategories(parentCategory))
+			foreach (var child in GetChildCategories(parentCategory).Reverse())
 			{
 				if (visited.Add(child))
-					queue.Enqueue(child);
+					stack.Push(child);
 			}
 
-			while (queue.Count > 0)
+			while (stack.Count > 0)
 			{
-				var current = queue.Dequeue();
+				var current = stack.Pop();
 				yield return current;
 
-				foreach (var child in GetChildCategories(current))
+				foreach (var child in GetChildCategories(current).Reverse())
 				{
 					if (visited.Add(child))
-						queue.Enqueue(child);
+						stack.Push(child);
 				}
 			}
 		}

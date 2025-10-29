@@ -6,25 +6,31 @@
 	using System.Linq;
 	using System.Threading.Tasks;
 
+	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.Tools;
 
 	public class CategoriesCache
 	{
 		private readonly object _lock = new();
+		private readonly NaturalSortComparer _naturalSortComparer = new();
 
 		private readonly ConcurrentDictionary<ApiObjectReference<Scope>, Scope> _scopes = new();
 		private readonly ConcurrentDictionary<string, Scope> _scopesByName = new();
 		private readonly ConcurrentDictionary<ApiObjectReference<Category>, Category> _categories = new();
+		private readonly ConcurrentDictionary<ApiObjectReference<CategoryItem>, CategoryItem> _categoryItems = new();
 
 		private readonly OneToManyMapping<ApiObjectReference<Scope>, Category> _scopeCategoriesMapping = new();
 		private readonly OneToManyMapping<ApiObjectReference<Category>, Category> _parentCategoriesMapping = new();
+		private readonly OneToManyMapping<ApiObjectReference<Category>, CategoryItem> _categoryItemsMapping = new();
 
 		public IReadOnlyDictionary<ApiObjectReference<Scope>, Scope> Scopes => _scopes;
 
 		public IReadOnlyDictionary<string, Scope> ScopesByName => _scopesByName;
 
 		public IReadOnlyDictionary<ApiObjectReference<Category>, Category> Categories => _categories;
+
+		public IReadOnlyDictionary<ApiObjectReference<CategoryItem>, CategoryItem> CategoryItems => _categoryItems;
 
 		public Scope GetScope(ApiObjectReference<Scope> scopeId)
 		{
@@ -71,6 +77,21 @@
 			return _categories.TryGetValue(id, out category);
 		}
 
+		public CategoryItem GetCategoryItem(ApiObjectReference<CategoryItem> categoryItemId)
+		{
+			if (!TryGetCategoryItem(categoryItemId, out var categoryItem))
+			{
+				throw new ArgumentException($"Couldn't find category item with ID {categoryItemId.ID}", nameof(categoryItemId));
+			}
+
+			return categoryItem;
+		}
+
+		public bool TryGetCategoryItem(ApiObjectReference<CategoryItem> id, out CategoryItem categoryItem)
+		{
+			return _categoryItems.TryGetValue(id, out categoryItem);
+		}
+
 		public IReadOnlyCollection<Category> GetCategoriesForScope(ApiObjectReference<Scope> scopeId)
 		{
 			lock (_lock)
@@ -87,6 +108,78 @@
 			}
 		}
 
+		public IReadOnlyCollection<Category> GetDescendantCategories(ApiObjectReference<Category> parentCategoryId)
+		{
+			lock (_lock)
+			{
+				var visited = new HashSet<Category>();
+				var stack = new Stack<Category>();
+
+				if (TryGetCategory(parentCategoryId, out var parentCategory))
+				{
+					stack.Push(parentCategory);
+				}
+
+				var descendants = new List<Category>();
+
+				while (stack.Count > 0)
+				{
+					var current = stack.Pop();
+					var children = GetChildCategories(current);
+
+					foreach (var child in children.Reverse())
+					{
+						if (visited.Add(child))
+						{
+							descendants.Add(child);
+							stack.Push(child);
+						}
+					}
+				}
+
+				return descendants;
+			}
+		}
+
+		public IReadOnlyCollection<CategoryItem> GetChildItems(ApiObjectReference<Category> parentCategoryId)
+		{
+			lock (_lock)
+			{
+				return _categoryItemsMapping.GetChildren(parentCategoryId).ToList();
+			}
+		}
+
+		public IReadOnlyCollection<CategoryItem> GetDescendantItems(ApiObjectReference<Category> parentCategoryId)
+		{
+			lock (_lock)
+			{
+				return GetDescendantCategories(parentCategoryId)
+					.SelectMany(c => GetChildItems(c))
+					.Concat(GetChildItems(parentCategoryId))
+					.ToList();
+			}
+		}
+
+		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				if (!TryGetCategory(categoryId, out var category))
+				{
+					throw new ArgumentException($"Couldn't find category with ID {categoryId.ID}", nameof(categoryId));
+				}
+
+				var childNodes = GetChildCategories(category)
+					.OrderBy(c => c.Name, _naturalSortComparer)
+					.Select(c => GetSubtree(c))
+					.ToList();
+
+				var childItems = GetChildItems(category);
+
+				return new CategoryNode(category, childNodes, childItems);
+			}
+		}
+
 		public void LoadInitialData(CategoriesApi api)
 		{
 			if (api is null)
@@ -96,13 +189,15 @@
 
 			var scopesTask = Task.Run(api.Scopes.ReadAll);
 			var categoriesTask = Task.Run(api.Categories.ReadAll);
+			var categoryItemsTask = Task.Run(api.CategoryItems.ReadAll);
 
-			Task.WaitAll(scopesTask, categoriesTask);
+			Task.WaitAll(scopesTask, categoriesTask, categoryItemsTask);
 
 			lock (_lock)
 			{
 				UpdateScopes(scopesTask.Result, []);
 				UpdateCategories(categoriesTask.Result, []);
+				UpdateCategoryItems(categoryItemsTask.Result, []);
 			}
 		}
 
@@ -181,6 +276,40 @@
 					_scopeCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveParent(item);
+				}
+			}
+		}
+
+		public void UpdateCategoryItems(IEnumerable<CategoryItem> updated, IEnumerable<CategoryItem> deleted)
+		{
+			if (updated is null)
+			{
+				throw new ArgumentNullException(nameof(updated));
+			}
+
+			if (deleted is null)
+			{
+				throw new ArgumentNullException(nameof(deleted));
+			}
+
+			lock (_lock)
+			{
+				foreach (var item in updated)
+				{
+					// Remove from old mappings if it exists
+					if (_categoryItems.TryGetValue(item.ID, out var existing))
+					{
+						_categoryItemsMapping.RemoveChild(existing);
+					}
+
+					_categoryItems[item.ID] = item;
+					_categoryItemsMapping.AddOrUpdate(item.Category, item);
+				}
+
+				foreach (var item in deleted)
+				{
+					_categoryItems.TryRemove(item, out _);
+					_categoryItemsMapping.RemoveChild(item);
 				}
 			}
 		}

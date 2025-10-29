@@ -1,5 +1,5 @@
 ﻿namespace Skyline.DataMiner.Utils.Categories.Tools
-{
+{	
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
@@ -193,6 +193,11 @@
 				throw new ArgumentNullException(nameof(child));
 
 			return _parentByChild.ContainsKey(child);
+		}
+
+		public override string ToString()
+		{
+			return $"OneToManyMapping<{typeof(TParent).Name}, {typeof(TChild).Name}> [Parents: {ParentCount}, Children: {ChildCount}]";
 		}
 
 		#endregion

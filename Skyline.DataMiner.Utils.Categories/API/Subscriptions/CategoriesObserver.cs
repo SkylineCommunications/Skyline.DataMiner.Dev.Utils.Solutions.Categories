@@ -12,6 +12,7 @@
 
 		private RepositorySubscription<Scope> _subscriptionScopes;
 		private RepositorySubscription<Category> _subscriptionCategories;
+		private RepositorySubscription<CategoryItem> _subscriptionCategoryItems;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="CategoriesObserver"/> class.
@@ -43,6 +44,8 @@
 
 		public event EventHandler<ApiObjectsChangedEvent<Category>> CategoriesChanged;
 
+		public event EventHandler<ApiObjectsChangedEvent<CategoryItem>> CategoryItemsChanged;
+
 		internal CategoriesApi Api { get; }
 
 		public CategoriesCache Cache { get; }
@@ -64,6 +67,9 @@
 				_subscriptionCategories = Api.Categories.Subscribe();
 				_subscriptionCategories.Changed += Categories_Changed;
 
+				_subscriptionCategoryItems = Api.CategoryItems.Subscribe();
+				_subscriptionCategoryItems.Changed += CategoryItems_Changed;
+
 				IsSubscribed = true;
 			}
 		}
@@ -82,6 +88,9 @@
 
 				_subscriptionCategories.Changed -= Categories_Changed;
 				_subscriptionCategories.Dispose();
+
+				_subscriptionCategoryItems.Changed -= CategoryItems_Changed;
+				_subscriptionCategoryItems.Dispose();
 
 				IsSubscribed = false;
 			}
@@ -113,6 +122,16 @@
 			}
 
 			CategoriesChanged?.Invoke(this, e);
+		}
+
+		private void CategoryItems_Changed(object sender, ApiObjectsChangedEvent<CategoryItem> e)
+		{
+			lock (_lock)
+			{
+				Cache.UpdateCategoryItems(e.Created.Concat(e.Updated), e.Deleted);
+			}
+
+			CategoryItemsChanged?.Invoke(this, e);
 		}
 
 		public void Dispose()

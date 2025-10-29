@@ -11,18 +11,26 @@ namespace Skyline.DataMiner.Utils.Categories.API.Caching
     {
         public CategoriesCache() { }
         public System.Collections.Generic.IReadOnlyDictionary<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category>, Skyline.DataMiner.Utils.Categories.API.Objects.Category> Categories { get; }
+        public System.Collections.Generic.IReadOnlyDictionary<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> CategoryItems { get; }
         public System.Collections.Generic.IReadOnlyDictionary<Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope>, Skyline.DataMiner.Utils.Categories.API.Objects.Scope> Scopes { get; }
         public System.Collections.Generic.IReadOnlyDictionary<string, Skyline.DataMiner.Utils.Categories.API.Objects.Scope> ScopesByName { get; }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetCategoriesForScope(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scopeId) { }
         public Skyline.DataMiner.Utils.Categories.API.Objects.Category GetCategory(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categoryId) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem GetCategoryItem(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> categoryItemId) { }
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetChildCategories(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategoryId) { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategoryId) { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.Category> GetDescendantCategories(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategoryId) { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetDescendantItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategoryId) { }
         public Skyline.DataMiner.Utils.Categories.API.Objects.Scope GetScope(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scopeId) { }
         public Skyline.DataMiner.Utils.Categories.API.Objects.Scope GetScope(string name) { }
+        public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode GetSubtree(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categoryId) { }
         public void LoadInitialData(Skyline.DataMiner.Utils.Categories.API.CategoriesApi api) { }
         public bool TryGetCategory(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> id, out Skyline.DataMiner.Utils.Categories.API.Objects.Category category) { }
+        public bool TryGetCategoryItem(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> id, out Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem categoryItem) { }
         public bool TryGetScope(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> scopeId, out Skyline.DataMiner.Utils.Categories.API.Objects.Scope scope) { }
         public bool TryGetScope(string name, out Skyline.DataMiner.Utils.Categories.API.Objects.Scope scope) { }
         public void UpdateCategories(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> updated, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> deleted) { }
+        public void UpdateCategoryItems(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> updated, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> deleted) { }
         public void UpdateScopes(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> updated, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> deleted) { }
     }
 }
@@ -133,6 +141,8 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> ChildItems { get; }
         public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode other) { }
         public override bool Equals(object obj) { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> GetDescendantCategories() { }
+        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetDescendantItems() { }
         public override int GetHashCode() { }
         public override string ToString() { }
         public static bool operator !=(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode left, Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode right) { }
@@ -180,10 +190,14 @@ namespace Skyline.DataMiner.Utils.Categories.API.Repositories
     public class CategoryItemRepository : Skyline.DataMiner.Utils.Categories.API.Repositories.Repository<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>
     {
         protected override Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomDefinitionId DomDefinition { get; }
+        public void AddChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> itemsToAdd) { }
         protected override Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
         protected override Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance) { }
         protected override SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
+        public void DeleteChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> category) { }
+        public void DeleteChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> itemsToDelete) { }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> parentCategory) { }
+        public void UpdateChildItems(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> newItems) { }
         protected override void ValidateBeforeDelete(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
         protected override void ValidateBeforeSave(System.Collections.Generic.ICollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> instances) { }
     }
@@ -274,6 +288,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Subscriptions
         public Skyline.DataMiner.Utils.Categories.API.Caching.CategoriesCache Cache { get; }
         public bool IsSubscribed { get; }
         public event System.EventHandler<Skyline.DataMiner.Utils.Categories.API.Subscriptions.ApiObjectsChangedEvent<Skyline.DataMiner.Utils.Categories.API.Objects.Category>> CategoriesChanged;
+        public event System.EventHandler<Skyline.DataMiner.Utils.Categories.API.Subscriptions.ApiObjectsChangedEvent<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem>> CategoryItemsChanged;
         public event System.EventHandler<Skyline.DataMiner.Utils.Categories.API.Subscriptions.ApiObjectsChangedEvent<Skyline.DataMiner.Utils.Categories.API.Objects.Scope>> ScopesChanged;
         public void Dispose() { }
         protected virtual void Dispose(bool disposing) { }

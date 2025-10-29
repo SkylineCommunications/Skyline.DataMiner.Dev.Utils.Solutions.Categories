@@ -33,6 +33,39 @@
 
 		public IReadOnlyCollection<CategoryItem> ChildItems { get; }
 
+		public IReadOnlyCollection<CategoryNode> GetDescendantCategories()
+		{
+			var visited = new HashSet<CategoryNode>();
+			var stack = new Stack<CategoryNode>();
+			stack.Push(this);
+
+			var descendants = new List<CategoryNode>();
+
+			while (stack.Count > 0)
+			{
+				var current = stack.Pop();
+				var children = current.ChildCategories;
+
+				foreach (var child in children.Reverse())
+				{
+					if (visited.Add(child))
+					{
+						descendants.Add(child);
+						stack.Push(child);
+					}
+				}
+			}
+
+			return descendants;
+		}
+
+		public IReadOnlyCollection<CategoryItem> GetDescendantItems()
+		{
+			return GetDescendantCategories().SelectMany(c => c.ChildItems)
+				.Concat(ChildItems)
+				.ToList();
+		}
+
 		public override string ToString()
 		{
 			return $"CategoryNode(Category: {Category}, ChildCategories: {ChildCategories.Count}, ChildItems: {ChildItems.Count})";
