@@ -12,11 +12,18 @@
 
 	public class Category : ApiObject<Category>
 	{
-		public static readonly Category DefaultRootCategory = new() { Name = "Root" };
+		public static readonly Category DefaultRootCategory = new(new Guid("33bb33bb-33bb-33bb-33bb-33bb33bb33bb"))
+		{
+			Name = "Root",
+		};
 
 		private readonly CategoryInstance _domInstance;
 
 		public Category() : this(new CategoryInstance())
+		{
+		}
+
+		public Category(Guid id) : this(new CategoryInstance(id))
 		{
 		}
 
