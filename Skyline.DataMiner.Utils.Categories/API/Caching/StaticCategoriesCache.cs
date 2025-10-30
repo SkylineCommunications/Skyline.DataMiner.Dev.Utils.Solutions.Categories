@@ -14,7 +14,7 @@
 
 		private bool _disposed;
 
-		public StaticCategoriesCache(IConnection connection)
+		private StaticCategoriesCache(IConnection connection)
 		{
 			Connection = connection ?? throw new ArgumentNullException(nameof(connection));
 
@@ -127,25 +127,20 @@
 
 		private static IConnection CloneConnection(IConnection baseConnection)
 		{
-			if (baseConnection.GetType().FullName.Contains("SLNetConnectionMock"))
-			{
-				// If the connection is a mock connection used for unit testing, use the existing connection directly.
-				// Such connection cannot be cloned.
-				return baseConnection;
-			}
-
+			// If the connection is a managed DataMiner module, use it directly
 			if (ConnectionHelper.IsManagedDataMinerModule(baseConnection))
 			{
-				// If the connection is a managed DataMiner module (e.g. Engine.SLNetRaw), use the existing connection directly.
 				return baseConnection;
 			}
 
+			// Attempt to clone; if it fails, use the original connection
 			if (ConnectionHelper.TryCloneConnection(baseConnection, "Categories - Connection", out var clonedConnection))
 			{
 				return clonedConnection;
 			}
 
-			throw new InvalidOperationException("Failed to clone the provided connection.");
+			// Fall back to the original connection when cloning isn't supported
+			return baseConnection;
 		}
 	}
 }

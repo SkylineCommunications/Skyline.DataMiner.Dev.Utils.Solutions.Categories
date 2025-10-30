@@ -36,7 +36,6 @@ namespace Skyline.DataMiner.Utils.Categories.API.Caching
     }
     public sealed class StaticCategoriesCache : System.IDisposable
     {
-        public StaticCategoriesCache(Skyline.DataMiner.Net.IConnection connection) { }
         public Skyline.DataMiner.Utils.Categories.API.Caching.CategoriesCache Cache { get; }
         public void Dispose() { }
         public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache Get() { }
