@@ -86,6 +86,27 @@
 		}
 
 		[TestMethod]
+		public void Api_Categories_GetAncestorPath()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11, RootCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11, category111]);
+
+			api.Categories.GetAncestorPath(category1).Should().BeEquivalentTo([category1], options => options.WithStrictOrdering());
+			api.Categories.GetAncestorPath(category11).Should().BeEquivalentTo([category1, category11], options => options.WithStrictOrdering());
+			api.Categories.GetAncestorPath(category111).Should().BeEquivalentTo([category1, category11, category111], options => options.WithStrictOrdering());
+
+			// other way to do the same
+			category111.GetAncestorPath(api.Categories).Should().BeEquivalentTo([category1, category11, category111], options => options.WithStrictOrdering());
+		}
+
+		[TestMethod]
 		public void Api_Categories_GetTree()
 		{
 			var api = new CategoriesApiMock();

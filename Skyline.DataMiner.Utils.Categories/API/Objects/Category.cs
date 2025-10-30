@@ -122,6 +122,16 @@
 			return categoryRepository.GetDescendantCategories(this);
 		}
 
+		public IEnumerable<Category> GetAncestorPath(CategoryRepository categoryRepository)
+		{
+			if (categoryRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryRepository));
+			}
+
+			return categoryRepository.GetAncestorPath(this);
+		}
+
 		public IEnumerable<CategoryItem> GetChildItems(CategoryItemRepository categoryItemRepository)
 		{
 			if (categoryItemRepository is null)

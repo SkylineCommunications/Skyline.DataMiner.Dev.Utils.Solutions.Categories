@@ -90,6 +90,32 @@
 			}
 		}
 
+		public IEnumerable<Category> GetAncestorPath(ApiObjectReference<Category> category)
+		{
+			var pathToRoot = new LinkedList<Category>();
+
+			while (category != ApiObjectReference<Category>.Empty)
+			{
+				var current = Read(category);
+				if (current == null)
+				{
+					throw new InvalidOperationException($"Category with ID '{category.ID}' does not exist.");
+				}
+
+				pathToRoot.AddFirst(current);
+
+				if (!current.ParentCategory.HasValue ||
+					current.ParentCategory == ApiObjectReference<Category>.Empty)
+				{
+					break;
+				}
+
+				category = current.ParentCategory.Value;
+			}
+
+			return pathToRoot;
+		}
+
 		public CategoryNode GetTree()
 		{
 			return ReadAll().ToTree();

@@ -180,6 +180,31 @@
 			}
 		}
 
+		public IReadOnlyCollection<Category> GetAncestorPath(ApiObjectReference<Category> categoryId)
+		{
+			if (categoryId == ApiObjectReference<Category>.Empty)
+			{
+				return [];
+			}
+
+			var pathToRoot = new LinkedList<Category>();
+
+			while (TryGetCategory(categoryId, out var category))
+			{
+				pathToRoot.AddFirst(category);
+
+				if (!category.ParentCategory.HasValue ||
+					category.ParentCategory == ApiObjectReference<Category>.Empty)
+				{
+					break;
+				}
+
+				categoryId = category.ParentCategory.Value;
+			}
+
+			return pathToRoot;
+		}
+
 		public void LoadInitialData(CategoriesApi api)
 		{
 			if (api is null)
