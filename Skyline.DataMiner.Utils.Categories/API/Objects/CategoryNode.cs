@@ -96,7 +96,7 @@
 
 		public override string ToString()
 		{
-			return $"CategoryNode(Category: {Category}, ChildCategories: {ChildCategories.Count}, ChildItems: {ChildItems.Count})";
+			return $"CategoryNode (Category: {Category.Name}, ChildCategories: {ChildCategories.Count}, ChildItems: {ChildItems.Count})";
 		}
 
 		public override bool Equals(object obj)
@@ -108,8 +108,8 @@
 		{
 			return other is not null &&
 				   EqualityComparer<Category>.Default.Equals(Category, other.Category) &&
-				   ChildCategories.ToHashSet().SetEquals(other.ChildCategories) &&
-				   ChildItems.ToHashSet().SetEquals(other.ChildItems);
+				   CollectionEqualityHelper.Equals(ChildCategories, other.ChildCategories, ignoreOrder: true) &&
+				   CollectionEqualityHelper.Equals(ChildItems, other.ChildItems, ignoreOrder: true);
 		}
 
 		public override int GetHashCode()
@@ -119,8 +119,8 @@
 				int hash = 17;
 
 				hash = (hash * 31) + EqualityComparer<Category>.Default.GetHashCode(Category);
-				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(ChildCategories);
-				hash = (hash * 31) + HashCode.GetOrderIndependentHashCode(ChildItems);
+				hash = (hash * 31) + CollectionEqualityHelper.GetHashCode(ChildCategories, ignoreOrder: true);
+				hash = (hash * 31) + CollectionEqualityHelper.GetHashCode(ChildItems, ignoreOrder: true);
 
 				return hash;
 			}

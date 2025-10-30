@@ -33,6 +33,16 @@ namespace Skyline.DataMiner.Utils.Categories.API.Caching
         public void UpdateCategoryItems(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> updated, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> deleted) { }
         public void UpdateScopes(System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> updated, System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Scope> deleted) { }
     }
+    public sealed class StaticCategoriesCache : System.IDisposable
+    {
+        public StaticCategoriesCache(Skyline.DataMiner.Net.IConnection connection) { }
+        public Skyline.DataMiner.Utils.Categories.API.Caching.CategoriesCache Cache { get; }
+        public void Dispose() { }
+        public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache Get() { }
+        public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache GetOrCreate(Skyline.DataMiner.Net.IConnection baseConnection) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache GetOrCreate(System.Func<Skyline.DataMiner.Net.IConnection> connectionFactory) { }
+        public static void Reset() { }
+    }
 }
 namespace Skyline.DataMiner.Utils.Categories.API
 {
@@ -385,12 +395,5 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
     public static class FilterQueryExecutor
     {
         public static System.Collections.Generic.IEnumerable<TResult> RetrieveFilteredItems<TId, TFilter, TResult>(System.Collections.Generic.IEnumerable<TId> ids, System.Func<TId, Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>> filterProvider, System.Func<Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<TFilter>, System.Collections.Generic.IEnumerable<TResult>> filterResolver) { }
-    }
-}
-namespace Skyline.DataMiner.Utils.Categories.Tools
-{
-    public static class HashCode
-    {
-        public static int GetOrderIndependentHashCode<T>(this System.Collections.Generic.IEnumerable<T> items, System.Collections.Generic.IEqualityComparer<T> comparer = null) { }
     }
 }

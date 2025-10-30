@@ -1,5 +1,5 @@
 ﻿namespace Skyline.DataMiner.Utils.Categories.Tools
-{	
+{
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
