@@ -89,8 +89,18 @@
 				}
 			}
 
-			// Start from root categories (no parent)
-			AddChildren(null);
+			// Start with root categories (those without a parent in the provided collection)
+			var allCategoryIds = new HashSet<Guid>(categories.Select(c => c.ID));
+			var roots = categories.Where(c => !c.ParentCategory.HasValue || !allCategoryIds.Contains(c.ParentCategory.Value));
+
+			foreach (var root in roots.OrderBy(c => c.Name, _naturalSortComparer))
+			{
+				if (visited.Add(root))
+				{
+					sorted.Add(root);
+					AddChildren(root.ID);
+				}
+			}
 
 			return sorted;
 		}
