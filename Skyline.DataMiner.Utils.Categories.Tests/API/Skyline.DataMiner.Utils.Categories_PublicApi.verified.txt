@@ -37,6 +37,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Caching
     public sealed class StaticCategoriesCache : System.IDisposable
     {
         public Skyline.DataMiner.Utils.Categories.API.Caching.CategoriesCache Cache { get; }
+        public Skyline.DataMiner.Utils.Categories.API.Subscriptions.CategoriesObserver Observer { get; }
         public void Dispose() { }
         public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache Get() { }
         public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache GetOrCreate(Skyline.DataMiner.Net.IConnection baseConnection) { }
@@ -154,8 +155,8 @@ namespace Skyline.DataMiner.Utils.Categories.API.Objects
         public Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode Parent { get; }
         public bool Equals(Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode other) { }
         public override bool Equals(object obj) { }
-        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> GetDescendantCategories() { }
-        public System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetDescendantItems() { }
+        public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode> GetDescendantCategories() { }
+        public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.CategoryItem> GetDescendantItems() { }
         public override int GetHashCode() { }
         public override string ToString() { }
         public bool TryFindCategory(Skyline.DataMiner.Utils.Categories.API.Objects.ApiObjectReference<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categoryId, out Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode category) { }

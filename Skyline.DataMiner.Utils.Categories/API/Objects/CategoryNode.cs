@@ -40,13 +40,11 @@
 
 		public IReadOnlyCollection<CategoryItem> ChildItems { get; }
 
-		public IReadOnlyCollection<CategoryNode> GetDescendantCategories()
+		public IEnumerable<CategoryNode> GetDescendantCategories()
 		{
 			var visited = new HashSet<CategoryNode>();
 			var stack = new Stack<CategoryNode>();
 			stack.Push(this);
-
-			var descendants = new List<CategoryNode>();
 
 			while (stack.Count > 0)
 			{
@@ -57,20 +55,17 @@
 				{
 					if (visited.Add(child))
 					{
-						descendants.Add(child);
+						yield return child;
 						stack.Push(child);
 					}
 				}
 			}
-
-			return descendants;
 		}
 
-		public IReadOnlyCollection<CategoryItem> GetDescendantItems()
+		public IEnumerable<CategoryItem> GetDescendantItems()
 		{
 			return GetDescendantCategories().SelectMany(c => c.ChildItems)
-				.Concat(ChildItems)
-				.ToList();
+				.Concat(ChildItems);
 		}
 
 		public bool TryFindCategory(ApiObjectReference<Category> categoryId, out CategoryNode category)

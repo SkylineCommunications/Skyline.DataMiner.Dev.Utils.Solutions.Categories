@@ -26,7 +26,7 @@
 
 		private CategoriesApi Api { get; }
 
-		private CategoriesObserver Observer { get; }
+		public CategoriesObserver Observer { get; }
 
 		public CategoriesCache Cache => Observer.Cache;
 
