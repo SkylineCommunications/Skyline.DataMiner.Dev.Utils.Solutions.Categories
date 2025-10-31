@@ -202,9 +202,21 @@
 			}
 
 			var pathToRoot = new LinkedList<Category>();
+			var visited = new HashSet<ApiObjectReference<Category>>();
 
-			while (TryGetCategory(categoryId, out var category))
+			while (categoryId != ApiObjectReference<Category>.Empty)
 			{
+				// Check for circular reference before processing
+				if (!visited.Add(categoryId.ID))
+				{
+					throw new InvalidOperationException($"Circular reference detected in category hierarchy at category ID '{categoryId.ID}'.");
+				}
+
+				if (!TryGetCategory(categoryId, out var category))
+				{
+					break;
+				}
+
 				pathToRoot.AddFirst(category);
 
 				if (!category.ParentCategory.HasValue ||

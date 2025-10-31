@@ -98,9 +98,16 @@
 		public IEnumerable<Category> GetAncestorPath(ApiObjectReference<Category> category)
 		{
 			var pathToRoot = new LinkedList<Category>();
+			var visited = new HashSet<ApiObjectReference<Category>>();
 
 			while (category != ApiObjectReference<Category>.Empty)
 			{
+				// Check for circular reference before reading
+				if (!visited.Add(category))
+				{
+					throw new InvalidOperationException($"Circular reference detected in category hierarchy at category ID '{category.ID}'.");
+				}
+
 				var current = Read(category);
 				if (current == null)
 				{

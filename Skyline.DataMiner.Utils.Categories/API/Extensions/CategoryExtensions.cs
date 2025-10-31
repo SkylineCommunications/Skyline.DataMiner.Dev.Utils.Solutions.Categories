@@ -59,5 +59,40 @@
 			// Create a dummy root category to hold multiple root categories
 			return new CategoryNode(Category.DefaultRootCategory, rootCategories);
 		}
+
+		/// <summary>
+		/// Sorts categories hierarchically, with parents appearing before their children,
+		/// and siblings sorted naturally by name.
+		/// </summary>
+		/// <param name="categories">The collection of categories to sort.</param>
+		/// <returns>A hierarchically sorted list of categories.</returns>
+		public static IList<Category> SortHierarchically(this IEnumerable<Category> categories)
+		{
+			var sorted = new List<Category>();
+
+			var childrenByParent = categories.ToLookup(c => c.ParentCategory);
+			var visited = new HashSet<Category>();
+
+			// Local recursive function
+			void AddChildren(Guid? parentId)
+			{
+				var children = childrenByParent[parentId]
+					.OrderBy(c => c.Name, _naturalSortComparer);
+
+				foreach (var child in children)
+				{
+					if (visited.Add(child))
+					{
+						sorted.Add(child);
+						AddChildren(child.ID);
+					}
+				}
+			}
+
+			// Start from root categories (no parent)
+			AddChildren(null);
+
+			return sorted;
+		}
 	}
 }

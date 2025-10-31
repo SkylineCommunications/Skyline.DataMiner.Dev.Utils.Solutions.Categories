@@ -63,6 +63,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Extensions
 {
     public static class CategoryExtensions
     {
+        public static System.Collections.Generic.IList<Skyline.DataMiner.Utils.Categories.API.Objects.Category> SortHierarchically(this System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categories) { }
         public static Skyline.DataMiner.Utils.Categories.API.Objects.CategoryNode ToTree(this System.Collections.Generic.IEnumerable<Skyline.DataMiner.Utils.Categories.API.Objects.Category> categories) { }
     }
     public static class ConnectionExtensions
