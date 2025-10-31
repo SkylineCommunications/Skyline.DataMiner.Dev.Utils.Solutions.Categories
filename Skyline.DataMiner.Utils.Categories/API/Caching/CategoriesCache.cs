@@ -100,6 +100,20 @@
 			}
 		}
 
+		public IReadOnlyCollection<Category> GetCategoriesForScope(string scopeName)
+		{
+			if (String.IsNullOrWhiteSpace(scopeName))
+			{
+				throw new ArgumentException($"'{nameof(scopeName)}' cannot be null or whitespace.", nameof(scopeName));
+			}
+
+			lock (_lock)
+			{
+				var scope = GetScope(scopeName);
+				return GetCategoriesForScope(scope);
+			}
+		}
+
 		public IReadOnlyCollection<Category> GetChildCategories(ApiObjectReference<Category> parentCategoryId)
 		{
 			lock (_lock)

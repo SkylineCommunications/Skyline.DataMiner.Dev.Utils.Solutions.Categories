@@ -41,6 +41,9 @@
 
 			cache.GetCategoriesForScope(scope1).Should().BeEquivalentTo([category1]);
 			cache.GetCategoriesForScope(scope2).Should().BeEquivalentTo([category2]);
+
+			cache.GetCategoriesForScope("Scope 1").Should().BeEquivalentTo([category1]);
+			cache.GetCategoriesForScope("Scope 2").Should().BeEquivalentTo([category2]);
 		}
 
 		[TestMethod]
