@@ -19,8 +19,8 @@
 
 			SlcCategoriesHelper = new SlcCategoriesHelper(connection);
 
-			Categories = new CategoryRepository(SlcCategoriesHelper, connection);
 			CategoryItems = new CategoryItemRepository(SlcCategoriesHelper, connection);
+			Categories = new CategoryRepository(SlcCategoriesHelper, CategoryItems, connection);
 			Scopes = new ScopeRepository(SlcCategoriesHelper, connection);
 		}
 

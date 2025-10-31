@@ -139,5 +139,27 @@
 			api.Categories.GetTree(scope2).Should().BeEquivalentTo(
 				new CategoryNode(Category.DefaultRootCategory));
 		}
+
+		[TestMethod]
+		public void Api_Categories_DeleteAlsoRemovesChildItems()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category2 = new Category { Name = "Category 2", Scope = scope };
+			api.Categories.CreateOrUpdate([category1, category2]);
+
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1.1", Category = category1 };
+			var item21 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 2.1", Category = category2 };
+			api.CategoryItems.CreateOrUpdate([item11, item21]);
+
+			api.Categories.Delete([category1, category2]);
+
+			api.Categories.ReadAll().Should().BeEmpty();
+			api.CategoryItems.ReadAll().Should().BeEmpty();
+		}
 	}
 }

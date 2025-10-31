@@ -13,16 +13,21 @@
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
 	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
+	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	using SLDataGateway.API.Types.Querying;
 
 	public class CategoryRepository : Repository<Category>
 	{
-		internal CategoryRepository(SlcCategoriesHelper helper, IConnection connection) : base(helper, connection)
+		internal CategoryRepository(SlcCategoriesHelper helper, CategoryItemRepository itemRepository, IConnection connection)
+			: base(helper, connection)
 		{
+			ItemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
 		}
 
 		protected internal override DomDefinitionId DomDefinition => Category.DomDefinition;
+
+		public CategoryItemRepository ItemRepository { get; }
 
 		public IEnumerable<Category> GetByScope(ApiObjectReference<Scope> scope)
 		{
@@ -124,6 +129,18 @@
 		public CategoryNode GetTree(ApiObjectReference<Scope> scope)
 		{
 			return GetByScope(scope).ToTree();
+		}
+
+		public override void Delete(IEnumerable<Category> instances)
+		{
+			var instancesCollection = instances as ICollection<Category> ?? instances.ToList();
+
+			// First delete all child item links
+			var childItems = ItemRepository.GetChildItems(instancesCollection.Select(x => x.Reference));
+			ItemRepository.Delete(childItems);
+
+			// Then delete the categories themselves
+			base.Delete(instancesCollection);
 		}
 
 		protected internal override Category CreateInstance(DomInstance domInstance)

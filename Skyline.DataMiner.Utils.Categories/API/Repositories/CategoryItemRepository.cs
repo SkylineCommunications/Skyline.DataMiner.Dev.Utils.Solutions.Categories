@@ -11,6 +11,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
@@ -34,6 +35,16 @@
 				DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.Category).Equal(parentCategory.ID));
 
 			return Read(filter);
+		}
+
+		public IEnumerable<CategoryItem> GetChildItems(IEnumerable<ApiObjectReference<Category>> parentCategories)
+		{
+			static FilterElement<DomInstance> CreateFilter(ApiObjectReference<Category> parentCategory) =>
+				new ANDFilterElement<DomInstance>(
+					DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.CategoryItem.Id),
+					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.Category).Equal(parentCategory.ID));
+
+			return FilterQueryExecutor.RetrieveFilteredItems(parentCategories, CreateFilter, Read);
 		}
 
 		public void UpdateChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> newItems)

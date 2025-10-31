@@ -102,9 +102,7 @@
 				throw new ArgumentNullException(nameof(instance));
 			}
 
-			ValidateBeforeDelete(new[] { instance });
-
-			Helper.DomInstances.Delete(instance.DomInstance);
+			Delete([instance]);
 		}
 
 		public virtual void Delete(IEnumerable<T> instances)

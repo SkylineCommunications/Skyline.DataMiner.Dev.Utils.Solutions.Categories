@@ -39,5 +39,21 @@
 			scope2Tree.Should().BeEquivalentTo(
 				new CategoryNode(Category.DefaultRootCategory));
 		}
+
+		[TestMethod]
+		public void Api_Scopes_DeleteStillInUse()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope1 };
+			api.Categories.CreateOrUpdate([category1]);
+
+			var ex = Assert.Throws<InvalidOperationException>(
+				() => { api.Scopes.Delete(scope1); });
+			Assert.AreEqual("Cannot delete scopes: One or more scopes are still in use", ex.Message);
+		}
 	}
 }
