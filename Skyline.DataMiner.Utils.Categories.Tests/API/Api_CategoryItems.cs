@@ -80,7 +80,7 @@
 		}
 
 		[TestMethod]
-		public void Api_CategoryItems_DeleteChildItems()
+		public void Api_CategoryItems_RemoveChildItems()
 		{
 			var api = new CategoriesApiMock();
 
@@ -99,11 +99,11 @@
 			api.CategoryItems.GetChildItems(category1).Should().BeEquivalentTo([item11, item12, item13]);
 
 			// Remove item12
-			api.CategoryItems.DeleteChildItems(category1, [item12]);
+			api.CategoryItems.RemoveChildItems(category1, [item12]);
 			api.CategoryItems.GetChildItems(category1).Should().BeEquivalentTo([item11, item13]);
 
 			// Remove all items
-			api.CategoryItems.DeleteChildItems(category1);
+			api.CategoryItems.RemoveChildItems(category1);
 			api.CategoryItems.GetChildItems(category1).Should().BeEmpty();
 		}
 	}

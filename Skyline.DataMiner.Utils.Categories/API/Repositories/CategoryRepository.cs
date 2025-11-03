@@ -27,7 +27,7 @@
 
 		protected internal override DomDefinitionId DomDefinition => Category.DomDefinition;
 
-		public CategoryItemRepository ItemRepository { get; }
+		private CategoryItemRepository ItemRepository { get; }
 
 		public IEnumerable<Category> GetByScope(ApiObjectReference<Scope> scope)
 		{

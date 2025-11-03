@@ -113,7 +113,7 @@
 			}
 		}
 
-		public void DeleteChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToDelete)
+		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToDelete)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{
@@ -138,7 +138,7 @@
 			Delete(itemsToDelete);
 		}
 
-		public void DeleteChildItems(ApiObjectReference<Category> category)
+		public void RemoveChildItems(ApiObjectReference<Category> category)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{
