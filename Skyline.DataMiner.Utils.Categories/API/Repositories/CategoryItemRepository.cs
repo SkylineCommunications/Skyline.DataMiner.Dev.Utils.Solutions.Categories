@@ -47,7 +47,7 @@
 			return FilterQueryExecutor.RetrieveFilteredItems(parentCategories, CreateFilter, Read);
 		}
 
-		public void UpdateChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> newItems)
+		public void ReplaceChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> newItems)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{
@@ -138,7 +138,7 @@
 			Delete(itemsToDelete);
 		}
 
-		public void RemoveChildItems(ApiObjectReference<Category> category)
+		public void ClearChildItems(ApiObjectReference<Category> category)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{

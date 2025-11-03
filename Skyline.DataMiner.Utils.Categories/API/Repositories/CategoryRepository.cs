@@ -138,6 +138,61 @@
 			return GetByScope(scope).ToTree();
 		}
 
+		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category cannot be empty.", nameof(category));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			ItemRepository.AddChildItems(category, items);
+		}
+
+		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category cannot be empty.", nameof(category));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			ItemRepository.RemoveChildItems(category, items);
+		}
+
+		public void ReplaceChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category cannot be empty.", nameof(category));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			ItemRepository.ReplaceChildItems(category, items);
+		}
+
+		public void ClearChildItems(ApiObjectReference<Category> category)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category cannot be empty.", nameof(category));
+			}
+
+			ItemRepository.ClearChildItems(category);
+		}
+
 		public override void Delete(IEnumerable<Category> instances)
 		{
 			var instancesCollection = instances as ICollection<Category> ?? instances.ToList();

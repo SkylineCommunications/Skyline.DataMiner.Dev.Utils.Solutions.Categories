@@ -29,7 +29,7 @@
 		}
 
 		[TestMethod]
-		public void Api_CategoryItems_UpdateChildItems()
+		public void Api_CategoryItems_ReplaceChildItems()
 		{
 			var api = new CategoriesApiMock();
 
@@ -42,14 +42,14 @@
 			// Initial items
 			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1" };
 			var item12 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 2" };
-			api.CategoryItems.UpdateChildItems(category1, [item11, item12]);
+			api.CategoryItems.ReplaceChildItems(category1, [item11, item12]);
 
 			api.CategoryItems.GetChildItems(category1).Should().BeEquivalentTo([item11, item12]);
 
 			// Update items: remove item11, update item12, add item13
 			var item12Updated = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 2 updated" };
 			var item13 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 3" };
-			api.CategoryItems.UpdateChildItems(category1, [item12Updated, item13]);
+			api.CategoryItems.ReplaceChildItems(category1, [item12Updated, item13]);
 
 			api.CategoryItems.GetChildItems(category1).Should().BeEquivalentTo([item12Updated, item13]);
 		}
@@ -103,7 +103,7 @@
 			api.CategoryItems.GetChildItems(category1).Should().BeEquivalentTo([item11, item13]);
 
 			// Remove all items
-			api.CategoryItems.RemoveChildItems(category1);
+			api.CategoryItems.ClearChildItems(category1);
 			api.CategoryItems.GetChildItems(category1).Should().BeEmpty();
 		}
 	}

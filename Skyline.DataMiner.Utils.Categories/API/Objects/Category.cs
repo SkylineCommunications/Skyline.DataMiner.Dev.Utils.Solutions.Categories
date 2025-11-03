@@ -142,6 +142,61 @@
 			return categoryItemRepository.GetChildItems(this);
 		}
 
+		public void AddChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		{
+			if (categoryItemRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryItemRepository));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			categoryItemRepository.AddChildItems(this, items);
+		}
+
+		public void RemoveChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		{
+			if (categoryItemRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryItemRepository));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			categoryItemRepository.RemoveChildItems(this, items);
+		}
+
+		public void ReplaceChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		{
+			if (categoryItemRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryItemRepository));
+			}
+
+			if (items is null)
+			{
+				throw new ArgumentNullException(nameof(items));
+			}
+
+			categoryItemRepository.ReplaceChildItems(this, items);
+		}
+
+		public void ClearChildItems(CategoryItemRepository categoryItemRepository)
+		{
+			if (categoryItemRepository is null)
+			{
+				throw new ArgumentNullException(nameof(categoryItemRepository));
+			}
+
+			categoryItemRepository.ClearChildItems(this);
+		}
+
 		public ValidationResult Validate()
 		{
 			var result = new ValidationResult();

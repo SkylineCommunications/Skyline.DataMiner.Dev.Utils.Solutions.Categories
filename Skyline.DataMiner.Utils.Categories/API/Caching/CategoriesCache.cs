@@ -174,26 +174,6 @@
 			}
 		}
 
-		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)
-		{
-			lock (_lock)
-			{
-				if (!TryGetCategory(categoryId, out var category))
-				{
-					throw new ArgumentException($"Couldn't find category with ID {categoryId.ID}", nameof(categoryId));
-				}
-
-				var childNodes = GetChildCategories(category)
-					.OrderBy(c => c.Name, _naturalSortComparer)
-					.Select(c => GetSubtree(c))
-					.ToList();
-
-				var childItems = GetChildItems(category);
-
-				return new CategoryNode(category, childNodes, childItems);
-			}
-		}
-
 		public IReadOnlyCollection<Category> GetAncestorPath(ApiObjectReference<Category> categoryId)
 		{
 			if (categoryId == ApiObjectReference<Category>.Empty)
@@ -229,6 +209,34 @@
 			}
 
 			return pathToRoot;
+		}
+
+		public bool CategoryContainsItem(ApiObjectReference<Category> categoryId, ApiObjectReference<CategoryItem> itemId)
+		{
+			if (!TryGetCategoryItem(itemId, out var item))
+				return false;
+
+			return item.Category == categoryId;
+		}
+
+		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				if (!TryGetCategory(categoryId, out var category))
+				{
+					throw new ArgumentException($"Couldn't find category with ID {categoryId.ID}", nameof(categoryId));
+				}
+
+				var childNodes = GetChildCategories(category)
+					.OrderBy(c => c.Name, _naturalSortComparer)
+					.Select(c => GetSubtree(c))
+					.ToList();
+
+				var childItems = GetChildItems(category);
+
+				return new CategoryNode(category, childNodes, childItems);
+			}
 		}
 
 		public void LoadInitialData(CategoriesApi api)
