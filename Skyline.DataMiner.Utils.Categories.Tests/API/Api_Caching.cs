@@ -188,6 +188,29 @@
 		}
 
 		[TestMethod]
+		public void Api_Caching_CategoryContainsItem()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			api.Categories.CreateOrUpdate([category1]);
+
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1", Category = category1 };
+			api.CategoryItems.CreateOrUpdate([item11]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			cache.CategoryContainsItem(category1, item11).Should().BeTrue();
+
+			var itemNotInCategory = new CategoryItem { ModuleId = "My Module", InstanceId = "Nonexistent Instance" };
+			cache.CategoryContainsItem(category1, itemNotInCategory).Should().BeFalse();
+		}
+
+		[TestMethod]
 		public void Api_Caching_Subscription()
 		{
 			var api = new CategoriesApiMock();
