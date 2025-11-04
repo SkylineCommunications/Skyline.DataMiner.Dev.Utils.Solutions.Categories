@@ -4,6 +4,7 @@
 
 	using Skyline.DataMiner.Scripting;
 	using Skyline.DataMiner.Utils.Categories.API;
+	using Skyline.DataMiner.Utils.Categories.API.Caching;
 
 	public static class Extensions
 	{
@@ -15,6 +16,16 @@
 			}
 
 			return new CategoriesApi(protocol.GetUserConnection());
+		}
+
+		public static StaticCategoriesCache GetStaticCategoriesCache(this SLProtocol protocol)
+		{
+			if (protocol is null)
+			{
+				throw new ArgumentNullException(nameof(protocol));
+			}
+
+			return StaticCategoriesCache.GetOrCreate(protocol.GetUserConnection);
 		}
 	}
 }

@@ -3,6 +3,7 @@
 	using System;
 
 	using Skyline.DataMiner.Net;
+	using Skyline.DataMiner.Utils.Categories.API.Caching;
 
 	public static class ConnectionExtensions
 	{
@@ -14,6 +15,16 @@
 			}
 
 			return new CategoriesApi(connection);
+		}
+
+		public static StaticCategoriesCache GetStaticCategoriesCache(this IConnection connection)
+		{
+			if (connection is null)
+			{
+				throw new ArgumentNullException(nameof(connection));
+			}
+
+			return StaticCategoriesCache.GetOrCreate(connection);
 		}
 	}
 }
