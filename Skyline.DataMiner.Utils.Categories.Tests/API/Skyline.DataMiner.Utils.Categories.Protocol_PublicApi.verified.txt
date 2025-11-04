@@ -7,5 +7,6 @@ namespace Skyline.DataMiner.Utils.Categories.Protocol
     public static class Extensions
     {
         public static Skyline.DataMiner.Utils.Categories.API.CategoriesApi GetCategoriesApi(this Skyline.DataMiner.Scripting.SLProtocol protocol) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Scripting.SLProtocol protocol) { }
     }
 }

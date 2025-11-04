@@ -70,6 +70,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Extensions
     public static class ConnectionExtensions
     {
         public static Skyline.DataMiner.Utils.Categories.API.CategoriesApi GetCategoriesApi(this Skyline.DataMiner.Net.IConnection connection) { }
+        public static Skyline.DataMiner.Utils.Categories.API.Caching.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Net.IConnection connection) { }
     }
 }
 namespace Skyline.DataMiner.Utils.Categories.API.Objects
