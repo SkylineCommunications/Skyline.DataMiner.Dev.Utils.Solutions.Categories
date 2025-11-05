@@ -211,12 +211,14 @@
 			return pathToRoot;
 		}
 
-		public bool CategoryContainsItem(ApiObjectReference<Category> categoryId, ApiObjectReference<CategoryItem> itemId)
+		public bool CategoryContainsItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
-			if (!TryGetCategoryItem(itemId, out var item))
-				return false;
+			return GetChildItems(categoryId).Any(ci => ci == item);
+		}
 
-			return item.Category == categoryId;
+		public bool CategoryContainsDescendantItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
+		{
+			return GetDescendantItems(categoryId).Any(ci => ci == item);
 		}
 
 		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)
