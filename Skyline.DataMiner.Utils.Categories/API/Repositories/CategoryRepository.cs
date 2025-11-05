@@ -138,7 +138,7 @@
 			return GetByScope(scope).ToTree();
 		}
 
-		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{
@@ -153,7 +153,7 @@
 			ItemRepository.AddChildItems(category, items);
 		}
 
-		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{
@@ -168,7 +168,7 @@
 			ItemRepository.RemoveChildItems(category, items);
 		}
 
-		public void ReplaceChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> items)
+		public void ReplaceChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
 			{

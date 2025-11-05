@@ -4,7 +4,6 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
@@ -17,7 +16,7 @@
 
 	public class CategoryItemRepository : Repository<CategoryItem>
 	{
-		internal CategoryItemRepository(SlcCategoriesHelper helper, IConnection connection) : base(helper, connection)
+		internal CategoryItemRepository(SlcCategoriesHelper helper, Net.IConnection connection) : base(helper, connection)
 		{
 		}
 
@@ -78,6 +77,22 @@
 			CreateOrUpdate(newItems);
 		}
 
+		public void ReplaceChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> newItemIdentifiers)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (newItemIdentifiers == null)
+			{
+				throw new ArgumentNullException(nameof(newItemIdentifiers));
+			}
+
+			var newItems = newItemIdentifiers.Select(id => id.ToCategoryItem(category)).ToList();
+			ReplaceChildItems(category, newItems);
+		}
+
 		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToAdd)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
@@ -113,6 +128,27 @@
 			}
 		}
 
+		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> itemIdentifiersToAdd)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (itemIdentifiersToAdd == null)
+			{
+				throw new ArgumentNullException(nameof(itemIdentifiersToAdd));
+			}
+
+			if (itemIdentifiersToAdd.Count == 0)
+			{
+				return;
+			}
+
+			var itemsToAdd = itemIdentifiersToAdd.Select(id => id.ToCategoryItem(category)).ToList();
+			AddChildItems(category, itemsToAdd);
+		}
+
 		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItem> itemsToDelete)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
@@ -136,6 +172,34 @@
 			}
 
 			Delete(itemsToDelete);
+		}
+
+		public void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> itemIdentifiersToDelete)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category reference cannot be empty.", nameof(category));
+			}
+
+			if (itemIdentifiersToDelete == null)
+			{
+				throw new ArgumentNullException(nameof(itemIdentifiersToDelete));
+			}
+
+			if (itemIdentifiersToDelete.Count == 0)
+			{
+				return;
+			}
+
+			var identifiersToDelete = itemIdentifiersToDelete.ToHashSet();
+			var itemsToDelete = GetChildItems(category)
+				.Where(item => identifiersToDelete.Contains(item.ToIdentifier()))
+				.ToList();
+
+			if (itemsToDelete.Count > 0)
+			{
+				Delete(itemsToDelete);
+			}
 		}
 
 		public void ClearChildItems(ApiObjectReference<Category> category)

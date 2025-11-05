@@ -68,6 +68,21 @@
 				_domInstance.CategoryItemInfo.InstanceID = value;
 			}
 		}
+
+		public CategoryItemIdentifier ToIdentifier()
+		{
+			return new CategoryItemIdentifier(ModuleId, InstanceId);
+		}
+
+		public static implicit operator CategoryItemIdentifier(CategoryItem item)
+		{
+			if (item == null)
+			{
+				throw new ArgumentNullException(nameof(item));
+			}
+
+			return item.ToIdentifier();
+		}
 	}
 
 	public static class CategoryItemExposers

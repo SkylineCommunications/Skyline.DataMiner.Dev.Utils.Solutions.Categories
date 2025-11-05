@@ -142,7 +142,7 @@
 			return categoryItemRepository.GetChildItems(this);
 		}
 
-		public void AddChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		public void AddChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -157,7 +157,7 @@
 			categoryItemRepository.AddChildItems(this, items);
 		}
 
-		public void RemoveChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		public void RemoveChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -172,7 +172,7 @@
 			categoryItemRepository.RemoveChildItems(this, items);
 		}
 
-		public void ReplaceChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItem> items)
+		public void ReplaceChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
