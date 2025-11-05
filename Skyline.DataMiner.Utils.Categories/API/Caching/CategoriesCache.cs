@@ -23,6 +23,7 @@
 		private readonly OneToManyMapping<ApiObjectReference<Scope>, Category> _scopeCategoriesMapping = new();
 		private readonly OneToManyMapping<ApiObjectReference<Category>, Category> _parentCategoriesMapping = new();
 		private readonly OneToManyMapping<ApiObjectReference<Category>, CategoryItem> _categoryItemsMapping = new();
+		private readonly ManyToManyMapping<ApiObjectReference<Category>, CategoryItemIdentifier> _categoryItemIdentifiersMapping = new();
 
 		public IReadOnlyDictionary<ApiObjectReference<Scope>, Scope> Scopes => _scopes;
 
@@ -213,12 +214,17 @@
 
 		public bool CategoryContainsItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
-			return GetChildItems(categoryId).Any(ci => ci == item);
+			return _categoryItemIdentifiersMapping.Contains(categoryId, item);
 		}
 
 		public bool CategoryContainsDescendantItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
-			return GetDescendantItems(categoryId).Any(ci => ci == item);
+			if (CategoryContainsItem(categoryId, item))
+			{
+				return true;
+			}
+
+			return GetDescendantCategories(categoryId).Any(x => CategoryContainsItem(x, item));
 		}
 
 		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)
@@ -319,6 +325,7 @@
 					{
 						_scopeCategoriesMapping.RemoveChild(existing);
 						_parentCategoriesMapping.RemoveChild(existing);
+						_categoryItemsMapping.RemoveParent(existing);
 					}
 
 					_categories[item.ID] = item;
@@ -337,6 +344,7 @@
 					_scopeCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveParent(item);
+					_categoryItemsMapping.RemoveParent(item);
 				}
 			}
 		}
@@ -361,16 +369,19 @@
 					if (_categoryItems.TryGetValue(item.ID, out var existing))
 					{
 						_categoryItemsMapping.RemoveChild(existing);
+						_categoryItemIdentifiersMapping.Remove(existing.Category, existing);
 					}
 
 					_categoryItems[item.ID] = item;
 					_categoryItemsMapping.AddOrUpdate(item.Category, item);
+					_categoryItemIdentifiersMapping.TryAdd(item.Category, item);
 				}
 
 				foreach (var item in deleted)
 				{
 					_categoryItems.TryRemove(item, out _);
 					_categoryItemsMapping.RemoveChild(item);
+					_categoryItemIdentifiersMapping.Remove(item.Category, item);
 				}
 			}
 		}
