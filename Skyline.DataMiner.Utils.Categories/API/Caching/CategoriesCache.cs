@@ -177,54 +177,92 @@
 
 		public IReadOnlyCollection<Category> GetAncestorPath(ApiObjectReference<Category> categoryId)
 		{
-			if (categoryId == ApiObjectReference<Category>.Empty)
+			lock (_lock)
 			{
-				return [];
+				if (categoryId == ApiObjectReference<Category>.Empty)
+				{
+					return [];
+				}
+
+				var pathToRoot = new LinkedList<Category>();
+				var visited = new HashSet<ApiObjectReference<Category>>();
+
+				while (categoryId != ApiObjectReference<Category>.Empty)
+				{
+					// Check for circular reference before processing
+					if (!visited.Add(categoryId.ID))
+					{
+						throw new InvalidOperationException($"Circular reference detected in category hierarchy at category ID '{categoryId.ID}'.");
+					}
+
+					if (!TryGetCategory(categoryId, out var category))
+					{
+						break;
+					}
+
+					pathToRoot.AddFirst(category);
+
+					if (!category.ParentCategory.HasValue ||
+						category.ParentCategory == ApiObjectReference<Category>.Empty)
+					{
+						break;
+					}
+
+					categoryId = category.ParentCategory.Value;
+				}
+
+				return pathToRoot;
 			}
-
-			var pathToRoot = new LinkedList<Category>();
-			var visited = new HashSet<ApiObjectReference<Category>>();
-
-			while (categoryId != ApiObjectReference<Category>.Empty)
-			{
-				// Check for circular reference before processing
-				if (!visited.Add(categoryId.ID))
-				{
-					throw new InvalidOperationException($"Circular reference detected in category hierarchy at category ID '{categoryId.ID}'.");
-				}
-
-				if (!TryGetCategory(categoryId, out var category))
-				{
-					break;
-				}
-
-				pathToRoot.AddFirst(category);
-
-				if (!category.ParentCategory.HasValue ||
-					category.ParentCategory == ApiObjectReference<Category>.Empty)
-				{
-					break;
-				}
-
-				categoryId = category.ParentCategory.Value;
-			}
-
-			return pathToRoot;
 		}
 
-		public bool CategoryContainsItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
+		public bool ContainsItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
-			return _categoryItemIdentifiersMapping.Contains(categoryId, item);
+			lock (_lock)
+			{
+				return _categoryItemIdentifiersMapping.Contains(categoryId, item); 
+			}
 		}
 
-		public bool CategoryContainsDescendantItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
+		public bool ContainsDescendantItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
-			if (CategoryContainsItem(categoryId, item))
+			lock (_lock)
 			{
-				return true;
-			}
+				if (ContainsItem(categoryId, item))
+				{
+					return true;
+				}
 
-			return GetDescendantCategories(categoryId).Any(x => CategoryContainsItem(x, item));
+				return GetDescendantCategories(categoryId).Any(x => ContainsItem(x, item)); 
+			}
+		}
+
+		public bool HasChildCategories(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				return _parentCategoriesMapping.GetChildren(categoryId).Any();
+			}
+		}
+
+		public bool HasChildItems(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				return _categoryItemsMapping.GetChildren(categoryId).Any();
+			}
+		}
+
+		public bool HasDescendantItems(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				if (HasChildItems(categoryId))
+				{
+					return true;
+				}
+
+				return GetDescendantCategories(categoryId).Any(x => HasChildItems(x));
+			}
 		}
 
 		public CategoryNode GetSubtree(ApiObjectReference<Category> categoryId)

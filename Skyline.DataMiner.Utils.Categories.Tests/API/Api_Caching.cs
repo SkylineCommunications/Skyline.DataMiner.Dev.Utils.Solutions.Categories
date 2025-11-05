@@ -205,14 +205,46 @@
 			var cache = new CategoriesCache();
 			cache.LoadInitialData(api);
 
-			cache.CategoryContainsItem(category1, item11).Should().BeFalse();
-			cache.CategoryContainsItem(category11, item11).Should().BeTrue();
+			cache.ContainsItem(category1, item11).Should().BeFalse();
+			cache.ContainsItem(category11, item11).Should().BeTrue();
 
-			cache.CategoryContainsDescendantItem(category1, item11).Should().BeTrue();
-			cache.CategoryContainsDescendantItem(category11, item11).Should().BeTrue();
+			cache.ContainsDescendantItem(category1, item11).Should().BeTrue();
+			cache.ContainsDescendantItem(category11, item11).Should().BeTrue();
 
 			var itemNotInCategory = new CategoryItemIdentifier("My Module", "Nonexistent Instance");
-			cache.CategoryContainsItem(category1, itemNotInCategory).Should().BeFalse();
+			cache.ContainsItem(category1, itemNotInCategory).Should().BeFalse();
+		}
+
+		[TestMethod]
+		public void Api_Caching_CategoryHasItems()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category2 = new Category { Name = "Category 2", Scope = scope };
+			api.Categories.CreateOrUpdate([category1, category11, category2]);
+
+			var item11 = new CategoryItemIdentifier("My Module", "My Instance 1");
+			api.Categories.AddChildItems(category11, [item11]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			cache.HasChildCategories(category1).Should().BeTrue();
+			cache.HasChildCategories(category11).Should().BeFalse();
+			cache.HasChildCategories(category2).Should().BeFalse();
+
+			cache.HasChildItems(category1).Should().BeFalse();
+			cache.HasChildItems(category11).Should().BeTrue();
+			cache.HasChildItems(category2).Should().BeFalse();
+
+			cache.HasDescendantItems(category1).Should().BeTrue();
+			cache.HasDescendantItems(category11).Should().BeTrue();
+			cache.HasDescendantItems(category2).Should().BeFalse();
 		}
 
 		[TestMethod]
