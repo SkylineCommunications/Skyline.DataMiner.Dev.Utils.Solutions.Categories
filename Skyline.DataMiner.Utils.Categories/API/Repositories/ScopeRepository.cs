@@ -7,11 +7,11 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
+	using Skyline.DataMiner.Utils.Categories.API.Extensions;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
@@ -74,12 +74,18 @@
 
 		private void CheckDuplicatesBeforeSave(ICollection<Scope> instances)
 		{
-			FilterElement<DomInstance> CreateFilter(Scope c) =>
-				new ANDFilterElement<DomInstance>(
-					DomInstanceExposers.Id.NotEqual(c.ID),
-					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.ScopeInfo.Name).Equal(c.Name));
+			var cache = Connection.GetStaticCategoriesCache().Cache;
 
-			var conflicts = FilterQueryExecutor.RetrieveFilteredItems(instances, CreateFilter, Read).ToList();
+			var conflicts = new HashSet<Scope>();
+
+			foreach (var instance in instances)
+			{
+				if (cache.TryGetScope(instance.Name, out var existing) &&
+					existing != instance)
+				{
+					conflicts.Add(instance);
+				}
+			}
 
 			if (conflicts.Count > 0)
 			{
@@ -93,17 +99,25 @@
 
 		private void CheckIfStillInUse(ICollection<Scope> instances)
 		{
-			FilterElement<DomInstance> CreateFilter(Scope s) =>
-				new ANDFilterElement<DomInstance>(
-					DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
-					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope).Equal(s.ID));
+			var cache = Connection.GetStaticCategoriesCache().Cache;
 
-			var filter = new ORFilterElement<DomInstance>(instances.Select(CreateFilter).ToArray());
-			var count = Helper.DomInstances.Count(filter);
+			var stillInUse = new HashSet<Scope>();
 
-			if (count > 0)
+			foreach (var instance in instances)
 			{
-				throw new InvalidOperationException("One or more scopes are still in use");
+				if (cache.GetCategoriesForScope(instance).Any())
+				{
+					stillInUse.Add(instance);
+				}
+			}
+
+			if (stillInUse.Count > 0)
+			{
+				var names = String.Join(", ", stillInUse
+					.Select(x => x.Name)
+					.OrderBy(x => x, new NaturalSortComparer()));
+
+				throw new InvalidOperationException($"One or more scopes are still in use: {names}");
 			}
 		}
 	}

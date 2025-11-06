@@ -12,8 +12,6 @@
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
-	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	using SLDataGateway.API.Types.Querying;
 
@@ -253,12 +251,21 @@
 
 		private void CheckDuplicatesBeforeSave(ICollection<Category> instances)
 		{
-			FilterElement<DomInstance> CreateFilter(Category c) =>
-				new ANDFilterElement<DomInstance>(
-					DomInstanceExposers.Id.NotEqual(c.ID),
-					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Name).Equal(c.Name));
+			var cache = Connection.GetStaticCategoriesCache().Cache;
 
-			var conflicts = FilterQueryExecutor.RetrieveFilteredItems(instances, CreateFilter, Read).ToList();
+			var conflicts = new HashSet<Category>();
+
+			foreach (var instance in instances)
+			{
+				var siblings = instance.ParentCategory.HasValue
+					? cache.GetChildCategories(instance.ParentCategory.Value)
+					: cache.GetRootCategoriesForScope(instance.Scope);
+
+				if (siblings.Any(x => x != instance && String.Equals(x.Name, instance.Name)))
+				{
+					conflicts.Add(instance);
+				}
+			}
 
 			if (conflicts.Count > 0)
 			{

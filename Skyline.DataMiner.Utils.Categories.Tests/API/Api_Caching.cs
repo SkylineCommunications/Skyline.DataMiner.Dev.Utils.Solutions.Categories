@@ -7,7 +7,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
 
 	[TestClass]
-	public sealed class Api_Caching
+	public sealed class Api_Caching : TestBase
 	{
 		[TestMethod]
 		public void Api_Caching_GetScopeByName()
@@ -33,17 +33,22 @@
 			api.Scopes.CreateOrUpdate([scope1, scope2]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
 			var category2 = new Category { Name = "Category 2", Scope = scope2 };
-			api.Categories.CreateOrUpdate([category1, category2]);
+			api.Categories.CreateOrUpdate([category1, category11, category2]);
 
 			var cache = new CategoriesCache();
 			cache.LoadInitialData(api);
 
-			cache.GetCategoriesForScope(scope1).Should().BeEquivalentTo([category1]);
+			cache.GetCategoriesForScope(scope1).Should().BeEquivalentTo([category1, category11]);
 			cache.GetCategoriesForScope(scope2).Should().BeEquivalentTo([category2]);
+			cache.GetRootCategoriesForScope(scope1).Should().BeEquivalentTo([category1]);
+			cache.GetRootCategoriesForScope(scope2).Should().BeEquivalentTo([category2]);
 
-			cache.GetCategoriesForScope("Scope 1").Should().BeEquivalentTo([category1]);
+			cache.GetCategoriesForScope("Scope 1").Should().BeEquivalentTo([category1, category11]);
 			cache.GetCategoriesForScope("Scope 2").Should().BeEquivalentTo([category2]);
+			cache.GetRootCategoriesForScope("Scope 1").Should().BeEquivalentTo([category1]);
+			cache.GetRootCategoriesForScope("Scope 2").Should().BeEquivalentTo([category2]);
 		}
 
 		[TestMethod]

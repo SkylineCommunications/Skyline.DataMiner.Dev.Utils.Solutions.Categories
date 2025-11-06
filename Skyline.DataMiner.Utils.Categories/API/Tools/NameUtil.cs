@@ -1,5 +1,8 @@
 ﻿namespace Skyline.DataMiner.Utils.Categories.API.Tools
 {
+	using System;
+	using System.Linq;
+
 	public static class NameUtil
 	{
 		public static bool Validate(string name, out string error)
@@ -10,7 +13,7 @@
 				return false;
 			}
 
-			if (string.IsNullOrWhiteSpace(name))
+			if (String.IsNullOrWhiteSpace(name))
 			{
 				error = "Name cannot be whitespace or empty.";
 				return false;
@@ -22,9 +25,16 @@
 				return false;
 			}
 
-			if (char.IsWhiteSpace(name[0]) || char.IsWhiteSpace(name[name.Length - 1]))
+			if (Char.IsWhiteSpace(name[0]) || Char.IsWhiteSpace(name[name.Length - 1]))
 			{
 				error = "Name cannot start or end with whitespace.";
+				return false;
+			}
+
+			// Check for invalid characters
+			if (name.Any(c => Char.IsControl(c) || c == '/' || c == '\\' || c == ';'))
+			{
+				error = "Name contains invalid or special characters.";
 				return false;
 			}
 

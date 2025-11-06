@@ -101,6 +101,14 @@
 			}
 		}
 
+		public IReadOnlyCollection<Category> GetRootCategoriesForScope(ApiObjectReference<Scope> scopeId)
+		{
+			lock (_lock)
+			{
+				return GetCategoriesForScope(scopeId).Where(x => x.IsRootCategory).ToList();
+			}
+		}
+
 		public IReadOnlyCollection<Category> GetCategoriesForScope(string scopeName)
 		{
 			if (String.IsNullOrWhiteSpace(scopeName))
@@ -112,6 +120,19 @@
 			{
 				var scope = GetScope(scopeName);
 				return GetCategoriesForScope(scope);
+			}
+		}
+
+		public IReadOnlyCollection<Category> GetRootCategoriesForScope(string scopeName)
+		{
+			if (String.IsNullOrWhiteSpace(scopeName))
+			{
+				throw new ArgumentException($"'{nameof(scopeName)}' cannot be null or whitespace.", nameof(scopeName));
+			}
+
+			lock (_lock)
+			{
+				return GetCategoriesForScope(scopeName).Where(x => x.IsRootCategory).ToList();
 			}
 		}
 
@@ -219,7 +240,7 @@
 		{
 			lock (_lock)
 			{
-				return _categoryItemIdentifiersMapping.Contains(categoryId, item); 
+				return _categoryItemIdentifiersMapping.Contains(categoryId, item);
 			}
 		}
 
@@ -232,7 +253,7 @@
 					return true;
 				}
 
-				return GetDescendantCategories(categoryId).Any(x => ContainsItem(x, item)); 
+				return GetDescendantCategories(categoryId).Any(x => ContainsItem(x, item));
 			}
 		}
 

@@ -5,7 +5,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	[TestClass]
-	public sealed class Api_Scopes
+	public sealed class Api_Scopes : TestBase
 	{
 		[TestMethod]
 		public void Api_Scopes_GetCategoriesTree()
@@ -53,7 +53,7 @@
 
 			var ex = Assert.Throws<InvalidOperationException>(
 				() => { api.Scopes.Delete(scope1); });
-			Assert.AreEqual("Cannot delete scopes: One or more scopes are still in use", ex.Message);
+			Assert.AreEqual("Cannot delete scopes: One or more scopes are still in use: Scope 1", ex.Message);
 		}
 	}
 }
