@@ -4,13 +4,12 @@
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.Tools;
 
 	public static class CategoryExtensions
 	{
-		private static readonly NaturalSortComparer _naturalSortComparer = new();
+		private static readonly Net.NaturalSortComparer _naturalSortComparer = new();
 
 		public static CategoryNode ToTree(this IEnumerable<Category> categories)
 		{
@@ -70,7 +69,9 @@
 		{
 			var sorted = new List<Category>();
 
+			var allCategoryIds = categories.Select(c => c.ID).ToHashSet();
 			var childrenByParent = categories.ToLookup(c => c.ParentCategory);
+
 			var visited = new HashSet<Category>();
 
 			// Local recursive function
@@ -89,16 +90,19 @@
 				}
 			}
 
-			// Start with root categories (those without a parent in the provided collection)
-			var allCategoryIds = new HashSet<Guid>(categories.Select(c => c.ID));
-			var roots = categories.Where(c => !c.ParentCategory.HasValue || !allCategoryIds.Contains(c.ParentCategory.Value));
-
-			foreach (var root in roots.OrderBy(c => c.Name, _naturalSortComparer))
+			// Process each scope separately
+			foreach (var scopeCategories in categories.GroupBy(c => c.Scope))
 			{
-				if (visited.Add(root))
+				// Start with root categories (those without a parent in the provided collection)
+				var roots = scopeCategories.Where(c => !c.ParentCategory.HasValue || !allCategoryIds.Contains(c.ParentCategory.Value));
+
+				foreach (var root in roots.OrderBy(c => c.Name, _naturalSortComparer))
 				{
-					sorted.Add(root);
-					AddChildren(root.ID);
+					if (visited.Add(root))
+					{
+						sorted.Add(root);
+						AddChildren(root.ID);
+					}
 				}
 			}
 
