@@ -8,6 +8,23 @@
 	public sealed class Api_Categories
 	{
 		[TestMethod]
+		public void Api_Categories_Query()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			var scope2 = new Scope { Name = "Scope 2" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope2 };
+			api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			api.Categories.Query().Single(x => x.Name == "Category 1" && x.Scope == scope1)
+				.Should().Be(category1_1);
+		}
+
+		[TestMethod]
 		public void Api_Categories_GetByScope()
 		{
 			var api = new CategoriesApiMock();

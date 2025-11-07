@@ -231,6 +231,10 @@
 					return FilterElementFactory.Create<string>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Name), comparer, value);
 				case nameof(Category.ParentCategory):
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory), comparer, value);
+				case nameof(Category.RootCategory):
+					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.RootCategory), comparer, value);
+				case nameof(Category.Scope):
+					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope), comparer, value);
 			}
 
 			return base.CreateFilter(fieldName, comparer, value);
@@ -244,6 +248,10 @@
 					return OrderByElementFactory.Create(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Name), sortOrder, naturalSort);
 				case nameof(Category.ParentCategory):
 					return OrderByElementFactory.Create(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory), sortOrder, naturalSort);
+				case nameof(Category.RootCategory):
+					return OrderByElementFactory.Create(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.RootCategory), sortOrder, naturalSort);
+				case nameof(Category.Scope):
+					return OrderByElementFactory.Create(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope), sortOrder, naturalSort);
 			}
 
 			return base.CreateOrderBy(fieldName, sortOrder, naturalSort);
