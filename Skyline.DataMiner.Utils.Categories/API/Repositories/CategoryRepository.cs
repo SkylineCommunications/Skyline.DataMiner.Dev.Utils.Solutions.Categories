@@ -251,27 +251,40 @@
 
 		private void CheckDuplicatesBeforeSave(ICollection<Category> instances)
 		{
-			var cache = Connection.GetStaticCategoriesCache().Cache;
+			var duplicateNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-			var conflicts = new HashSet<Category>();
+			// Group instances by (scope, parent)
+			var groups = instances.GroupBy(c => (c.Scope, c.ParentCategory));
 
-			foreach (var instance in instances)
+			foreach (var group in groups)
 			{
-				var siblings = instance.ParentCategory.HasValue
-					? cache.GetChildCategories(instance.ParentCategory.Value)
-					: cache.GetRootCategoriesForScope(instance.Scope);
+				// Retrieve existing siblings only once per group
+				var existingSiblings = group.Key.ParentCategory.HasValue
+					? GetChildCategories(group.Key.ParentCategory.Value)
+					: GetByScope(group.Key.Scope).Where(x => x.IsRootCategory);
 
-				if (siblings.Any(x => x != instance && String.Equals(x.Name, instance.Name)))
+				// Build a dictionary to track duplicates efficiently
+				var seen = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
+
+				foreach (var category in existingSiblings.Concat(group))
 				{
-					conflicts.Add(instance);
+					if (seen.TryGetValue(category.Name, out var existingId))
+					{
+						if (existingId != category.ID)
+						{
+							duplicateNames.Add(category.Name);
+						}
+					}
+					else
+					{
+						seen[category.Name] = category.ID;
+					}
 				}
 			}
 
-			if (conflicts.Count > 0)
+			if (duplicateNames.Count > 0)
 			{
-				var names = String.Join(", ", conflicts
-					.Select(x => x.Name)
-					.OrderBy(x => x, new NaturalSortComparer()));
+				var names = String.Join(", ", duplicateNames.OrderBy(x => x, new NaturalSortComparer()));
 
 				throw new InvalidOperationException($"Cannot save categories. The following names are already in use: {names}");
 			}

@@ -7,7 +7,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
 
 	[TestClass]
-	public sealed class Api_Caching : TestBase
+	public sealed class Api_Caching
 	{
 		[TestMethod]
 		public void Api_Caching_GetScopeByName()

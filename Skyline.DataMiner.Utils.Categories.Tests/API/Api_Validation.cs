@@ -5,7 +5,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	[TestClass]
-	public sealed class Api_Validation : TestBase
+	public sealed class Api_Validation
 	{
 		[TestMethod]
 		public void Api_Validation_Scopes_CheckDuplicates()
@@ -16,6 +16,10 @@
 			var scope = new Scope { Name = "Scope 1" };
 			api.Scopes.Create(scope);
 
+			// update with same name doesn't throw exception
+			api.Scopes.Update(scope);
+
+			// update to a different name that is not in use doesn't throw exception
 			scope.Name = "Scope 2";
 			api.Scopes.Update(scope);
 
@@ -58,6 +62,9 @@
 			var category1 = new Category { Name = "Category 1", Scope = scope };
 			var category2 = new Category { Name = "Category 2", Scope = scope };
 			api.Categories.CreateOrUpdate([category1, category2]);
+
+			// update with same name doesn't throw exception
+			api.Categories.Update(category1);
 
 			// create item with same name
 			var ex = Assert.Throws<InvalidOperationException>(

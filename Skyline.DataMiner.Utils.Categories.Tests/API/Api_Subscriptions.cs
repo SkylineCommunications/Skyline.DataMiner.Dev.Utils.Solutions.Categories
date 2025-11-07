@@ -9,7 +9,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
 
 	[TestClass]
-	public sealed class Api_Subscriptions : TestBase
+	public sealed class Api_Subscriptions
 	{
 		[TestMethod]
 		public void Api_Subscriptions_CreateWithFilter()

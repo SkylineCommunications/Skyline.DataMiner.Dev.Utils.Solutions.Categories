@@ -5,7 +5,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	[TestClass]
-	public sealed class Api_Categories : TestBase
+	public sealed class Api_Categories
 	{
 		[TestMethod]
 		public void Api_Categories_GetByScope()

@@ -21,7 +21,7 @@
 
 			CategoryItems = new CategoryItemRepository(SlcCategoriesHelper, connection);
 			Categories = new CategoryRepository(SlcCategoriesHelper, CategoryItems, connection);
-			Scopes = new ScopeRepository(SlcCategoriesHelper, connection);
+			Scopes = new ScopeRepository(SlcCategoriesHelper, Categories, connection);
 		}
 
 		protected internal IConnection Connection { get; }

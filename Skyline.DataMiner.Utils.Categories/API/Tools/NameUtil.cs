@@ -32,7 +32,7 @@
 			}
 
 			// Check for invalid characters
-			if (name.Any(c => Char.IsControl(c) || c == '/' || c == '\\' || c == ';'))
+			if (name.Any(c => Char.IsControl(c) || c == '/' || c == '\\' || c == ';' || c == ',' || c == '|'))
 			{
 				error = "Name contains invalid or special characters.";
 				return false;

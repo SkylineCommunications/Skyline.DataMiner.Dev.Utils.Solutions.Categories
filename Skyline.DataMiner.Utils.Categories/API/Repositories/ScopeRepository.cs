@@ -7,7 +7,6 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Extensions;
 	using Skyline.DataMiner.Utils.Categories.API.Objects;
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
@@ -17,11 +16,15 @@
 
 	public class ScopeRepository : Repository<Scope>
 	{
-		internal ScopeRepository(SlcCategoriesHelper helper, IConnection connection) : base(helper, connection)
+		internal ScopeRepository(SlcCategoriesHelper helper, CategoryRepository categoryRepository, IConnection connection)
+			: base(helper, connection)
 		{
+			CategoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
 		}
 
 		protected internal override DomDefinitionId DomDefinition => Scope.DomDefinition;
+
+		private CategoryRepository CategoryRepository { get; }
 
 		protected internal override Scope CreateInstance(DomInstance domInstance)
 		{
@@ -74,24 +77,42 @@
 
 		private void CheckDuplicatesBeforeSave(ICollection<Scope> instances)
 		{
-			var cache = Connection.GetStaticCategoriesCache().Cache;
+			var duplicateNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-			var conflicts = new HashSet<Scope>();
+			// Track already seen scope names
+			var seen = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
 
+			// First, check within the provided instances
 			foreach (var instance in instances)
 			{
-				if (cache.TryGetScope(instance.Name, out var existing) &&
-					existing != instance)
+				if (seen.TryGetValue(instance.Name, out var existingId) &&
+					existingId != instance.ID)
 				{
-					conflicts.Add(instance);
+					duplicateNames.Add(instance.Name);
+				}
+				else
+				{
+					seen[instance.Name] = instance.ID;
 				}
 			}
 
-			if (conflicts.Count > 0)
+			// Next, check against existing scopes in the repository, once per name
+			foreach (var name in seen.Keys)
 			{
-				var names = String.Join(", ", conflicts
-					.Select(x => x.Name)
-					.OrderBy(x => x, new NaturalSortComparer()));
+				var existingScopes = Read(ScopeExposers.Name.Equal(name));
+				foreach (var existing in existingScopes)
+				{
+					if (existing.ID != seen[name])
+					{
+						duplicateNames.Add(name);
+					}
+				}
+			}
+
+			// Finally, throw if any duplicates were found
+			if (duplicateNames.Count > 0)
+			{
+				var names = String.Join(", ", duplicateNames.OrderBy(x => x, new NaturalSortComparer()));
 
 				throw new InvalidOperationException($"Cannot save scopes. The following names are already in use: {names}");
 			}
@@ -99,13 +120,11 @@
 
 		private void CheckIfStillInUse(ICollection<Scope> instances)
 		{
-			var cache = Connection.GetStaticCategoriesCache().Cache;
-
 			var stillInUse = new HashSet<Scope>();
 
 			foreach (var instance in instances)
 			{
-				if (cache.GetCategoriesForScope(instance).Any())
+				if (CategoryRepository.GetByScope(instance).Any())
 				{
 					stillInUse.Add(instance);
 				}
