@@ -53,7 +53,7 @@
 
 			var ex = Assert.Throws<InvalidOperationException>(
 				() => { api.Scopes.Delete(scope1); });
-			Assert.AreEqual("Cannot delete scopes: One or more scopes are still in use: Scope 1", ex.Message);
+			Assert.AreEqual("Cannot delete scopes: one or more scopes are still in use: Scope 1", ex.Message);
 		}
 	}
 }

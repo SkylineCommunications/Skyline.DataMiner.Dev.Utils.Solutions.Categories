@@ -43,13 +43,15 @@
 
 		protected override void ValidateBeforeDelete(ICollection<Scope> instances)
 		{
-			try
+			var stillInUse = GetStillInUse(instances);
+
+			if (stillInUse.Count > 0)
 			{
-				CheckIfStillInUse(instances);
-			}
-			catch (Exception ex)
-			{
-				throw new InvalidOperationException($"Cannot delete scopes: {ex.Message}", ex);
+				var names = String.Join(", ", stillInUse
+					.Select(x => x.Name)
+					.OrderBy(x => x, new NaturalSortComparer()));
+
+				throw new InvalidOperationException($"Cannot delete scopes: one or more scopes are still in use: {names}");
 			}
 		}
 
@@ -100,6 +102,7 @@
 			foreach (var name in seen.Keys)
 			{
 				var existingScopes = Read(ScopeExposers.Name.Equal(name));
+
 				foreach (var existing in existingScopes)
 				{
 					if (existing.ID != seen[name])
@@ -118,7 +121,7 @@
 			}
 		}
 
-		private void CheckIfStillInUse(ICollection<Scope> instances)
+		private ICollection<Scope> GetStillInUse(ICollection<Scope> instances)
 		{
 			var stillInUse = new HashSet<Scope>();
 
@@ -130,14 +133,7 @@
 				}
 			}
 
-			if (stillInUse.Count > 0)
-			{
-				var names = String.Join(", ", stillInUse
-					.Select(x => x.Name)
-					.OrderBy(x => x, new NaturalSortComparer()));
-
-				throw new InvalidOperationException($"One or more scopes are still in use: {names}");
-			}
+			return stillInUse;
 		}
 	}
 }
