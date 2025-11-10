@@ -46,7 +46,7 @@
 
 		protected abstract void ValidateBeforeDelete(ICollection<T> instances);
 
-		public virtual void Create(T instance)
+		public virtual T Create(T instance)
 		{
 			if (instance == null)
 			{
@@ -55,10 +55,11 @@
 
 			ValidateBeforeSave(new[] { instance });
 
-			Helper.DomInstances.Create(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Create(instance.DomInstance);
+			return CreateInstance(newInstance);
 		}
 
-		public virtual void Update(T instance)
+		public virtual T Update(T instance)
 		{
 			if (instance == null)
 			{
@@ -67,10 +68,11 @@
 
 			ValidateBeforeSave(new[] { instance });
 
-			Helper.DomInstances.Update(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Update(instance.DomInstance);
+			return CreateInstance(newInstance);
 		}
 
-		public virtual void CreateOrUpdate(IEnumerable<T> instances)
+		public virtual IEnumerable<T> CreateOrUpdate(IEnumerable<T> instances)
 		{
 			if (instances == null)
 			{
@@ -82,17 +84,21 @@
 			ValidateBeforeSave(instanceCollection);
 
 			var domInstances = instanceCollection.Select(x => x.DomInstance.ToInstance());
-			Helper.DomInstances.CreateOrUpdateInBatches(domInstances).ThrowOnFailure();
+			var result = Helper.DomInstances.CreateOrUpdateInBatches(domInstances);
+
+			result.ThrowOnFailure();
+
+			return result.SuccessfulItems.Select(CreateInstance);
 		}
 
-		public virtual void CreateOrUpdate(T instance)
+		public virtual T CreateOrUpdate(T instance)
 		{
 			if (instance == null)
 			{
 				throw new ArgumentNullException(nameof(instance));
 			}
 
-			CreateOrUpdate(new[] { instance });
+			return CreateOrUpdate(new[] { instance }).FirstOrDefault();
 		}
 
 		public virtual void Delete(T instance)

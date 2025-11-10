@@ -278,11 +278,11 @@ namespace Skyline.DataMiner.Utils.Categories.API.Repositories
         protected Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomHelper Helper { get; }
         public virtual long Count(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
         public virtual long CountAll() { }
-        public virtual void Create(T instance) { }
+        public virtual T Create(T instance) { }
         protected virtual Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> CreateFilter(string fieldName, Skyline.DataMiner.Net.Messages.SLDataGateway.Comparer comparer, object value) { }
         protected abstract T CreateInstance(Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance domInstance);
-        public virtual void CreateOrUpdate(System.Collections.Generic.IEnumerable<T> instances) { }
-        public virtual void CreateOrUpdate(T instance) { }
+        public virtual System.Collections.Generic.IEnumerable<T> CreateOrUpdate(System.Collections.Generic.IEnumerable<T> instances) { }
+        public virtual T CreateOrUpdate(T instance) { }
         protected virtual void CreateOrUpdateWithoutValidation(System.Collections.Generic.IEnumerable<T> instances) { }
         protected virtual SLDataGateway.API.Types.Querying.IOrderByElement CreateOrderBy(string fieldName, SLDataGateway.API.Types.Querying.SortOrder sortOrder, bool naturalSort = false) { }
         protected virtual void CreateWithoutValidation(T instance) { }
@@ -308,7 +308,7 @@ namespace Skyline.DataMiner.Utils.Categories.API.Repositories
         protected virtual Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<Skyline.DataMiner.Net.Apps.DataMinerObjectModel.DomInstance> TranslateFullFilter(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter) { }
         protected virtual SLDataGateway.API.Types.Querying.IOrderBy TranslateFullOrderBy(SLDataGateway.API.Types.Querying.IOrderBy order) { }
         protected virtual SLDataGateway.API.Types.Querying.IOrderByElement TranslateOrderBy(SLDataGateway.API.Types.Querying.IOrderByElement orderByElement) { }
-        public virtual void Update(T instance) { }
+        public virtual T Update(T instance) { }
         protected virtual void UpdateWithoutValidation(T instance) { }
         protected abstract void ValidateBeforeDelete(System.Collections.Generic.ICollection<T> instances);
         protected abstract void ValidateBeforeSave(System.Collections.Generic.ICollection<T> instances);

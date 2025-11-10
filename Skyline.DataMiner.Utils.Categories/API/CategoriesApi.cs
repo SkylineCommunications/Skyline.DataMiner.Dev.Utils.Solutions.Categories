@@ -8,8 +8,10 @@
 	using Skyline.DataMiner.Net.ManagerStore;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Utils.Categories.API.Repositories;
+	using Skyline.DataMiner.Utils.Categories.DOM.Definitions;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 
 	public class CategoriesApi
 	{
@@ -33,6 +35,11 @@
 		public CategoryItemRepository CategoryItems { get; }
 
 		public ScopeRepository Scopes { get; }
+
+		public void InstallDomModules()
+		{
+			DomModuleInstaller.Install(Connection.HandleMessages, new SlcCategoriesDomModule(), x => { });
+		}
 
 		public bool IsInstalled()
 		{
