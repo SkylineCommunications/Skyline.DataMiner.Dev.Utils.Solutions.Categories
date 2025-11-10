@@ -235,9 +235,9 @@
 				case nameof(CategoryItem.Category):
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.Category), comparer, value);
 				case nameof(CategoryItem.ModuleId):
-					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.ModuleID), comparer, value);
+					return FilterElementFactory.Create<string>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.ModuleID), comparer, value);
 				case nameof(CategoryItem.InstanceId):
-					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.InstanceID), comparer, value);
+					return FilterElementFactory.Create<string>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryItemInfo.InstanceID), comparer, value);
 			}
 
 			return base.CreateFilter(fieldName, comparer, value);
