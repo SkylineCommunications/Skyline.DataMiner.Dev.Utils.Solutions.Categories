@@ -11,6 +11,7 @@
 	using Skyline.DataMiner.Utils.Categories.API.Tools;
 	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
@@ -79,38 +80,26 @@
 
 		private void CheckDuplicatesBeforeSave(ICollection<Scope> instances)
 		{
-			var duplicateNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+			// Keep track of seen (name, id) pairs
+			var seen = new HashSet<(string Name, Guid ID)>();
 
-			// Track already seen scope names
-			var seen = new Dictionary<string, Guid>(StringComparer.OrdinalIgnoreCase);
+			// Retrieve existing scopes with the same names as the instances being saved
+			var existingScopes = FilterQueryExecutor.RetrieveFilteredItems(
+				instances.Select(x => x.Name).Distinct(),
+				name => ScopeExposers.Name.Equal(name),
+				Read);
 
-			// First, check within the provided instances
-			foreach (var instance in instances)
+			// Add both existing scopes and the instances being saved
+			foreach (var existing in existingScopes.Concat(instances))
 			{
-				if (seen.TryGetValue(instance.Name, out var existingId) &&
-					existingId != instance.ID)
-				{
-					duplicateNames.Add(instance.Name);
-				}
-				else
-				{
-					seen[instance.Name] = instance.ID;
-				}
+				seen.Add((existing.Name, existing.ID));
 			}
 
-			// Next, check against existing scopes in the repository, once per name
-			foreach (var name in seen.Keys)
-			{
-				var existingScopes = Read(ScopeExposers.Name.Equal(name));
-
-				foreach (var existing in existingScopes)
-				{
-					if (existing.ID != seen[name])
-					{
-						duplicateNames.Add(name);
-					}
-				}
-			}
+			// Now, find duplicates
+			var duplicateNames = seen.GroupBy(x => x.Name, StringComparer.OrdinalIgnoreCase)
+				.Where(g => g.Count() > 1)
+				.Select(g => g.Key)
+				.ToList();
 
 			// Finally, throw if any duplicates were found
 			if (duplicateNames.Count > 0)

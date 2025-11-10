@@ -276,17 +276,13 @@
 
 				foreach (var category in existingSiblings.Concat(group))
 				{
-					if (seen.TryGetValue(category.Name, out var existingId))
+					if (seen.TryGetValue(category.Name, out var existingId) &&
+						existingId != category.ID)
 					{
-						if (existingId != category.ID)
-						{
-							duplicateNames.Add(category.Name);
-						}
+						duplicateNames.Add(category.Name);
 					}
-					else
-					{
-						seen[category.Name] = category.ID;
-					}
+
+					seen[category.Name] = category.ID;
 				}
 			}
 
