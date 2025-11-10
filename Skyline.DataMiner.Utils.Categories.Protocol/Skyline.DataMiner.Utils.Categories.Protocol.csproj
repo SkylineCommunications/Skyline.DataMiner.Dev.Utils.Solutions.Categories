@@ -40,9 +40,6 @@
 		<PackageReference Include="Skyline.DataMiner.Dev.Common" Version="10.5.9.2" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Protocol" Version="10.5.9.2" />
 		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.4" />
-		<PackageReference Include="GitInfo" Version="3.6.0">
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
