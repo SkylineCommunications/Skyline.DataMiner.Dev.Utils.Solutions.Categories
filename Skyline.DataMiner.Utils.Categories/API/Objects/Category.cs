@@ -60,6 +60,12 @@
 					return _domInstance.CategoryInfo.RootCategory.Value;
 				}
 
+				if (IsRootCategory)
+				{
+					// This is the root category itself. Return a reference to self.
+					return this.Reference;
+				}
+
 				return ApiObjectReference<Category>.Empty;
 			}
 
@@ -214,6 +220,12 @@
 			if (!IsRootCategory && RootCategory == ApiObjectReference<Category>.Empty)
 			{
 				result.AddError("A root category is required when a parent category is assigned.", this, x => x.RootCategory);
+			}
+
+			if (IsRootCategory && RootCategory != this)
+			{
+				// If this is the root category, the RootCategory property should reference self.
+				result.AddError("The root category must reference itself as root category.", this, x => x.RootCategory);
 			}
 
 			return result;
