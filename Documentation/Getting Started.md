@@ -78,8 +78,3 @@ var results = api.Categories.Query()
 var tree = api.Categories.GetTree(scope);
 ```
 
-## Next Steps
-
-- [Core Concepts](Core Concepts.md) - Learn about the data model
-- [Examples](Examples.md) - See more usage examples
-- [Advanced Topics](Advanced Topics.md) - Caching, subscriptions, and performance optimization
