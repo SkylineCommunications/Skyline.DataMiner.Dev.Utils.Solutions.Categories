@@ -5,6 +5,8 @@
 The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure. It consists of three main components:
 This API is part of the [DataMiner Categories](https://catalog.dataminer.services/details/c9666f3a-be26-42fd-83f2-6ee7fab4f11e) application, and can be used by other solutions to manage categories via code.
 
+## Main Components
+
 - **Scopes**: Define contexts for categories (e.g., "Resource Studio", "Virtual Signal Groups")
 - **Categories**: Provides hierarchical structure for grouping items. Categories can be nested to form a tree structure
 - **Category Items**: Link external items to categories using ModuleId and InstanceId
