@@ -33,7 +33,7 @@
 			api.Scopes.CreateOrUpdate([scope1, scope2]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope1 };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope1, ParentCategory = category1, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope1, ParentCategory = category1 };
 			var category2 = new Category { Name = "Category 2", Scope = scope2 };
 			api.Categories.CreateOrUpdate([category1, category11, category2]);
 
@@ -60,10 +60,10 @@
 			api.Scopes.CreateOrUpdate([scope]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
-			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1 };
 			var category2 = new Category { Name = "Category 2", Scope = scope };
-			var category21 = new Category { Name = "Category 2.1", Scope = scope, ParentCategory = category2, RootCategory = category2 };
+			var category21 = new Category { Name = "Category 2.1", Scope = scope, ParentCategory = category2 };
 			api.Categories.CreateOrUpdate([category1, category11, category12, category2, category21]);
 
 			var cache = new CategoriesCache();
@@ -104,8 +104,8 @@
 
 			// Create a category hierarchy: Category 1 -> Category 1.1 -> Category 1.1.1
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
-			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11 };
 			api.Categories.CreateOrUpdate([category1, category11, category111]);
 
 			// Create items at different levels
@@ -136,8 +136,8 @@
 			api.Scopes.CreateOrUpdate([scope]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
-			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			var category12 = new Category { Name = "Category 1.2", Scope = scope, ParentCategory = category1 };
 			api.Categories.CreateOrUpdate([category1, category11, category12]);
 
 			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1", Category = category1 };
@@ -180,8 +180,8 @@
 			api.Scopes.CreateOrUpdate([scope]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
-			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11 };
 			api.Categories.CreateOrUpdate([category1, category11, category111]);
 
 			var cache = new CategoriesCache();
@@ -201,7 +201,7 @@
 			api.Scopes.CreateOrUpdate([scope]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
 			api.Categories.CreateOrUpdate([category1, category11]);
 
 			var item11 = new CategoryItemIdentifier( "My Module", "My Instance 1");
@@ -229,7 +229,7 @@
 			api.Scopes.CreateOrUpdate([scope]);
 
 			var category1 = new Category { Name = "Category 1", Scope = scope };
-			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1, RootCategory = category1 };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
 			var category2 = new Category { Name = "Category 2", Scope = scope };
 			api.Categories.CreateOrUpdate([category1, category11, category2]);
 

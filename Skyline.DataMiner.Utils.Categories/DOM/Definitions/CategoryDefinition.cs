@@ -57,16 +57,6 @@
 				new DomInstanceFieldDescriptor(SlcCategoriesIds.ModuleId)
 				{
 					FieldType = typeof(Guid),
-					ID = SlcCategoriesIds.Sections.CategoryInfo.RootCategory,
-					Name = "Root Category",
-					DomDefinitionIds = { SlcCategoriesIds.Definitions.Category },
-					IsOptional = true,
-				});
-
-			sectionDefinition.AddOrReplaceFieldDescriptor(
-				new DomInstanceFieldDescriptor(SlcCategoriesIds.ModuleId)
-				{
-					FieldType = typeof(Guid),
 					ID = SlcCategoriesIds.Sections.CategoryInfo.ParentCategory,
 					Name = "Parent Category",
 					DomDefinitionIds = { SlcCategoriesIds.Definitions.Category },

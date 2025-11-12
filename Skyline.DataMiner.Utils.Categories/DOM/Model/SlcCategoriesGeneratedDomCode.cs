@@ -42,7 +42,6 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("5816d327-e025-4f2f-a404-fd0685a6d047"))
 				{ ModuleId = "(slc)categories" };
 				public static FieldDescriptorID Name { get; } = new FieldDescriptorID(new Guid("68bea0c6-e645-4605-ad7e-31ea31802d77"));
-				public static FieldDescriptorID RootCategory { get; } = new FieldDescriptorID(new Guid("c89b1cd1-b01e-423a-840d-15eeced4444b"));
 				public static FieldDescriptorID ParentCategory { get; } = new FieldDescriptorID(new Guid("fdc3efdc-cd13-4e9e-bf31-7aeb58702813"));
 				public static FieldDescriptorID Scope { get; } = new FieldDescriptorID(new Guid("285f102e-7a6a-46b0-98ea-67d3affdb14c"));
 			}
@@ -757,49 +756,6 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 				else
 				{
 					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryInfo.Name, (String)value);
-				}
-			}
-		}
-
-		/// <summary>
-		/// Gets or sets the RootCategory field of the DOM Instance.
-		/// </summary>
-		/// <remarks>
-		/// When retrieving the value:
-		/// <list type="bullet">
-		/// <item>If the field has been set, it will return the value.</item>
-		/// <item>If the field is not set it will return <see langword="null"/>.</item>
-		/// </list>
-		/// When setting the value:
-		/// <list type="bullet">
-		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
-		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
-		/// </list>
-		/// </remarks>
-		public Guid? RootCategory
-		{
-			get
-			{
-				var wrapper = section.GetValue<Guid>(SlcCategoriesIds.Sections.CategoryInfo.RootCategory);
-				if (wrapper != null)
-				{
-					return (Guid?)wrapper.Value;
-				}
-				else
-				{
-					return null;
-				}
-			}
-
-			set
-			{
-				if (value == null)
-				{
-					section.RemoveFieldValueById(SlcCategoriesIds.Sections.CategoryInfo.RootCategory);
-				}
-				else
-				{
-					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryInfo.RootCategory, (Guid)value);
 				}
 			}
 		}

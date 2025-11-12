@@ -78,7 +78,7 @@
 			Assert.AreEqual("Cannot save categories. The following names are already in use: Category 2", ex.Message);
 
 			// create category with same name with a different parent - should be allowed
-			var category3 = new Category { Name = "Category 2", Scope = scope, ParentCategory = category2, RootCategory = category2 };
+			var category3 = new Category { Name = "Category 2", Scope = scope, ParentCategory = category2 };
 			api.Categories.Create(category3);
 		}
 	}

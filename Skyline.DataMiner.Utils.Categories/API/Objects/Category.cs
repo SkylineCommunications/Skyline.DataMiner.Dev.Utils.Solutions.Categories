@@ -51,24 +51,6 @@
 			}
 		}
 
-		public ApiObjectReference<Category> RootCategory
-		{
-			get
-			{
-				if (_domInstance.CategoryInfo.RootCategory.HasValue)
-				{
-					return _domInstance.CategoryInfo.RootCategory.Value;
-				}
-
-				return ApiObjectReference<Category>.Empty;
-			}
-
-			set
-			{
-				_domInstance.CategoryInfo.RootCategory = value != ApiObjectReference<Category>.Empty ? value : null;
-			}
-		}
-
 		public ApiObjectReference<Category>? ParentCategory
 		{
 			get
@@ -211,11 +193,6 @@
 				result.AddError($"Scope is mandatory.", this, x => x.Scope);
 			}
 
-			if (!IsRootCategory && RootCategory == ApiObjectReference<Category>.Empty)
-			{
-				result.AddError("A root category is required when a parent category is assigned.", this, x => x.RootCategory);
-			}
-
 			return result;
 		}
 	}
@@ -224,7 +201,6 @@
 	{
 		public static readonly Exposer<Category, Guid> ID = new(x => x.ID, nameof(Category.ID));
 		public static readonly Exposer<Category, string> Name = new(x => x.Name, nameof(Category.Name));
-		public static readonly Exposer<Category, ApiObjectReference<Category>?> RootCategory = new(x => x.RootCategory, nameof(Category.RootCategory));
 		public static readonly Exposer<Category, ApiObjectReference<Category>?> ParentCategory = new(x => x.ParentCategory, nameof(Category.ParentCategory));
 		public static readonly Exposer<Category, ApiObjectReference<Scope>?> Scope = new(x => x.Scope, nameof(Category.Scope));
 	}
