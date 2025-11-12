@@ -45,7 +45,6 @@ var subcategory = new Category
 	Name = "Core Routers",
 	Scope = scope,
 	ParentCategory = category,
-	RootCategory = category
 };
 api.Categories.CreateOrUpdate([subcategory]);
 ```

@@ -34,7 +34,6 @@ var routers = new Category
     Name = "Routers",
     Scope = scope,
     ParentCategory = devices,
-    RootCategory = devices
 };
 
 var switches = new Category 
@@ -42,7 +41,6 @@ var switches = new Category
     Name = "Switches",
     Scope = scope,
     ParentCategory = devices,
-    RootCategory = devices
 };
 
 api.Categories.CreateOrUpdate([routers, switches]);
@@ -53,7 +51,6 @@ var coreRouters = new Category
     Name = "Core Routers",
     Scope = scope,
     ParentCategory = routers,
-    RootCategory = devices
 };
 api.Categories.CreateOrUpdate([coreRouters]);
 ```
@@ -164,9 +161,6 @@ using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 // Filter by scope
 var categories = api.Categories.GetByScope(scope);
-
-// Filter by root category
-var descendants = api.Categories.GetByRootCategory(rootCategory);
 
 // Get child categories
 var children = api.Categories.GetChildCategories(parentCategory);

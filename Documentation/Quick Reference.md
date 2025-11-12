@@ -35,7 +35,6 @@ var child = new Category
 	Name = "Child Category",
 	Scope = scope,
 	ParentCategory = category,
-	RootCategory = category
 };
 
 // Category Item
@@ -230,7 +229,6 @@ CategoryExposers.ID
 CategoryExposers.Name
 CategoryExposers.Scope
 CategoryExposers.ParentCategory
-CategoryExposers.RootCategory
 
 CategoryItemExposers.ID
 CategoryItemExposers.Category

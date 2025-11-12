@@ -16,7 +16,6 @@ erDiagram
 	"Category" {
 		string Name
 		Category ParentCategory
-		Category RootCategory
 		Scope Scope
 	}
 	"Category Item" {
@@ -58,7 +57,6 @@ var childCategory = new Category
     Name = "Routers",
     Scope = scope,
     ParentCategory = rootCategory,
-    RootCategory = rootCategory
 };
 ```
 
@@ -66,7 +64,6 @@ var childCategory = new Category
 - `Name` (string) - Name of the category
 - `Scope` (ApiObjectReference<Scope>) - The scope this category belongs to
 - `ParentCategory` (ApiObjectReference<Category>?) - Reference to parent category (null for root categories)
-- `RootCategory` (ApiObjectReference<Category>) - Reference to the top-level category in the hierarchy
 - `IsRootCategory` (bool) - Whether this is a root category (has no parent)
 
 **Key Methods:**

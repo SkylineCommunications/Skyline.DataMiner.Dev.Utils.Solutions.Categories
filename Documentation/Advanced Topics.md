@@ -342,7 +342,6 @@ The API enforces these validation rules:
 **Category:**
 - Name is required
 - Scope is required
-- If ParentCategory is set, RootCategory must also be set
 - Category names must be unique within the same parent
 
 **Category Item:**

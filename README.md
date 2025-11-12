@@ -79,7 +79,6 @@ var routers = new Category
     Name = "Routers",
     Scope = scope,
     ParentCategory = devices,
-    RootCategory = devices
 };
 
 api.Categories.CreateOrUpdate([devices, routers]);
