@@ -193,6 +193,27 @@
 		}
 
 		[TestMethod]
+		public void Api_Caching_GetRootCategory()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			var category111 = new Category { Name = "Category 1.1.1", Scope = scope, ParentCategory = category11 };
+			api.Categories.CreateOrUpdate([category1, category11, category111]);
+
+			var cache = new CategoriesCache();
+			cache.LoadInitialData(api);
+
+			cache.GetRootCategory(category1).Should().Be(category1);
+			cache.GetRootCategory(category11).Should().Be(category1);
+			cache.GetRootCategory(category111).Should().Be(category1);
+		}
+
+		[TestMethod]
 		public void Api_Caching_CategoryContainsItem()
 		{
 			var api = new CategoriesApiMock();

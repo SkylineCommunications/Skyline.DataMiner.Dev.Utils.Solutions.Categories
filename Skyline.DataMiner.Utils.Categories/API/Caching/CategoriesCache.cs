@@ -236,6 +236,15 @@
 			}
 		}
 
+		public Category GetRootCategory(ApiObjectReference<Category> categoryId)
+		{
+			lock (_lock)
+			{
+				var path = GetAncestorPath(categoryId);
+				return path.First();
+			}
+		}
+
 		public bool ContainsItem(ApiObjectReference<Category> categoryId, CategoryItemIdentifier item)
 		{
 			lock (_lock)
