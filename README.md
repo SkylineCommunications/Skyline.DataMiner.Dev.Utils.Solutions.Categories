@@ -45,7 +45,7 @@ api.Categories.CreateOrUpdate([routers]);
 // Add items
 var items = new[]
 {
-	new CategoryItemIdentifier("Protocol", "Router-01"),
+    new CategoryItemIdentifier("Protocol", "Router-01"),
     new CategoryItemIdentifier("Protocol", "Router-02")
 };
 routers.AddChildItems(api.CategoryItems, items);
@@ -64,7 +64,6 @@ var results = api.Categories.Query()
 - **[Examples](Documentation/Examples.md)** - Common usage patterns
 - **[Caching](Documentation/Caching.md)** - Improve performance with caching
 - **[Advanced Topics](Documentation/Advanced%20Topics.md)** - Subscriptions, validation, and more
-- **[Data Model](Documentation/Data%20Model.md)** - Entity relationship diagram
 
 ## Installation
 

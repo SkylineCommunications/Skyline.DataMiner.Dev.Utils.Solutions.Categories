@@ -4,6 +4,33 @@
 
 The Categories API is built around three main entities that work together to create a hierarchical categorization system.
 
+- **Scope**: defines the context in which categories exist.
+- **Categories**: provide a hierarchical structure for grouping items within a specific scope. Categories can be nested to form a tree structure, with each category having a reference to its parent.
+- **Category Items**: links specific items to categories. It serves only as a reference to a module/instance and does not store additional data.
+
+```mermaid
+erDiagram
+	"Scope" {
+		string Name
+	}
+	"Category" {
+		string Name
+		Category ParentCategory
+		Category RootCategory
+		Scope Scope
+	}
+	"Category Item" {
+		Category Category
+		string ModuleID
+		string InstanceID
+	}
+
+	"Scope" ||--o{ "Category" : ""
+	"Category" ||--o{ "Category" : ""
+	"Category" ||--o{ "Category Item" : ""
+	"Category Item" |o..o| "Object" : "external module,<br/>maintained elsewhere"
+```
+
 ### Scope
 
 A **Scope** defines the context in which categories exist. It's the top-level organizational unit.

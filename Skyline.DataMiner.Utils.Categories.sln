@@ -26,7 +26,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		Documentation\Examples.md = Documentation\Examples.md
 		Documentation\Caching.md = Documentation\Caching.md
 		Documentation\Advanced Topics.md = Documentation\Advanced Topics.md
-		Documentation\Data Model.md = Documentation\Data Model.md
 	EndProjectSection
 EndProject
 Global

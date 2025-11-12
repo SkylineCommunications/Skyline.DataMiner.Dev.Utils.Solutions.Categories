@@ -11,9 +11,6 @@ Welcome to the Skyline.DataMiner.Utils.Categories documentation!
 
 ### Learning More
 - **[Examples](Examples.md)** - Practical code examples for common scenarios
-- **[Data Model](Data%20Model.md)** - Entity relationship diagram and data structure
-
-### Advanced Usage
 - **[Caching](Caching.md)** - Boost performance with the built-in caching system
 - **[Advanced Topics](Advanced%20Topics.md)** - Subscriptions, validation, pagination, and more
 
@@ -101,4 +98,4 @@ Visual reference:
 3. **Need examples?** ? Browse [Examples](Examples.md)
 4. **Complex scenario?** ? See [Advanced Topics](Advanced%20Topics.md)
 5. **Performance issue?** ? Review [Caching](Caching.md)
-6. **Understand structure?** ? Study [Core Concepts](Core%20Concepts.md) and [Data Model](Data%20Model.md)
+6. **Understand structure?** ? Study [Core Concepts](Core%20Concepts.md)
