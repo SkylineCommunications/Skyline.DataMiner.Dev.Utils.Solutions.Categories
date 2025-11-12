@@ -101,7 +101,7 @@ var scope = cache.GetScope("Network Infrastructure");
 // Check if scope exists
 if (cache.TryGetScope("MyScope", out var scope))
 {
- // Use scope
+    // Use scope
 }
 
 // Get all scopes
@@ -237,7 +237,7 @@ public class CategoryService
     private readonly StaticCategoriesCache _staticCache;
     
     public CategoryService(IConnection connection)
-  {
+    {
       _staticCache = connection.GetStaticCategoriesCache();
     }
     
@@ -250,11 +250,11 @@ public class CategoryService
     {
         if (_staticCache.Cache.TryGetScope(scopeName, out var scope))
         {
- var categories = _staticCache.Cache.GetCategoriesForScope(scope);
- return categories.ToTree();
+            var categories = _staticCache.Cache.GetCategoriesForScope(scope);
+            return categories.ToTree();
         }
         
-     return null;
+        return null;
     }
 }
 ```

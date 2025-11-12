@@ -33,7 +33,7 @@ var routers = new Category
 { 
     Name = "Routers",
     Scope = scope,
- ParentCategory = devices,
+    ParentCategory = devices,
     RootCategory = devices
 };
 
@@ -152,7 +152,7 @@ var sorted = api.Categories.Query()
 var results = api.Categories.Query()
     .Where(c => c.Scope == scope)
     .Where(c => c.ParentCategory != null)
-  .OrderBy(c => c.Name)
+    .OrderBy(c => c.Name)
     .Take(10)
     .ToList();
 ```
@@ -189,7 +189,7 @@ foreach (var childNode in tree.ChildCategories)
     Console.WriteLine($"Category: {childNode.Category.Name}");
     
     // Get items in this category
- foreach (var item in childNode.ChildItems)
+    foreach (var item in childNode.ChildItems)
     {
         Console.WriteLine($"  - {item.ModuleId}/{item.InstanceId}");
     }

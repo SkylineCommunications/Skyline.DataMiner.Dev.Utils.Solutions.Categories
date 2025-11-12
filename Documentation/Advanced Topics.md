@@ -17,7 +17,7 @@ subscription.Changed += (sender, e) =>
     
     foreach (var category in e.Created)
     {
-    Console.WriteLine($"  New category: {category.Name}");
+        Console.WriteLine($"  New category: {category.Name}");
     }
 };
 
@@ -56,7 +56,7 @@ var result = category.Validate();
 if (!result.IsValid)
 {
     // Get all errors
-  foreach (var error in result.Errors)
+    foreach (var error in result.Errors)
     {
       Console.WriteLine($"{error.PropertyName}: {error.Message}");
     }
@@ -98,7 +98,7 @@ foreach (var page in api.Categories.ReadAllPaged(pageSize: 100))
 {
     foreach (var category in page)
     {
- Console.WriteLine($"Category: {category.Name}");
+        Console.WriteLine($"Category: {category.Name}");
     }
 }
 
@@ -127,7 +127,7 @@ Perform operations in batch for better performance:
 // Create multiple categories at once
 var categories = new[]
 {
-new Category { Name = "Category 1", Scope = scope },
+    new Category { Name = "Category 1", Scope = scope },
     new Category { Name = "Category 2", Scope = scope },
     new Category { Name = "Category 3", Scope = scope }
 };
@@ -154,7 +154,7 @@ var categories = api.Categories.Read(filter);
 // Sort using exposers
 var query = new TRUEFilterElement<Category>().ToQuery()
     .OrderBy(CategoryExposers.Name.Ascending())
- .ThenBy(CategoryExposers.ID.Ascending());
+    .ThenBy(CategoryExposers.ID.Ascending());
 
 var sorted = api.Categories.Read(query);
 ```
@@ -174,7 +174,7 @@ if (!api.IsInstalled())
 }
 else
 {
-Console.WriteLine("Already installed.");
+    Console.WriteLine("Already installed.");
     var version = api.GetVersion();
     Console.WriteLine($"Version: {version}");
 }

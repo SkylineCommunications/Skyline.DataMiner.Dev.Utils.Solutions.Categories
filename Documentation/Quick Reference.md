@@ -167,7 +167,7 @@ bool containsItem = cache.ContainsItem(categoryId, itemIdentifier);
 using var subscription = api.Categories.Subscribe();
 subscription.Changed += (sender, e) => 
 {
- // Handle changes
+    // Handle changes
 };
 
 // Subscribe with filter
@@ -185,7 +185,7 @@ if (!result.IsValid)
     foreach (var error in result.Errors)
     {
         Console.WriteLine(error.Message);
- }
+    }
 }
 
 // Automatic validation on save

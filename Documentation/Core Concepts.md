@@ -30,7 +30,7 @@ var childCategory = new Category
 { 
     Name = "Routers",
     Scope = scope,
-ParentCategory = rootCategory,
+    ParentCategory = rootCategory,
     RootCategory = rootCategory
 };
 ```
@@ -80,14 +80,14 @@ Categories form a tree structure:
 
 ```
 Scope: "Network Infrastructure"
-??? Category: "Devices" (root)
-?   ??? Category: "Routers"
-?   ?   ??? Item: "Router-01"
-?   ?   ??? Item: "Router-02"
-?   ??? Category: "Switches"
-?  ??? Item: "Switch-01"
-??? Category: "Services" (root)
-    ??? Category: "Monitoring"
+  Category: "Devices" (root)
+    Category: "Routers"
+      Item: "Router-01"
+      Item: "Router-02"
+  Category: "Switches"
+    Item: "Switch-01"
+   Category: "Services" (root)
+     Category: "Monitoring"
 ```
 
 ## References vs Objects

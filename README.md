@@ -1,24 +1,27 @@
 # Skyline.DataMiner.Utils.Categories
 
-A hierarchical categorization system for organizing items in DataMiner.
-
-## Overview
+## About
 
 The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure. It consists of three main components:
+This API is part of the [DataMiner Categories](https://catalog.dataminer.services/details/c9666f3a-be26-42fd-83f2-6ee7fab4f11e) application, and can be used by other solutions to manage categories via code.
 
-- **Scopes**: Define contexts for categories (e.g., "Network Infrastructure", "Services")
-- **Categories**: Create hierarchical classifications within a scope
+- **Scopes**: Define contexts for categories (e.g., "Resource Studio", "Virtual Signal Groups")
+- **Categories**: Provides hierarchical structure for grouping items. Categories can be nested to form a tree structure
 - **Category Items**: Link external items to categories using ModuleId and InstanceId
 
-## Key Features
+> [!NOTE]
+> ModuleId and InstanceId are strings that uniquely identify items within DataMiner.
+> These typically refer to DOM instances, but can represent any item type.
 
-- ? Hierarchical category trees with unlimited depth
-- ? Multiple scopes for different contexts
-- ? LINQ-based querying
-- ? Built-in caching for optimal performance
-- ? Real-time subscriptions to data changes
-- ? Batch operations for efficiency
-- ? Strongly-typed API
+### Key Features
+
+- Hierarchical category trees with unlimited depth
+- Multiple scopes for different contexts
+- LINQ-based querying
+- Built-in caching for optimal performance
+- Real-time subscriptions to data changes
+- Batch operations for efficiency
+- Strongly-typed API
 
 ## Quick Start
 
@@ -40,7 +43,7 @@ api.Categories.CreateOrUpdate([routers]);
 // Add items
 var items = new[]
 {
-new CategoryItemIdentifier("Protocol", "Router-01"),
+	new CategoryItemIdentifier("Protocol", "Router-01"),
     new CategoryItemIdentifier("Protocol", "Router-02")
 };
 routers.AddChildItems(api.CategoryItems, items);
@@ -76,7 +79,7 @@ var devices = new Category { Name = "Devices", Scope = scope };
 var routers = new Category 
 { 
     Name = "Routers",
-Scope = scope,
+    Scope = scope,
     ParentCategory = devices,
     RootCategory = devices
 };
@@ -102,10 +105,10 @@ var path = api.Categories.GetAncestorPath(category);
 ```csharp
 using Skyline.DataMiner.Utils.Categories.API.Extensions;
 
-var cache = connection.GetStaticCategoriesCache();
+var cache = connection.GetStaticCategoriesCache().Cache;
 
 // Fast O(1) lookup by name
-var scope = cache.Cache.GetScope("Network Devices");
+var scope = cache.GetScope("Network Devices");
 
 // Get categories for scope
 var categories = cache.Cache.GetCategoriesForScope(scope);
