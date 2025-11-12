@@ -34,18 +34,18 @@ api.Scopes.CreateOrUpdate([scope]);
 // Create a root category
 var category = new Category 
 { 
-    Name = "Routers", 
-    Scope = scope 
+	Name = "Routers", 
+	Scope = scope 
 };
 api.Categories.CreateOrUpdate([category]);
 
 // Create a subcategory
 var subcategory = new Category 
 { 
-    Name = "Core Routers",
-    Scope = scope,
-    ParentCategory = category,
-    RootCategory = category
+	Name = "Core Routers",
+	Scope = scope,
+	ParentCategory = category,
+	RootCategory = category
 };
 api.Categories.CreateOrUpdate([subcategory]);
 ```
@@ -56,8 +56,8 @@ api.Categories.CreateOrUpdate([subcategory]);
 // Add items to a category
 var items = new[]
 {
-    new CategoryItemIdentifier("MyModule", "Instance1"),
-    new CategoryItemIdentifier("MyModule", "Instance2")
+	new CategoryItemIdentifier("MyModule", "Instance1"),
+	new CategoryItemIdentifier("MyModule", "Instance2")
 };
 
 category.AddChildItems(api.CategoryItems, items);
@@ -71,8 +71,8 @@ var categories = api.Categories.GetByScope(scope);
 
 // Query with LINQ
 var results = api.Categories.Query()
-    .Where(c => c.Name.Contains("Router"))
-    .ToList();
+	.Where(c => c.Name.Contains("Router"))
+	.ToList();
 
 // Get category hierarchy
 var tree = api.Categories.GetTree(scope);
@@ -80,6 +80,6 @@ var tree = api.Categories.GetTree(scope);
 
 ## Next Steps
 
-- [Core Concepts](Core%20Concepts.md) - Learn about the data model
+- [Core Concepts](Core Concepts.md) - Learn about the data model
 - [Examples](Examples.md) - See more usage examples
-- [Caching](Caching.md) - Improve performance with caching
+- [Advanced Topics](Advanced Topics.md) - Caching, subscriptions, and performance optimization

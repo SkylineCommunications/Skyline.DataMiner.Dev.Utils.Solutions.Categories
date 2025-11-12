@@ -111,10 +111,10 @@ Scope: "Network Infrastructure"
     Category: "Routers"
       Item: "Router-01"
       Item: "Router-02"
-  Category: "Switches"
-    Item: "Switch-01"
-   Category: "Services" (root)
-     Category: "Monitoring"
+    Category: "Switches"
+      Item: "Switch-01"
+  Category: "Services" (root)
+    Category: "Monitoring"
 ```
 
 ## References vs Objects

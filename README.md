@@ -48,7 +48,7 @@ var items = new[]
     new CategoryItemIdentifier("Protocol", "Router-01"),
     new CategoryItemIdentifier("Protocol", "Router-02")
 };
-routers.AddChildItems(api.CategoryItems, items);
+api.CategoryItems.AddChildItems(router, items);
 
 // Query with LINQ
 var results = api.Categories.Query()
@@ -58,12 +58,11 @@ var results = api.Categories.Query()
 
 ## Documentation
 
-- **[Getting Started](Documentation/Getting%20Started.md)** - Installation and basic usage
-- **[Quick Reference](Documentation/Quick%20Reference.md)** - Cheat sheet with common code snippets
-- **[Core Concepts](Documentation/Core%20Concepts.md)** - Understanding the data model
+- **[Getting Started](Documentation/Getting Started.md)** - Installation and basic usage
+- **[Quick Reference](Documentation/Quick Reference.md)** - Cheat sheet with common code snippets
+- **[Core Concepts](Documentation/Core Concepts.md)** - Understanding the data model
 - **[Examples](Documentation/Examples.md)** - Common usage patterns
-- **[Caching](Documentation/Caching.md)** - Improve performance with caching
-- **[Advanced Topics](Documentation/Advanced%20Topics.md)** - Subscriptions, validation, and more
+- **[Advanced Topics](Documentation/Advanced Topics.md)** - Subscriptions, validation, and more
 
 ## Installation
 
@@ -112,13 +111,20 @@ var cache = connection.GetStaticCategoriesCache().Cache;
 var scope = cache.GetScope("Network Devices");
 
 // Get categories for scope
-var categories = cache.Cache.GetCategoriesForScope(scope);
+var categories = cache.GetCategoriesForScope(scope);
 ```
 
-## License
+## About DataMiner
 
-See the LICENSE file for details.
+DataMiner is a transformational platform that provides vendor-independent control and monitoring of devices and services. Out of the box and by design, it addresses key challenges such as security, complexity, multi-cloud, and much more. It has a pronounced open architecture and powerful capabilities enabling users to evolve easily and continuously.
 
-## Contributing
+The foundation of DataMiner is its powerful and versatile data acquisition and control layer. With DataMiner, there are no restrictions to what data users can access. Data sources may reside on premises, in the cloud, or in a hybrid setup.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+A unique catalog of 7000+ connectors already exists. In addition, you can leverage DataMiner Development Packages to build your own connectors (also known as "protocols" or "drivers").
+
+> **Note**
+> See also: [About DataMiner](https://aka.dataminer.services/about-dataminer).
+
+## About Skyline Communications
+
+At Skyline Communications, we deal with world-class solutions that are deployed by leading companies around the globe. Check out [our proven track record](https://aka.dataminer.services/about-skyline) and see how we make our customers' lives easier by empowering them to take their operations to the next level.
