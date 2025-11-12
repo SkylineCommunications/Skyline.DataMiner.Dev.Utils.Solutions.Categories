@@ -56,11 +56,11 @@ var results = api.Categories.Query()
 
 ## Documentation
 
-- **[Getting Started](Documentation/Getting Started.md)** - Installation and basic usage
-- **[Quick Reference](Documentation/Quick Reference.md)** - Cheat sheet with common code snippets
-- **[Core Concepts](Documentation/Core Concepts.md)** - Understanding the data model
+- **[Getting Started](Documentation/Getting%20Started.md)** - Installation and basic usage
+- **[Quick Reference](Documentation/Quick%20Reference.md)** - Cheat sheet with common code snippets
+- **[Core Concepts](Documentation/Core%20Concepts.md)** - Understanding the data model
 - **[Examples](Documentation/Examples.md)** - Common usage patterns
-- **[Advanced Topics](Documentation/Advanced Topics.md)** - Subscriptions, validation, and more
+- **[Advanced Topics](Documentation/Advanced%20Topics.md)** - Subscriptions, validation, and more
 
 ## Installation
 
