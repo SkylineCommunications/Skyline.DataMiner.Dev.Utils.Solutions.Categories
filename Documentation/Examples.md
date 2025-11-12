@@ -138,7 +138,7 @@ var results = api.Categories.Query()
 // Count categories
 var count = api.Categories.Query()
     .Where(c => c.Scope == scope)
-  .Count();
+    .Count();
 
 // Order categories
 var sorted = api.Categories.Query()
@@ -147,11 +147,11 @@ var sorted = api.Categories.Query()
 
 // Complex query
 var results = api.Categories.Query()
-	.Where(c => c.Scope == scope)
-	.Where(c => c.ParentCategory != null)
-	.OrderBy(c => c.Name)
-	.Take(10)
-	.ToList();
+    .Where(c => c.Scope == scope)
+    .Where(c => c.ParentCategory != null)
+    .OrderBy(c => c.Name)
+    .Take(10)
+    .ToList();
 ```
 
 ### Using Filters
@@ -180,13 +180,13 @@ var tree = api.Categories.GetTree(scope);
 // Get child categories
 foreach (var childNode in tree.ChildCategories)
 {
-	Console.WriteLine($"Category: {childNode.Category.Name}");
-	
-	// Get items in this category
-	foreach (var item in childNode.ChildItems)
-	{
-		Console.WriteLine($"  - {item.ModuleId}/{item.InstanceId}");
-	}
+    Console.WriteLine($"Category: {childNode.Category.Name}");
+    
+    // Get items in this category
+    foreach (var item in childNode.ChildItems)
+    {
+        Console.WriteLine($"  - {item.ModuleId}/{item.InstanceId}");
+    }
 }
 
 // Find a specific category in the tree
@@ -226,21 +226,21 @@ var category = new Category
 var validationResult = category.Validate();
 if (!validationResult.IsValid)
 {
-	foreach (var error in validationResult.Errors)
-	{
-		Console.WriteLine($"Error: {error.Message}");
-	}
-	return;
+    foreach (var error in validationResult.Errors)
+    {
+        Console.WriteLine($"Error: {error.Message}");
+    }
+    return;
 }
 
 // Or let CreateOrUpdate validate automatically
 try
 {
-	api.Categories.CreateOrUpdate([category]);
+    api.Categories.CreateOrUpdate([category]);
 }
 catch (Exception ex)
 {
-	Console.WriteLine($"Validation failed: {ex.Message}");
+    Console.WriteLine($"Validation failed: {ex.Message}");
 }
 ```
 

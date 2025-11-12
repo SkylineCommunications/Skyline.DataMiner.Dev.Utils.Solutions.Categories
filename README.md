@@ -1,6 +1,6 @@
 # Skyline.DataMiner.Utils.Categories
 
-The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure. It consists of three main components:
+The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure.
 This API is part of the [DataMiner Categories](https://catalog.dataminer.services/details/c9666f3a-be26-42fd-83f2-6ee7fab4f11e) application, and can be used by other solutions to manage categories via code.
 
 ## Main Components
@@ -46,7 +46,7 @@ var items = new[]
     new CategoryItemIdentifier("(slc)resources", "0a542997-d771-45d4-b9e7-ad3cffdf7b40"),
     new CategoryItemIdentifier("(slc)resources", "0a069d67-0b1a-48bd-99f0-fb291f9732c7")
 };
-api.CategoryItems.AddChildItems(router, items);
+api.CategoryItems.AddChildItems(routers, items);
 
 // Query with LINQ
 var results = api.Categories.Query()
