@@ -45,8 +45,8 @@ api.Categories.CreateOrUpdate([routers]);
 // Add items
 var items = new[]
 {
-    new CategoryItemIdentifier("Protocol", "Router-01"),
-    new CategoryItemIdentifier("Protocol", "Router-02")
+    new CategoryItemIdentifier("(slc)resources", "0a542997-d771-45d4-b9e7-ad3cffdf7b40"),
+    new CategoryItemIdentifier("(slc)resources", "0a069d67-0b1a-48bd-99f0-fb291f9732c7")
 };
 api.CategoryItems.AddChildItems(router, items);
 

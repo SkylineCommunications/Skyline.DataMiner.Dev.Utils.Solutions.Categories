@@ -146,7 +146,7 @@ var items = cache.GetChildItems(categoryId);
 var allItems = cache.GetDescendantItems(categoryId);
 
 // Check if category contains an item
-var identifier = new CategoryItemIdentifier("Protocol", "Element123");
+var identifier = new CategoryItemIdentifier("My Module", "Instance123");
 bool hasItem = cache.ContainsItem(categoryId, identifier);
 
 // Check if category or any descendant contains an item

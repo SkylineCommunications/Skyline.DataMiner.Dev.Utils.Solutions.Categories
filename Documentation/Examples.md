@@ -67,17 +67,17 @@ api.Categories.CreateOrUpdate([coreRouters]);
 var item = new CategoryItem
 {
     Category = category,
-    ModuleId = "Protocol",
-    InstanceId = "Element123"
+    ModuleId = "My Module",
+    InstanceId = "Instance123"
 };
 api.CategoryItems.CreateOrUpdate([item]);
 
 // Add multiple items using identifiers
 var items = new[]
 {
-    new CategoryItemIdentifier("Protocol", "Element1"),
-    new CategoryItemIdentifier("Protocol", "Element2"),
-    new CategoryItemIdentifier("Protocol", "Element3")
+    new CategoryItemIdentifier("My Module", "Instance1"),
+    new CategoryItemIdentifier("My Module", "Instance2"),
+    new CategoryItemIdentifier("My Module", "Instance3")
 };
 
 category.AddChildItems(api.CategoryItems, items);
@@ -89,7 +89,7 @@ category.AddChildItems(api.CategoryItems, items);
 // Remove specific items
 var itemsToRemove = new[]
 {
-    new CategoryItemIdentifier("Protocol", "Element1")
+    new CategoryItemIdentifier("My Module", "Instance1")
 };
 
 category.RemoveChildItems(api.CategoryItems, itemsToRemove);
@@ -104,8 +104,8 @@ category.ClearChildItems(api.CategoryItems);
 // Replace all items in a category
 var newItems = new[]
 {
-    new CategoryItemIdentifier("Protocol", "NewElement1"),
-    new CategoryItemIdentifier("Protocol", "NewElement2")
+    new CategoryItemIdentifier("My Module", "NewInstance1"),
+    new CategoryItemIdentifier("My Module", "NewInstance2")
 };
 
 category.ReplaceChildItems(api.CategoryItems, newItems);
@@ -310,6 +310,6 @@ var items = api.CategoryItems.GetChildItems(category);
 // Query items
 var items = api.CategoryItems.Query()
 	.Where(i => i.Category == category)
-	.Where(i => i.ModuleId == "Protocol")
+	.Where(i => i.ModuleId == "My Module")
 	.ToList();
 ```
