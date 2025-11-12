@@ -1,7 +1,5 @@
 # Skyline.DataMiner.Utils.Categories
 
-## About
-
 The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure. It consists of three main components:
 This API is part of the [DataMiner Categories](https://catalog.dataminer.services/details/c9666f3a-be26-42fd-83f2-6ee7fab4f11e) application, and can be used by other solutions to manage categories via code.
 
@@ -15,7 +13,7 @@ This API is part of the [DataMiner Categories](https://catalog.dataminer.service
 > ModuleId and InstanceId are strings that uniquely identify items within DataMiner.
 > These typically refer to DOM instances, but can represent any item type.
 
-### Key Features
+## Key Features
 
 - Hierarchical category trees with unlimited depth
 - Multiple scopes for different contexts
