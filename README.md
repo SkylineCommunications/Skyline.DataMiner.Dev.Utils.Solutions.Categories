@@ -60,7 +60,7 @@ var results = api.Categories.Query()
 - **[Quick Reference](Documentation/Quick%20Reference.md)** - Cheat sheet with common code snippets
 - **[Core Concepts](Documentation/Core%20Concepts.md)** - Understanding the data model
 - **[Examples](Documentation/Examples.md)** - Common usage patterns
-- **[Advanced Topics](Documentation/Advanced%20Topics.md)** - Subscriptions, validation, and more
+- **[Advanced Topics](Documentation/Advanced%20Topics.md)** - Caching, Subscriptions, validation, and more
 
 ## Installation
 
