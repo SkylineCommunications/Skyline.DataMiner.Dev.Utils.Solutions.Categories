@@ -64,7 +64,7 @@ namespace Skyline.DataMiner.Utils.Categories.API
         protected Skyline.DataMiner.Net.IConnection Connection { get; }
         public Skyline.DataMiner.Utils.Categories.API.Repositories.ScopeRepository Scopes { get; }
         public string GetVersion() { }
-        public void InstallDomModules() { }
+        public void InstallDomModules(System.Action<string> logAction = null) { }
         public bool IsInstalled() { }
     }
 }

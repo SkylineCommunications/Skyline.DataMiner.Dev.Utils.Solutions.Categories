@@ -16,7 +16,7 @@
 
 			return Verifier.Verify(publicApi)
 				.UseFileName($"{assemblyName}_PublicApi")
-				.AutoVerify();
+				.AutoVerify(includeBuildServer: false);
 		}
 
 		[TestMethod]
@@ -27,7 +27,7 @@
 
 			return Verifier.Verify(publicApi)
 				.UseFileName($"{assemblyName}_PublicApi")
-				.AutoVerify();
+				.AutoVerify(includeBuildServer: false);
 		}
 
 		[TestMethod]
@@ -38,7 +38,7 @@
 
 			return Verifier.Verify(publicApi)
 				.UseFileName($"{assemblyName}_PublicApi")
-				.AutoVerify();
+				.AutoVerify(includeBuildServer: false);
 		}
 
 		[TestMethod]
@@ -49,7 +49,7 @@
 
 			return Verifier.Verify(publicApi)
 				.UseFileName($"{assemblyName}_PublicApi")
-				.AutoVerify();
+				.AutoVerify(includeBuildServer: false);
 		}
 	}
 }
