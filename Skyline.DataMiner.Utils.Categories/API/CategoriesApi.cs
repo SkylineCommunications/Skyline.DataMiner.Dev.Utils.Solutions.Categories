@@ -36,9 +36,12 @@
 
 		public ScopeRepository Scopes { get; }
 
-		public void InstallDomModules()
+		public void InstallDomModules(Action<string> logAction = null)
 		{
-			DomModuleInstaller.Install(Connection.HandleMessages, new SlcCategoriesDomModule(), x => { });
+			// When no logging action is provided, use a no-op.
+			logAction ??= x => { };
+
+			DomModuleInstaller.Install(Connection.HandleMessages, new SlcCategoriesDomModule(), logAction);
 		}
 
 		public bool IsInstalled()
