@@ -393,7 +393,6 @@
 					{
 						_scopeCategoriesMapping.RemoveChild(existing);
 						_parentCategoriesMapping.RemoveChild(existing);
-						_categoryItemsMapping.RemoveParent(existing);
 					}
 
 					_categories[item.ID] = item;
@@ -412,7 +411,6 @@
 					_scopeCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveChild(item);
 					_parentCategoriesMapping.RemoveParent(item);
-					_categoryItemsMapping.RemoveParent(item);
 				}
 			}
 		}

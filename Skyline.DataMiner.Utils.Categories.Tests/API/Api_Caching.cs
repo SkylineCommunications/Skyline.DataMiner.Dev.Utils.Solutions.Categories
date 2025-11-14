@@ -92,6 +92,10 @@
 			cache.LoadInitialData(api);
 
 			cache.GetChildItems(category1).Should().BeEquivalentTo([item11, item12]);
+
+			// Updating a category should not affect child items
+			cache.UpdateCategories([category1], []);
+			cache.GetChildItems(category1).Should().BeEquivalentTo([item11, item12]);
 		}
 
 		[TestMethod]
