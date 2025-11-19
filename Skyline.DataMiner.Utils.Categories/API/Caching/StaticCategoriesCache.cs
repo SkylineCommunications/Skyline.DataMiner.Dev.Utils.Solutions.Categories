@@ -79,15 +79,18 @@
 
 		public static StaticCategoriesCache Get()
 		{
-			lock (_lock)
+			if (_instance == null)
 			{
-				if (_instance == null)
+				lock (_lock)
 				{
-					throw new InvalidOperationException($"The instance has not been created yet. Please call {nameof(GetOrCreate)} first.");
+					if (_instance == null)
+					{
+						throw new InvalidOperationException($"The instance has not been created yet. Please call {nameof(GetOrCreate)} first.");
+					}
 				}
-
-				return _instance;
 			}
+
+			return _instance;
 		}
 
 		/// <summary>
