@@ -37,7 +37,7 @@
 				new DomInstanceFieldDescriptor(SlcCategoriesIds.ModuleId)
 				{
 					FieldType = typeof(Guid),
-					ID = SlcCategoriesIds.Sections.CategoryInfo.ParentCategory,
+					ID = SlcCategoriesIds.Sections.CategoryItemInfo.Category,
 					Name = "Category",
 					DomDefinitionIds = { SlcCategoriesIds.Definitions.Category },
 					IsOptional = false,
