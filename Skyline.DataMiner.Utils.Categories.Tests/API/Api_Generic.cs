@@ -3,8 +3,6 @@
 	using FluentAssertions;
 
 	using Skyline.DataMiner.Utils.Categories.API;
-	using Skyline.DataMiner.Utils.Categories.DOM.Definitions;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
 	using Skyline.DataMiner.Utils.Categories.Tools;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
 
@@ -14,12 +12,11 @@
 		[TestMethod]
 		public void Api_IsInstalled()
 		{
-			var api = new CategoriesApiMock();
+			var api = new CategoriesApiMock(installDomModules: false);
 
 			Assert.IsFalse(api.IsInstalled());
 
-			var domModule = new SlcCategoriesDomModule();
-			DomModuleInstaller.Install(api.Connection.HandleMessages, domModule, x => { });
+			api.InstallDomModules();
 
 			Assert.IsTrue(api.IsInstalled());
 		}

@@ -5,8 +5,13 @@
 
 	public class CategoriesApiMock : CategoriesApi
 	{
-		public CategoriesApiMock() : base(new DomConnectionMock())
+		public CategoriesApiMock(bool installDomModules = true)
+			: base(new DomConnectionMock(validateAgainstDefinition: true))
 		{
+			if (installDomModules)
+			{
+				InstallDomModules();
+			}
 		}
 	}
 }
