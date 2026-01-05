@@ -20,14 +20,17 @@
 	
 	<ItemGroup>
 		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.5" />
-		<PackageReference Include="Skyline.DataMiner.Core.DataMinerSystem.Automation" Version="1.1.3.5" />
+		<PackageReference Include="Skyline.DataMiner.Core.DataMinerSystem.Automation" Version="1.1.3.6" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Automation" Version="10.5.9.2" />
 		<PackageReference Include="FluentAssertions" Version="7.2.0" />
-		<PackageReference Include="PublicApiGenerator" Version="11.5.0" />
-		<PackageReference Include="Verify.MSTest" Version="31.4.3" />
+		<PackageReference Include="PublicApiGenerator" Version="11.5.4" />
+		<PackageReference Include="Verify.MSTest" Version="31.9.3" />
 	</ItemGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
+  	<PackageReference Include="MSTest.TestAdapter" Version="4.0.2" />
+	<PackageReference Include="MSTest.TestFramework" Version="4.0.2" />
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Utils.Categories.Automation.csproj" />
 		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Utils.Categories.GQI.csproj" />
