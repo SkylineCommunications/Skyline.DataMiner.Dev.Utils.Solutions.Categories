@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Repositories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API.Repositories
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,17 +7,17 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Tools;
-	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
+	using Skyline.DataMiner.Solutions.Categories.API;
+	using Skyline.DataMiner.Solutions.Categories.API.Tools;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
-	public class ScopeRepository : Repository<Scope>
+	internal class ScopeRepository : Repository<Scope>, IScopeRepository
 	{
-		internal ScopeRepository(SlcCategoriesHelper helper, CategoryRepository categoryRepository, IConnection connection)
+		internal ScopeRepository(SlcCategoriesHelper helper, ICategoryRepository categoryRepository, IConnection connection)
 			: base(helper, connection)
 		{
 			CategoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
@@ -25,9 +25,9 @@
 
 		protected internal override DomDefinitionId DomDefinition => Scope.DomDefinition;
 
-		private CategoryRepository CategoryRepository { get; }
+		private ICategoryRepository CategoryRepository { get; }
 
-		protected internal override Scope CreateInstance(DomInstance domInstance)
+		public override Scope CreateInstance(DomInstance domInstance)
 		{
 			return new Scope(domInstance);
 		}
@@ -123,6 +123,11 @@
 			}
 
 			return stillInUse;
+		}
+
+		public IEnumerable<Scope> Read()
+		{
+			return Read(new TRUEFilterElement<Scope>());
 		}
 	}
 }

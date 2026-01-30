@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
-		<RootNamespace>Skyline.DataMiner.Utils.Categories.Tests</RootNamespace>
+		<RootNamespace>Skyline.DataMiner.Solutions.Categories.Tests</RootNamespace>
 		<LangVersion>latest</LangVersion>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<UseVSTest>true</UseVSTest>
@@ -28,10 +28,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Utils.Categories.Automation.csproj" />
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Utils.Categories.GQI.csproj" />
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Utils.Categories.Protocol.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Dev.Utils.Solutions.Categories.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Dev.Utils.Solutions.Categories.GQI.csproj" />
+		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Dev.Utils.Solutions.Categories.Protocol.csproj" />
 	</ItemGroup>
 
 </Project>

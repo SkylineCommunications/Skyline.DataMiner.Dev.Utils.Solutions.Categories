@@ -1,10 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Skyline.DataMiner.Utils.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
 
 	public class CategoryNode : IEquatable<CategoryNode>
 	{

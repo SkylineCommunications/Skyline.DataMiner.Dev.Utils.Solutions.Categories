@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Extensions
+﻿namespace Skyline.DataMiner.Solutions.Categories.Extensions
 {
 	using System;
 	using System.Collections.Generic;

@@ -3,13 +3,13 @@
 		<TargetFramework>net48</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<OutputType>Library</OutputType>
-		<AssemblyTitle>Skyline.DataMiner.Utils.Categories.Automation</AssemblyTitle>
-		<Product>Skyline.DataMiner.Utils.Categories.Automation</Product>
+		<AssemblyTitle>Skyline.DataMiner.Dev.Utils.Solutions.Categories</AssemblyTitle>
+		<Product>Skyline.DataMiner.Dev.Utils.Solutions.Categories</Product>
 		<Copyright>Copyright © 2025</Copyright>
-		<AssemblyName>Skyline.DataMiner.Utils.Categories.Automation</AssemblyName>
-		<RootNamespace>Skyline.DataMiner.Utils.Categories.Automation</RootNamespace>
-
-		<PackageId>Skyline.DataMiner.Utils.Categories.Automation</PackageId>
+		<AssemblyName>Skyline.DataMiner.Dev.Utils.Solutions.Categories</AssemblyName>
+		<RootNamespace>Skyline.DataMiner.Solutions.Categories</RootNamespace>
+		
+		<PackageId>Skyline.DataMiner.Dev.Utils.Solutions.Categories</PackageId>
 		<PackageTags>Skyline;DataMiner</PackageTags>
 		<PackageProjectUrl>https://skyline.be</PackageProjectUrl>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
@@ -33,15 +33,18 @@
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="$(MSBuildProjectName).UnitTesting" />
+		<InternalsVisibleTo Include="$(MSBuildProjectName).Automation" />
+		<InternalsVisibleTo Include="$(MSBuildProjectName).Protocol" />
+		<InternalsVisibleTo Include="$(MSBuildProjectName).GQI" />
 		<InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Skyline.DataMiner.Core.DataMinerSystem.Automation" Version="1.1.3.5" />
+		<PackageReference Include="Skyline.DataMiner.Core.DataMinerSystem.Common" Version="1.1.3.5" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Automation" Version="10.5.9.2" />
+		<PackageReference Include="Skyline.DataMiner.Dev.Common" Version="10.5.9.2" />
 		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.5" />
-	</ItemGroup>
-	<ItemGroup>
-		<ProjectReference Include="..\Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj" />
+		<PackageReference Include="Skyline.DataMiner.SDM.Abstractions" Version="0.3.1" />
+		<PackageReference Include="GitInfo" Version="3.6.0" PrivateAssets="all" />
 	</ItemGroup>
 
 	<Target Name="CopyNuGetPackage" AfterTargets="Pack" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">

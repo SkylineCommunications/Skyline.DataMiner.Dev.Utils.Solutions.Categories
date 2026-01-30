@@ -1,4 +1,4 @@
-namespace Skyline.DataMiner.Utils.Categories.API.Objects
+namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;

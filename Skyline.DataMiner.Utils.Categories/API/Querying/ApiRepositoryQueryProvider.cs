@@ -1,13 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Querying
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Linq;
 	using System.Linq.Expressions;
 
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Repositories;
-
-	public class ApiRepositoryQueryProvider<T> : IQueryProvider where T : ApiObject<T>
+	internal class ApiRepositoryQueryProvider<T> : IQueryProvider where T : ApiObject<T>
 	{
 		public ApiRepositoryQueryProvider(Repository<T> repository)
 		{

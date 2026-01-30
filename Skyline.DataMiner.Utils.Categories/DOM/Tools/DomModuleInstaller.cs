@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Tools
 {
 	using System;
 	using System.Linq;
@@ -8,7 +8,7 @@
 	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Net.Sections;
-	using Skyline.DataMiner.Utils.Categories.DOM.Interfaces;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Interfaces;
 
 	public static class DomModuleInstaller
 	{

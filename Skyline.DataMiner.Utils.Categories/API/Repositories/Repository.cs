@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Repositories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,18 +7,15 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Querying;
-	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
-	using Skyline.DataMiner.Utils.Categories.API.Tools;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
-	using Skyline.DataMiner.Utils.Categories.Extensions;
+	using Skyline.DataMiner.Solutions.Categories.API.Tools;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Extensions;
 	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	using SLDataGateway.API.Querying;
 	using SLDataGateway.API.Types.Querying;
 
-	public abstract class Repository<T> where T : ApiObject<T>
+	internal abstract class Repository<T> : IRepository<T> where T : ApiObject<T>
 	{
 		private const int _defaultPageSize = 500;
 
@@ -34,13 +31,13 @@
 			_queryProvider = new ApiRepositoryQueryProvider<T>(this);
 		}
 
-		protected internal DomHelper Helper { get; }
+		public DomHelper Helper { get; }
 
-		protected internal IConnection Connection { get; }
+		public IConnection Connection { get; }
 
 		protected internal abstract DomDefinitionId DomDefinition { get; }
 
-		protected internal abstract T CreateInstance(DomInstance domInstance);
+		public abstract T CreateInstance(DomInstance domInstance);
 
 		protected abstract void ValidateBeforeSave(ICollection<T> instances);
 

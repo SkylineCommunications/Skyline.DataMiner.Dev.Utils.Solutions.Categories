@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Definitions
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Definitions
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,8 +7,8 @@
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel.Concatenation;
 	using Skyline.DataMiner.Net.Apps.Sections.SectionDefinitions;
 	using Skyline.DataMiner.Net.Sections;
-	using Skyline.DataMiner.Utils.Categories.DOM.Interfaces;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Interfaces;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	internal class CategoryDefinition : IDomDefinitionInfo
 	{

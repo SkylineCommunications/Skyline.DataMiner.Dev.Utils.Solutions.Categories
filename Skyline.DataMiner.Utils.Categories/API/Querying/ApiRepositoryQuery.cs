@@ -1,12 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Querying
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 	using System.Linq.Expressions;
-
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	internal class ApiRepositoryQuery<T> : IOrderedQueryable<T> where T : ApiObject<T>
 	{

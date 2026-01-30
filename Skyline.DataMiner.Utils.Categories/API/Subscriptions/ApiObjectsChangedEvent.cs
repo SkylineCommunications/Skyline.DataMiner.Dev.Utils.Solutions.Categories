@@ -1,8 +1,6 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Subscriptions
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System.Collections.Generic;
-
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	public sealed class ApiObjectsChangedEvent<T>
 		where T : ApiObject<T>

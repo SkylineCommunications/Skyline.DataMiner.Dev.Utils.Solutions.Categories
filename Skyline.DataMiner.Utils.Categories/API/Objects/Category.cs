@@ -1,14 +1,13 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Repositories;
-	using Skyline.DataMiner.Utils.Categories.API.Tools;
-	using Skyline.DataMiner.Utils.Categories.API.Validation;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.API.Tools;
+	using Skyline.DataMiner.Solutions.Categories.API.Validation;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	public class Category : ApiObject<Category>
 	{
@@ -84,7 +83,7 @@
 
 		public bool IsRootCategory => ParentCategory == ApiObjectReference<Category>.Empty;
 
-		public IEnumerable<Category> GetChildCategories(CategoryRepository categoryRepository)
+		public IEnumerable<Category> GetChildCategories(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -94,7 +93,7 @@
 			return categoryRepository.GetChildCategories(this);
 		}
 
-		public IEnumerable<Category> GetDescendantCategories(CategoryRepository categoryRepository)
+		public IEnumerable<Category> GetDescendantCategories(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -104,7 +103,7 @@
 			return categoryRepository.GetDescendantCategories(this);
 		}
 
-		public IEnumerable<Category> GetAncestorPath(CategoryRepository categoryRepository)
+		public IEnumerable<Category> GetAncestorPath(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -114,7 +113,7 @@
 			return categoryRepository.GetAncestorPath(this);
 		}
 
-		public IEnumerable<CategoryItem> GetChildItems(CategoryItemRepository categoryItemRepository)
+		public IEnumerable<CategoryItem> GetChildItems(ICategoryItemRepository categoryItemRepository)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -124,7 +123,7 @@
 			return categoryItemRepository.GetChildItems(this);
 		}
 
-		public void AddChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void AddChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -139,7 +138,7 @@
 			categoryItemRepository.AddChildItems(this, items);
 		}
 
-		public void RemoveChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void RemoveChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -154,7 +153,7 @@
 			categoryItemRepository.RemoveChildItems(this, items);
 		}
 
-		public void ReplaceChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void ReplaceChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -169,7 +168,7 @@
 			categoryItemRepository.ReplaceChildItems(this, items);
 		}
 
-		public void ClearChildItems(CategoryItemRepository categoryItemRepository)
+		public void ClearChildItems(ICategoryItemRepository categoryItemRepository)
 		{
 			if (categoryItemRepository is null)
 			{

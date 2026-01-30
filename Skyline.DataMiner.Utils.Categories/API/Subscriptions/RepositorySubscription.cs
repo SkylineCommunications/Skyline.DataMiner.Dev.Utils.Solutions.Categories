@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Subscriptions
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Linq;
@@ -6,8 +6,6 @@
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Repositories;
 	using Skyline.DataMiner.Utils.DOM;
 
 	public sealed class RepositorySubscription<T> : IDisposable
@@ -15,10 +13,10 @@
 	{
 		private readonly object _lock = new object();
 
-		private readonly Repository<T> _repository;
+		private readonly IRepository<T> _repository;
 		private readonly DomWatcher _domWatcher;
 
-		internal RepositorySubscription(Repository<T> repository, FilterElement<DomInstance> domFilter)
+		internal RepositorySubscription(IRepository<T> repository, FilterElement<DomInstance> domFilter)
 		{
 			if (domFilter is null)
 			{
@@ -30,7 +28,7 @@
 			_domWatcher = new DomWatcher(repository.Helper.ModuleId, domFilter, repository.Connection);
 		}
 
-		public Repository<T> Repository => _repository;
+		public IRepository<T> Repository => _repository;
 
 		private event EventHandler<ApiObjectsChangedEvent<T>> ChangedInternal;
 

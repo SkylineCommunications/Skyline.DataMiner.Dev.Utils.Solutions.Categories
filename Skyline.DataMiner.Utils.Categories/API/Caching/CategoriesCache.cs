@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Caching
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Concurrent;
@@ -7,8 +7,7 @@
 	using System.Threading.Tasks;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
 
 	public class CategoriesCache
 	{
@@ -315,7 +314,7 @@
 			}
 		}
 
-		public void LoadInitialData(CategoriesApi api)
+		public void LoadInitialData(ICategoriesApi api)
 		{
 			if (api is null)
 			{

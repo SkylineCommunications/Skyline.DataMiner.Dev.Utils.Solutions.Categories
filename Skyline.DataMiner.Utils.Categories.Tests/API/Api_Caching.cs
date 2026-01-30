@@ -1,10 +1,8 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Tests.API
+﻿namespace Skyline.DataMiner.Solutions.Categories.Tests.API
 {
 	using FluentAssertions;
 
-	using Skyline.DataMiner.Utils.Categories.API.Caching;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
+	using Skyline.DataMiner.Solutions.Categories.API;
 
 	[TestClass]
 	public sealed class Api_Caching

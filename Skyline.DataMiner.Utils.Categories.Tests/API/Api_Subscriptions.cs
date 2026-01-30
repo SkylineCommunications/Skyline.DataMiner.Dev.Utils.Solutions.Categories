@@ -1,12 +1,11 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Tests.API
+﻿namespace Skyline.DataMiner.Solutions.Categories.Tests.API
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
+	using Skyline.DataMiner.Solutions.Categories.API;
 
 	[TestClass]
 	public sealed class Api_Subscriptions

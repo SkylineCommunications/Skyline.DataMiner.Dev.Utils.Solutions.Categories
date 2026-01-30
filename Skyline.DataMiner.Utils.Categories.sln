@@ -1,31 +1,33 @@
-﻿Microsoft Visual Studio Solution File, Format Version 12.00
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.35825.156
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories", "Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Utils.Categories.csproj", "{8297606F-2266-439B-ACE2-30B135B31315}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Dev.Utils.Solutions.Categories", "Skyline.DataMiner.Utils.Categories\Skyline.DataMiner.Dev.Utils.Solutions.Categories.csproj", "{8297606F-2266-439B-ACE2-30B135B31315}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Tests", "Skyline.DataMiner.Utils.Categories.Tests\Skyline.DataMiner.Utils.Categories.Tests.csproj", "{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Tests", "Skyline.DataMiner.Utils.Categories.Tests\Skyline.DataMiner.Dev.Utils.Solutions.Categories.Tests.csproj", "{AAD16232-3BE4-4D15-B5A3-B0CEB884FD70}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Automation", "Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Utils.Categories.Automation.csproj", "{47D3C5C5-04D0-4425-827D-BA7C08290DDE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation", "Skyline.DataMiner.Utils.Categories.Automation\Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation.csproj", "{47D3C5C5-04D0-4425-827D-BA7C08290DDE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.Protocol", "Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Utils.Categories.Protocol.csproj", "{E7787DC6-47F2-462E-A3DE-22B9EBE9C5D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Protocol", "Skyline.DataMiner.Utils.Categories.Protocol\Skyline.DataMiner.Dev.Utils.Solutions.Categories.Protocol.csproj", "{E7787DC6-47F2-462E-A3DE-22B9EBE9C5D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Utils.Categories.GQI", "Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Utils.Categories.GQI.csproj", "{4CFEF59A-3B1E-4FBF-9F76-D7D92B8CDA72}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.GQI", "Skyline.DataMiner.Utils.Categories.GQI\Skyline.DataMiner.Dev.Utils.Solutions.Categories.GQI.csproj", "{4CFEF59A-3B1E-4FBF-9F76-D7D92B8CDA72}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A1A1A1A1-A1A1-A1A1-A1A1-A1A1A1A1A1A1}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{D1D1D1D1-D1D1-D1D1-D1D1-D1D1D1D1D1D1}"
 	ProjectSection(SolutionItems) = preProject
-		Documentation\README.md = Documentation\README.md
-		Documentation\Quick Reference.md = Documentation\Quick Reference.md
-		Documentation\Getting Started.md = Documentation\Getting Started.md
+		Documentation\Advanced Topics.md = Documentation\Advanced Topics.md
+		Documentation\Caching.md = Documentation\Caching.md
 		Documentation\Core Concepts.md = Documentation\Core Concepts.md
 		Documentation\Examples.md = Documentation\Examples.md
-		Documentation\Caching.md = Documentation\Caching.md
-		Documentation\Advanced Topics.md = Documentation\Advanced Topics.md
+		Documentation\Getting Started.md = Documentation\Getting Started.md
+		Documentation\Quick Reference.md = Documentation\Quick Reference.md
+		Documentation\README.md = Documentation\README.md
 	EndProjectSection
 EndProject
 Global

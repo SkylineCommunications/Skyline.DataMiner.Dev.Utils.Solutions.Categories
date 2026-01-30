@@ -1,40 +1,51 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
-	using System.Linq;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Net.Apps.Modules;
-	using Skyline.DataMiner.Net.ManagerStore;
-	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Repositories;
-	using Skyline.DataMiner.Utils.Categories.DOM.Definitions;
-	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Logging;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.API.Repositories;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Definitions;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 
-	public class CategoriesApi
+	internal class CategoriesApi : ICategoriesApi
 	{
+		private readonly InstalledAppPackageCache installedAppPackages;
+
+		private readonly Lazy<ICategoryRepository> lazyCategoryRepository;
+		private readonly Lazy<ICategoryItemRepository> lazyCategoryItemRepository;
+		private readonly Lazy<IScopeRepository> lazyScopeRepository;
+
 		public CategoriesApi(IConnection connection)
 		{
 			Connection = connection ?? throw new ArgumentNullException(nameof(connection));
 
+			installedAppPackages = new InstalledAppPackageCache(connection);
 			SlcCategoriesHelper = new SlcCategoriesHelper(connection);
 
-			CategoryItems = new CategoryItemRepository(SlcCategoriesHelper, connection);
-			Categories = new CategoryRepository(SlcCategoriesHelper, CategoryItems, connection);
-			Scopes = new ScopeRepository(SlcCategoriesHelper, Categories, connection);
+			lazyCategoryItemRepository = new Lazy<ICategoryItemRepository>(() => new CategoryItemRepository(SlcCategoriesHelper, connection));
+			lazyCategoryRepository = new Lazy<ICategoryRepository>(() => new CategoryRepository(SlcCategoriesHelper, CategoryItems, connection));
+			lazyScopeRepository = new Lazy<IScopeRepository>(() => new ScopeRepository(SlcCategoriesHelper, Categories, connection));
 		}
 
 		protected internal IConnection Connection { get; }
 
+		internal ILogger Logger { get; private set; } = new NullLogger();
+
 		internal SlcCategoriesHelper SlcCategoriesHelper { get; }
 
-		public CategoryRepository Categories { get; }
+		public ICategoryRepository Categories => lazyCategoryRepository.Value;
 
-		public CategoryItemRepository CategoryItems { get; }
+		public ICategoryItemRepository CategoryItems => lazyCategoryItemRepository.Value;
 
-		public ScopeRepository Scopes { get; }
+		public IScopeRepository Scopes => lazyScopeRepository.Value;
+
+		public void SetLogger(ILogger logger)
+		{
+			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
+		}
 
 		public void InstallDomModules(Action<string> logAction = null)
 		{
@@ -44,27 +55,16 @@
 			DomModuleInstaller.Install(Connection.HandleMessages, new SlcCategoriesDomModule(), logAction);
 		}
 
-		public bool IsInstalled()
+		public bool IsInstalled(out string version)
 		{
-			var moduleSettingsHelper = new ModuleSettingsHelper(Connection.HandleMessages);
-
-			var definitions = SlcCategoriesHelper.DomHelper.DomDefinitions.ReadAll();
-
-			return definitions
-				.Select(x => x.ID)
-				.Contains(SlcCategoriesIds.Definitions.Category);
+			var isInstalled = installedAppPackages.IsInstalled("SLC-LCA-Categories-Package", out var installedAppInfo);
+			version = isInstalled ? installedAppInfo?.AppInfo?.Version : null;
+			return isInstalled;
 		}
 
-		public string GetVersion()
+		public bool IsInstalled()
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
-			if (!String.IsNullOrWhiteSpace(ThisAssembly.Git.Tag))
-			{
-				return ThisAssembly.Git.Tag;
-			}
-
-			return $"{ThisAssembly.Git.SemVer.Major}.{ThisAssembly.Git.SemVer.Minor}.{ThisAssembly.Git.SemVer.Patch}{ThisAssembly.Git.SemVer.DashLabel}";
-#pragma warning restore CS0618 // Type or member is obsolete
+			return IsInstalled(out _);
 		}
 	}
 }

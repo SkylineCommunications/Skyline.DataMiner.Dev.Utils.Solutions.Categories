@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Interfaces
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Interfaces
 {
 	using System.Collections.Generic;
 

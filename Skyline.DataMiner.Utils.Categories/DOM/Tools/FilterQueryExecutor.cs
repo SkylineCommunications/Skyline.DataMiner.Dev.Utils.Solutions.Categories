@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Tools
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Tools
 {
 	using System;
 	using System.Collections.Generic;

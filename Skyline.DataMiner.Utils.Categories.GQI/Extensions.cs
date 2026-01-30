@@ -1,14 +1,13 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.GQI
+﻿namespace Skyline.DataMiner.Solutions.Categories.GQI
 {
 	using System;
 
 	using Skyline.DataMiner.Analytics.GenericInterface;
-	using Skyline.DataMiner.Utils.Categories.API;
-	using Skyline.DataMiner.Utils.Categories.API.Caching;
+	using Skyline.DataMiner.Solutions.Categories.API;
 
 	public static class Extensions
 	{
-		public static CategoriesApi GetCategoriesApi(this GQIDMS gqiDms)
+		public static ICategoriesApi GetCategoriesApi(this GQIDMS gqiDms)
 		{
 			if (gqiDms is null)
 			{
@@ -18,6 +17,7 @@
 			return new CategoriesApi(gqiDms.GetConnection());
 		}
 
+		// TODO: Check if we need interface here
 		public static StaticCategoriesCache GetStaticCategoriesCache(this GQIDMS gqiDms)
 		{
 			if (gqiDms is null)
