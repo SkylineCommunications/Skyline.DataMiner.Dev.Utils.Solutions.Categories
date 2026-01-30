@@ -7,7 +7,7 @@
 
 	public static class Extensions
 	{
-		public static ICategoriesApi GetCategoriesApi(this GQIDMS gqiDms)
+		public static CategoriesApi GetCategoriesApi(this GQIDMS gqiDms)
 		{
 			if (gqiDms is null)
 			{

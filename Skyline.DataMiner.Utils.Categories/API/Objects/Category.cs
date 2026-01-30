@@ -83,7 +83,7 @@
 
 		public bool IsRootCategory => ParentCategory == ApiObjectReference<Category>.Empty;
 
-		public IEnumerable<Category> GetChildCategories(ICategoryRepository categoryRepository)
+		public IEnumerable<Category> GetChildCategories(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -93,7 +93,7 @@
 			return categoryRepository.GetChildCategories(this);
 		}
 
-		public IEnumerable<Category> GetDescendantCategories(ICategoryRepository categoryRepository)
+		public IEnumerable<Category> GetDescendantCategories(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -103,7 +103,7 @@
 			return categoryRepository.GetDescendantCategories(this);
 		}
 
-		public IEnumerable<Category> GetAncestorPath(ICategoryRepository categoryRepository)
+		public IEnumerable<Category> GetAncestorPath(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -113,7 +113,7 @@
 			return categoryRepository.GetAncestorPath(this);
 		}
 
-		public IEnumerable<CategoryItem> GetChildItems(ICategoryItemRepository categoryItemRepository)
+		public IEnumerable<CategoryItem> GetChildItems(CategoryItemRepository categoryItemRepository)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -123,7 +123,7 @@
 			return categoryItemRepository.GetChildItems(this);
 		}
 
-		public void AddChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void AddChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -138,7 +138,7 @@
 			categoryItemRepository.AddChildItems(this, items);
 		}
 
-		public void RemoveChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void RemoveChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -153,7 +153,7 @@
 			categoryItemRepository.RemoveChildItems(this, items);
 		}
 
-		public void ReplaceChildItems(ICategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
+		public void ReplaceChildItems(CategoryItemRepository categoryItemRepository, ICollection<CategoryItemIdentifier> items)
 		{
 			if (categoryItemRepository is null)
 			{
@@ -168,7 +168,7 @@
 			categoryItemRepository.ReplaceChildItems(this, items);
 		}
 
-		public void ClearChildItems(ICategoryItemRepository categoryItemRepository)
+		public void ClearChildItems(CategoryItemRepository categoryItemRepository)
 		{
 			if (categoryItemRepository is null)
 			{

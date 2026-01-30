@@ -11,7 +11,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Common()
 		{
-			var assemblyName = "Skyline.DataMiner.Solutions.Categories";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -22,7 +22,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Automation()
 		{
-			var assemblyName = "Skyline.DataMiner.Solutions.Categories.Automation";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -33,7 +33,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Protocol()
 		{
-			var assemblyName = "Skyline.DataMiner.Solutions.Categories.Protocol";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Protocol";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -44,7 +44,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_GQI()
 		{
-			var assemblyName = "Skyline.DataMiner.Solutions.Categories.GQI";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.GQI";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)

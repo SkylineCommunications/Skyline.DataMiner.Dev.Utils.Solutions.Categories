@@ -15,9 +15,9 @@
 
 	using SLDataGateway.API.Types.Querying;
 
-	internal class ScopeRepository : Repository<Scope>, IScopeRepository
+	public class ScopeRepository : Repository<Scope>
 	{
-		internal ScopeRepository(SlcCategoriesHelper helper, ICategoryRepository categoryRepository, IConnection connection)
+		internal ScopeRepository(SlcCategoriesHelper helper, CategoryRepository categoryRepository, IConnection connection)
 			: base(helper, connection)
 		{
 			CategoryRepository = categoryRepository ?? throw new ArgumentNullException(nameof(categoryRepository));
@@ -25,7 +25,7 @@
 
 		protected internal override DomDefinitionId DomDefinition => Scope.DomDefinition;
 
-		private ICategoryRepository CategoryRepository { get; }
+		private CategoryRepository CategoryRepository { get; }
 
 		public override Scope CreateInstance(DomInstance domInstance)
 		{

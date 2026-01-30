@@ -13,7 +13,7 @@
 
 	using SLDataGateway.API.Types.Querying;
 
-	internal class CategoryItemRepository : Repository<CategoryItem>, ICategoryItemRepository
+	public class CategoryItemRepository : Repository<CategoryItem>
 	{
 		internal CategoryItemRepository(SlcCategoriesHelper helper, Net.IConnection connection) : base(helper, connection)
 		{

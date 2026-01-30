@@ -19,7 +19,7 @@
 		/// </summary>
 		/// <param name="api">The categories API to use for subscriptions.</param>
 		/// <param name="cache">The cache to update when changes occur.</param>
-		public CategoriesObserver(ICategoriesApi api, CategoriesCache cache)
+		public CategoriesObserver(CategoriesApi api, CategoriesCache cache)
 		{
 			Api = api ?? throw new ArgumentNullException(nameof(api));
 			Cache = cache ?? throw new ArgumentNullException(nameof(cache));
@@ -32,7 +32,7 @@
 		/// It raises events when scopes or categories change.
 		/// </summary>
 		/// <param name="api">The categories API to use for subscriptions.</param>
-		public CategoriesObserver(ICategoriesApi api)
+		public CategoriesObserver(CategoriesApi api)
 			: this(api, new CategoriesCache())
 		{
 		}
@@ -43,7 +43,7 @@
 
 		public event EventHandler<ApiObjectsChangedEvent<CategoryItem>> CategoryItemsChanged;
 
-		internal ICategoriesApi Api { get; }
+		internal CategoriesApi Api { get; }
 
 		public CategoriesCache Cache { get; }
 

@@ -13,10 +13,10 @@
 	{
 		private readonly object _lock = new object();
 
-		private readonly IRepository<T> _repository;
+		private readonly Repository<T> _repository;
 		private readonly DomWatcher _domWatcher;
 
-		internal RepositorySubscription(IRepository<T> repository, FilterElement<DomInstance> domFilter)
+		internal RepositorySubscription(Repository<T> repository, FilterElement<DomInstance> domFilter)
 		{
 			if (domFilter is null)
 			{
@@ -28,7 +28,7 @@
 			_domWatcher = new DomWatcher(repository.Helper.ModuleId, domFilter, repository.Connection);
 		}
 
-		public IRepository<T> Repository => _repository;
+		public Repository<T> Repository => _repository;
 
 		private event EventHandler<ApiObjectsChangedEvent<T>> ChangedInternal;
 

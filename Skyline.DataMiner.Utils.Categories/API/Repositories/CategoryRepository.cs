@@ -13,9 +13,9 @@
 
 	using SLDataGateway.API.Types.Querying;
 
-	internal class CategoryRepository : Repository<Category>, ICategoryRepository
+	public class CategoryRepository : Repository<Category>
 	{
-		internal CategoryRepository(SlcCategoriesHelper helper, ICategoryItemRepository itemRepository, IConnection connection)
+		internal CategoryRepository(SlcCategoriesHelper helper, CategoryItemRepository itemRepository, IConnection connection)
 			: base(helper, connection)
 		{
 			ItemRepository = itemRepository ?? throw new ArgumentNullException(nameof(itemRepository));
@@ -23,7 +23,7 @@
 
 		protected internal override DomDefinitionId DomDefinition => Category.DomDefinition;
 
-		private ICategoryItemRepository ItemRepository { get; }
+		private CategoryItemRepository ItemRepository { get; }
 
 		public IEnumerable<Category> GetByScope(ApiObjectReference<Scope> scope)
 		{

@@ -42,7 +42,7 @@
 			}
 		}
 
-		public IEnumerable<Category> GetCategories(ICategoryRepository categoryRepository)
+		public IEnumerable<Category> GetCategories(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -52,7 +52,7 @@
 			return categoryRepository.GetByScope(this);
 		}
 
-		public CategoryNode GetCategoriesTree(ICategoryRepository categoryRepository)
+		public CategoryNode GetCategoriesTree(CategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{

@@ -15,7 +15,7 @@
 	using SLDataGateway.API.Querying;
 	using SLDataGateway.API.Types.Querying;
 
-	internal abstract class Repository<T> : IRepository<T> where T : ApiObject<T>
+	public abstract class Repository<T> where T : ApiObject<T>
 	{
 		private const int _defaultPageSize = 500;
 
