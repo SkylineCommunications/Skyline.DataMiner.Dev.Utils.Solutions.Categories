@@ -17,7 +17,6 @@
 			return new CategoriesApi(engine.GetUserConnection());
 		}
 
-		// TODO: Check if we need interface here as well
 		public static StaticCategoriesCache GetStaticCategoriesCache(this IEngine engine)
 		{
 			if (engine is null)

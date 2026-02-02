@@ -17,7 +17,6 @@
 			return new CategoriesApi(gqiDms.GetConnection());
 		}
 
-		// TODO: Check if we need interface here
 		public static StaticCategoriesCache GetStaticCategoriesCache(this GQIDMS gqiDms)
 		{
 			if (gqiDms is null)

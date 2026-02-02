@@ -53,14 +53,7 @@
 		public bool IsInstalled(out string version)
 		{
 #pragma warning disable CS0618 // Type or member is obsolete
-			if (!String.IsNullOrWhiteSpace(ThisAssembly.Git.Tag))
-			{
-				version = ThisAssembly.Git.Tag;
-			}
-			else
-			{
-				version = $"{ThisAssembly.Git.SemVer.Major}.{ThisAssembly.Git.SemVer.Minor}.{ThisAssembly.Git.SemVer.Patch}{ThisAssembly.Git.SemVer.DashLabel}";
-			}
+			version = !String.IsNullOrWhiteSpace(ThisAssembly.Git.Tag) ? ThisAssembly.Git.Tag : $"{ThisAssembly.Git.SemVer.Major}.{ThisAssembly.Git.SemVer.Minor}.{ThisAssembly.Git.SemVer.Patch}{ThisAssembly.Git.SemVer.DashLabel}";
 #pragma warning restore CS0618 // Type or member is obsolete
 
 			var definitions = SlcCategoriesHelper.DomHelper.DomDefinitions.ReadAll();

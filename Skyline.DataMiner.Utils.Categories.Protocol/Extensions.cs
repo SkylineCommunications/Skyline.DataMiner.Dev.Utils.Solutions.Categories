@@ -17,7 +17,6 @@
 			return new CategoriesApi(protocol.GetUserConnection());
 		}
 
-		// TODO: Check if we need interface
 		public static StaticCategoriesCache GetStaticCategoriesCache(this SLProtocol protocol)
 		{
 			if (protocol is null)

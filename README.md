@@ -27,7 +27,6 @@ This API is part of the [DataMiner Categories](https://catalog.dataminer.service
 
 ```csharp
 using Skyline.DataMiner.Solutions.Categories.API;
-using Skyline.DataMiner.Solutions.Categories.API.Objects;
 
 // Initialize the API
 var api = new CategoriesApi(connection);
@@ -65,7 +64,7 @@ var results = api.Categories.Query()
 ## Installation
 
 ```bash
-dotnet add package Skyline.DataMiner.Solutions.Categories
+dotnet add package Skyline.DataMiner.Dev.Utils.Categories
 ```
 
 ## Basic Examples
@@ -100,9 +99,9 @@ var path = api.Categories.GetAncestorPath(category);
 ### Using Cache for Performance
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Extensions;
+using Skyline.DataMiner.Solutions.Categories.API;
 
-var cache = connection.GetStaticCategoriesCache().Cache;
+var cache =  StaticCategoriesCache.GetOrCreate(connection);
 
 // Fast O(1) lookup by name
 var scope = cache.GetScope("Network Devices");

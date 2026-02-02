@@ -42,29 +42,29 @@
 
 		protected abstract void ValidateBeforeDelete(ICollection<T> instances);
 
-		public virtual T Create(T instance)
+		public virtual T Create(T oToCreate)
 		{
-			if (instance == null)
+			if (oToCreate == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToCreate));
 			}
 
-			ValidateBeforeSave(new[] { instance });
+			ValidateBeforeSave(new[] { oToCreate });
 
-			var newInstance = Helper.DomInstances.Create(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Create(oToCreate.DomInstance);
 			return CreateInstance(newInstance);
 		}
 
-		public virtual T Update(T instance)
+		public virtual T Update(T oToUpdate)
 		{
-			if (instance == null)
+			if (oToUpdate == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToUpdate));
 			}
 
-			ValidateBeforeSave(new[] { instance });
+			ValidateBeforeSave(new[] { oToUpdate });
 
-			var newInstance = Helper.DomInstances.Update(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Update(oToUpdate.DomInstance);
 			return CreateInstance(newInstance);
 		}
 
@@ -97,24 +97,24 @@
 			return CreateOrUpdate(new[] { instance }).FirstOrDefault();
 		}
 
-		public virtual void Delete(T instance)
+		public virtual void Delete(T oToDelete)
 		{
-			if (instance == null)
+			if (oToDelete == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToDelete));
 			}
 
-			Delete([instance]);
+			Delete([oToDelete]);
 		}
 
-		public virtual void Delete(IEnumerable<T> instances)
+		public virtual void Delete(IEnumerable<T> oToDelete)
 		{
-			if (instances == null)
+			if (oToDelete == null)
 			{
-				throw new ArgumentNullException(nameof(instances));
+				throw new ArgumentNullException(nameof(oToDelete));
 			}
 
-			var instanceCollection = instances as ICollection<T> ?? instances.ToList();
+			var instanceCollection = oToDelete as ICollection<T> ?? oToDelete.ToList();
 
 			ValidateBeforeDelete(instanceCollection);
 
