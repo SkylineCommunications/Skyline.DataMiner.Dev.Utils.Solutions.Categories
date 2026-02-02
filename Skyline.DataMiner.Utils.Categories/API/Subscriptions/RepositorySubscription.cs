@@ -28,7 +28,7 @@
 			_domWatcher = new DomWatcher(repository.Helper.ModuleId, domFilter, repository.Connection);
 		}
 
-		public Repository<T> Repository => _repository;
+		public IRepository<T> Repository => _repository;
 
 		private event EventHandler<ApiObjectsChangedEvent<T>> ChangedInternal;
 

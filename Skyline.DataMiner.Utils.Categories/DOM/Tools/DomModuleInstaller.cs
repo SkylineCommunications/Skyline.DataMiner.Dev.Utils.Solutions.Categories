@@ -5,37 +5,42 @@
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Apps.Modules;
-	using Skyline.DataMiner.Net.Messages;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Net.Sections;
+	using Skyline.DataMiner.Solutions.Categories.API;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Interfaces;
 
-	public static class DomModuleInstaller
+	internal class DomModuleInstaller
 	{
-		public static void Install(Func<DMSMessage[], DMSMessage[]> messageHandler, IDomModuleInfo domModuleInfo, Action<string> logAction)
+		private readonly CategoriesApi api;
+
+		public DomModuleInstaller(CategoriesApi api)
 		{
-			if (messageHandler == null)
-				throw new ArgumentNullException(nameof(messageHandler));
+			this.api = api ?? throw new ArgumentNullException(nameof(api));
+		}
+
+		public void Install(IDomModuleInfo domModuleInfo)
+		{
 			if (domModuleInfo == null)
 				throw new ArgumentNullException(nameof(domModuleInfo));
 
-			var moduleSettingsHelper = new ModuleSettingsHelper(messageHandler);
-			var domHelper = new DomHelper(messageHandler, domModuleInfo.ModuleId);
+			var moduleSettingsHelper = new ModuleSettingsHelper(api.Connection.HandleMessages);
+			var domHelper = new DomHelper(api.Connection.HandleMessages, domModuleInfo.ModuleId);
 
-			CreateOrUpdateModuleSettings(moduleSettingsHelper, domModuleInfo.ModuleSettings, logAction);
+			CreateOrUpdateModuleSettings(moduleSettingsHelper, domModuleInfo.ModuleSettings);
 
 			foreach (var domDefinitionInfo in domModuleInfo.Definitions)
 			{
 				foreach (var sectionDefinition in domDefinitionInfo.SectionDefinitions)
 				{
-					CreateOrUpdateSectionDefinition(domHelper, sectionDefinition, logAction);
+					CreateOrUpdateSectionDefinition(domHelper, sectionDefinition);
 				}
 
-				CreateOrUpdateDomDefinition(domHelper, domDefinitionInfo.Definition, logAction);
+				CreateOrUpdateDomDefinition(domHelper, domDefinitionInfo.Definition);
 			}
 		}
 
-		private static void CreateOrUpdateModuleSettings(ModuleSettingsHelper helper, ModuleSettings settings, Action<string> logAction)
+		private void CreateOrUpdateModuleSettings(ModuleSettingsHelper helper, ModuleSettings settings)
 		{
 			if (settings is null)
 				throw new ArgumentNullException(nameof(settings));
@@ -44,23 +49,23 @@
 
 			if (existing == null)
 			{
-				Log(logAction, "Creating", settings);
+				Log("Creating", settings);
 				helper.ModuleSettings.Create(settings);
 			}
 			else
 			{
 				if (settings.Equals(existing))
 				{
-					Log(logAction, "Skipping", settings);
+					Log("Skipping", settings);
 					return;
 				}
 
-				Log(logAction, "Updating", settings);
+				Log("Updating", settings);
 				helper.ModuleSettings.Update(settings);
 			}
 		}
 
-		private static void CreateOrUpdateDomDefinition(DomHelper helper, DomDefinition definition, Action<string> logAction)
+		private void CreateOrUpdateDomDefinition(DomHelper helper, DomDefinition definition)
 		{
 			if (definition is null)
 				throw new ArgumentNullException(nameof(definition));
@@ -69,24 +74,24 @@
 
 			if (existing == null)
 			{
-				Log(logAction, "Creating", definition);
+				Log("Creating", definition);
 				helper.DomDefinitions.Create(definition);
 			}
 			else
 			{
 				if (definition.Equals(existing))
 				{
-					Log(logAction, "Skipping", definition);
+					Log("Skipping", definition);
 					return;
 				}
 
-				Log(logAction, "Updating", definition);
+				Log("Updating", definition);
 				MarkExistingSectionDefinitionLinksAsDeleted(definition, existing);
 				helper.DomDefinitions.Update(definition);
 			}
 		}
 
-		private static void CreateOrUpdateSectionDefinition(DomHelper helper, CustomSectionDefinition definition, Action<string> logAction)
+		private void CreateOrUpdateSectionDefinition(DomHelper helper, CustomSectionDefinition definition)
 		{
 			if (definition is null)
 				throw new ArgumentNullException(nameof(definition));
@@ -95,18 +100,18 @@
 
 			if (existing == null)
 			{
-				Log(logAction, "Creating", definition);
+				Log("Creating", definition);
 				helper.SectionDefinitions.Create(definition);
 			}
 			else
 			{
 				if (CompareSectionDefinitions(definition, existing))
 				{
-					Log(logAction, "Skipping", definition);
+					Log("Skipping", definition);
 					return;
 				}
 
-				Log(logAction, "Updating", definition);
+				Log("Updating", definition);
 				MarkExistingFieldDescriptorsAsDeleted(definition, existing);
 				helper.SectionDefinitions.Update(definition);
 			}
@@ -170,9 +175,9 @@
 			}
 		}
 
-		private static void Log(Action<string> logAction, string action, DataType dataType)
+		private void Log(string action, DataType dataType)
 		{
-			logAction?.Invoke($"{action} {dataType.GetType().Name}: {GetName(dataType)} [{dataType.DataTypeID}].");
+			api.Logger.Information($"{action} {dataType.GetType().Name}: {GetName(dataType)} [{dataType.DataTypeID}].");
 		}
 
 		private static string GetName(DataType dataType)

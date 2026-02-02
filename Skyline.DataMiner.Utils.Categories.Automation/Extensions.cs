@@ -7,7 +7,7 @@
 
 	public static class Extensions
 	{
-		public static CategoriesApi GetCategoriesApi(this IEngine engine)
+		public static ICategoriesApi GetCategoriesApi(this IEngine engine)
 		{
 			if (engine is null)
 			{

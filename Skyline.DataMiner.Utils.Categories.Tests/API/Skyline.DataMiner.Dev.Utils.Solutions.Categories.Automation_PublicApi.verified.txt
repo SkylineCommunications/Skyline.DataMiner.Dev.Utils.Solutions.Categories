@@ -6,7 +6,7 @@ namespace Skyline.DataMiner.Solutions.Categories.Automation
 {
     public static class Extensions
     {
-        public static Skyline.DataMiner.Solutions.Categories.API.CategoriesApi GetCategoriesApi(this Skyline.DataMiner.Automation.IEngine engine) { }
+        public static Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi GetCategoriesApi(this Skyline.DataMiner.Automation.IEngine engine) { }
         public static Skyline.DataMiner.Solutions.Categories.API.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Automation.IEngine engine) { }
     }
 }

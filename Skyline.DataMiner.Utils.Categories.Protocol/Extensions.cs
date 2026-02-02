@@ -7,7 +7,7 @@
 
 	public static class Extensions
 	{
-		public static CategoriesApi GetCategoriesApi(this SLProtocol protocol)
+		public static ICategoriesApi GetCategoriesApi(this SLProtocol protocol)
 		{
 			if (protocol is null)
 			{

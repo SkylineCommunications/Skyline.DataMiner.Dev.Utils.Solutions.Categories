@@ -6,7 +6,7 @@
 
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 
-	public static class FilterQueryExecutor
+	internal static class FilterQueryExecutor
 	{
 		public static IEnumerable<TResult> RetrieveFilteredItems<TId, TFilter, TResult>(IEnumerable<TId> ids, Func<TId, FilterElement<TFilter>> filterProvider, Func<FilterElement<TFilter>, IEnumerable<TResult>> filterResolver)
 		{

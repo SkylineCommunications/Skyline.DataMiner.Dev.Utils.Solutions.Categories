@@ -7,7 +7,6 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Solutions.Categories.API.Tools;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 	using Skyline.DataMiner.Solutions.Categories.Extensions;
 	using Skyline.DataMiner.Utils.DOM.Extensions;
@@ -15,7 +14,7 @@
 	using SLDataGateway.API.Querying;
 	using SLDataGateway.API.Types.Querying;
 
-	public abstract class Repository<T> where T : ApiObject<T>
+	internal abstract class Repository<T> : IRepository<T> where T : ApiObject<T>
 	{
 		private const int _defaultPageSize = 500;
 

@@ -4,7 +4,7 @@
 
 	using Skyline.DataMiner.Net.Apps.Modules;
 
-	public interface IDomModuleInfo
+	internal interface IDomModuleInfo
 	{
 		string ModuleId { get; }
 

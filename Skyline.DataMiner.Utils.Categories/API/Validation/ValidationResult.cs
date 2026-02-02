@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Solutions.Categories.API.Validation
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Solutions.Categories.API.Repositories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,15 +7,13 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Solutions.Categories.API;
-	using Skyline.DataMiner.Solutions.Categories.API.Tools;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
-	public class ScopeRepository : Repository<Scope>
+	internal class ScopeRepository : Repository<Scope>, IScopeRepository
 	{
 		internal ScopeRepository(SlcCategoriesHelper helper, CategoryRepository categoryRepository, IConnection connection)
 			: base(helper, connection)

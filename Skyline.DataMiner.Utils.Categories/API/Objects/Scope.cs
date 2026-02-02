@@ -5,9 +5,6 @@
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Solutions.Categories.API.Repositories;
-	using Skyline.DataMiner.Solutions.Categories.API.Tools;
-	using Skyline.DataMiner.Solutions.Categories.API.Validation;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	public class Scope : ApiObject<Scope>
@@ -42,7 +39,7 @@
 			}
 		}
 
-		public IEnumerable<Category> GetCategories(CategoryRepository categoryRepository)
+		public IEnumerable<Category> GetCategories(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -52,7 +49,7 @@
 			return categoryRepository.GetByScope(this);
 		}
 
-		public CategoryNode GetCategoriesTree(CategoryRepository categoryRepository)
+		public CategoryNode GetCategoriesTree(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
 			{
@@ -62,7 +59,7 @@
 			return categoryRepository.GetTree(this);
 		}
 
-		public ValidationResult Validate()
+		internal ValidationResult Validate()
 		{
 			var result = new ValidationResult();
 

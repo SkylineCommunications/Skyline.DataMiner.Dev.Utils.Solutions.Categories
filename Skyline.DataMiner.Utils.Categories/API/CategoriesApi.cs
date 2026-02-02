@@ -5,14 +5,13 @@
 
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.ManagerStore;
-	using Skyline.DataMiner.Solutions.Categories.API.Repositories;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Definitions;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 	using Skyline.DataMiner.Solutions.Categories.Logging;
 
-	public class CategoriesApi
+	internal class CategoriesApi : ICategoriesApi
 	{
 		private readonly Lazy<CategoryRepository> lazyCategoryRepository;
 		private readonly Lazy<CategoryItemRepository> lazyCategoryItemRepository;
@@ -24,8 +23,8 @@
 			SlcCategoriesHelper = new SlcCategoriesHelper(connection);
 
 			lazyCategoryItemRepository = new Lazy<CategoryItemRepository>(() => new CategoryItemRepository(SlcCategoriesHelper, connection));
-			lazyCategoryRepository = new Lazy<CategoryRepository>(() => new CategoryRepository(SlcCategoriesHelper, CategoryItems, connection));
-			lazyScopeRepository = new Lazy<ScopeRepository>(() => new ScopeRepository(SlcCategoriesHelper, Categories, connection));
+			lazyCategoryRepository = new Lazy<CategoryRepository>(() => new CategoryRepository(SlcCategoriesHelper, lazyCategoryItemRepository.Value, connection));
+			lazyScopeRepository = new Lazy<ScopeRepository>(() => new ScopeRepository(SlcCategoriesHelper, lazyCategoryRepository.Value, connection));
 		}
 
 		protected internal IConnection Connection { get; }
@@ -34,23 +33,21 @@
 
 		internal SlcCategoriesHelper SlcCategoriesHelper { get; }
 
-		public CategoryRepository Categories => lazyCategoryRepository.Value;
+		public ICategoryRepository Categories => lazyCategoryRepository.Value;
 
-		public CategoryItemRepository CategoryItems => lazyCategoryItemRepository.Value;
+		public ICategoryItemRepository CategoryItems => lazyCategoryItemRepository.Value;
 
-		public ScopeRepository Scopes => lazyScopeRepository.Value;
+		public IScopeRepository Scopes => lazyScopeRepository.Value;
 
 		public void SetLogger(ILogger logger)
 		{
 			Logger = logger ?? throw new ArgumentNullException(nameof(logger));
 		}
 
-		public void InstallDomModules(Action<string> logAction = null)
+		public void InstallDomModules()
 		{
-			// When no logging action is provided, use a no-op.
-			logAction ??= x => { };
-
-			DomModuleInstaller.Install(Connection.HandleMessages, new SlcCategoriesDomModule(), logAction);
+			var domInstaller = new DomModuleInstaller(this);
+			domInstaller.Install(new SlcCategoriesDomModule());
 		}
 
 		public bool IsInstalled(out string version)

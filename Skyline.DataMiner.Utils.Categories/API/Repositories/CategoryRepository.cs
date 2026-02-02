@@ -7,13 +7,12 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Solutions.Categories.API.Tools;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	using SLDataGateway.API.Types.Querying;
 
-	public class CategoryRepository : Repository<Category>
+	internal class CategoryRepository : Repository<Category>, ICategoryRepository
 	{
 		internal CategoryRepository(SlcCategoriesHelper helper, CategoryItemRepository itemRepository, IConnection connection)
 			: base(helper, connection)

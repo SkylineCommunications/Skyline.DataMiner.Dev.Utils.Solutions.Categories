@@ -6,7 +6,7 @@ namespace Skyline.DataMiner.Solutions.Categories.GQI
 {
     public static class Extensions
     {
-        public static Skyline.DataMiner.Solutions.Categories.API.CategoriesApi GetCategoriesApi(this Skyline.DataMiner.Analytics.GenericInterface.GQIDMS gqiDms) { }
+        public static Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi GetCategoriesApi(this Skyline.DataMiner.Analytics.GenericInterface.GQIDMS gqiDms) { }
         public static Skyline.DataMiner.Solutions.Categories.API.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Analytics.GenericInterface.GQIDMS gqiDms) { }
     }
 }

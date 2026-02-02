@@ -157,7 +157,7 @@ var results = api.Categories.Query()
 ### Using Filters
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Objects;
+using Skyline.DataMiner.Solutions.Categories.API;
 
 // Filter by scope
 var categories = api.Categories.GetByScope(scope);
@@ -249,7 +249,7 @@ catch (Exception ex)
 ### Convert to Tree
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Extensions;
+using Skyline.DataMiner.Solutions.Categories.API;
 
 // Convert a list of categories to a tree structure
 var categories = api.Categories.GetByScope(scope);
