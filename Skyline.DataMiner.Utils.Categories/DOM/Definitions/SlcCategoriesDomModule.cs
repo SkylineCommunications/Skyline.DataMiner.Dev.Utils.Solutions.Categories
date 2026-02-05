@@ -1,13 +1,13 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Definitions
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Definitions
 {
 	using System.Collections.Generic;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel.Settings;
 	using Skyline.DataMiner.Net.Apps.Modules;
-	using Skyline.DataMiner.Utils.Categories.DOM.Interfaces;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Interfaces;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
-	public class SlcCategoriesDomModule : IDomModuleInfo
+	internal class SlcCategoriesDomModule : IDomModuleInfo
 	{
 		public ModuleSettings ModuleSettings { get; } = new ModuleSettings(SlcCategoriesIds.ModuleId)
 		{

@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Tests.API
+﻿namespace Skyline.DataMiner.Solutions.Categories.Tests.API
 {
 	using System.Reflection;
 
@@ -11,7 +11,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Common()
 		{
-			var assemblyName = "Skyline.DataMiner.Utils.Categories";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -22,7 +22,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Automation()
 		{
-			var assemblyName = "Skyline.DataMiner.Utils.Categories.Automation";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -33,7 +33,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_Protocol()
 		{
-			var assemblyName = "Skyline.DataMiner.Utils.Categories.Protocol";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.Protocol";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)
@@ -44,7 +44,7 @@
 		[TestMethod]
 		public Task Api_NoPublicApiChanges_GQI()
 		{
-			var assemblyName = "Skyline.DataMiner.Utils.Categories.GQI";
+			var assemblyName = "Skyline.DataMiner.Dev.Utils.Solutions.Categories.GQI";
 			var publicApi = Assembly.Load(assemblyName).GeneratePublicApi();
 
 			return Verifier.Verify(publicApi)

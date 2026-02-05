@@ -1,11 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Tools
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
 	using Skyline.DataMiner.Core.DataMinerSystem.Common;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	public static class FilterElementFactory
 	{
@@ -123,7 +122,7 @@
 
 			if (typeof(T) == typeof(Guid))
 			{
-				if (value is IApiObjectReference apiRef)
+				if (value is IIdentifiable apiRef)
 				{
 					return (T)(object)apiRef.ID;
 				}

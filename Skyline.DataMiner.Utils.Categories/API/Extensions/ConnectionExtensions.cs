@@ -1,11 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Extensions
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Utils.Categories.API.Caching;
 
-	public static class ConnectionExtensions
+	internal static class ConnectionExtensions
 	{
 		public static CategoriesApi GetCategoriesApi(this IConnection connection)
 		{

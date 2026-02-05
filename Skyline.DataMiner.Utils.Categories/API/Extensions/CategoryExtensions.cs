@@ -1,11 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Extensions
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
 
 	public static class CategoryExtensions
 	{

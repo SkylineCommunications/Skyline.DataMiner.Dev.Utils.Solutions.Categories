@@ -1,8 +1,8 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
-	public readonly struct ApiObjectReference<T> : IApiObjectReference, IEquatable<ApiObjectReference<T>>
+	public readonly struct ApiObjectReference<T> : IIdentifiable, IEquatable<ApiObjectReference<T>>
 		where T : ApiObject<T>
 	{
 		public ApiObjectReference(Guid id)

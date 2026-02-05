@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Querying
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,7 +7,6 @@
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	using SLDataGateway.API.Querying;
 	using SLDataGateway.API.Types.Querying;

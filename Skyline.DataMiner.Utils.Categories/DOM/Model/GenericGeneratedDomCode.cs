@@ -4,7 +4,7 @@
 //     Changes to this file will be lost if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-namespace Skyline.DataMiner.Utils.Categories.DOM.Model
+namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 {
 	using System;
 	using System.Linq;
@@ -270,7 +270,7 @@ namespace Skyline.DataMiner.Utils.Categories.DOM.Model
 //     Changes to this file will be lost if the code is regenerated.
 // </auto-generated>
 //------------------------------------------------------------------------------
-namespace Skyline.DataMiner.Utils.Categories.DOM.Model
+namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 {
 	using System;
 	using System.Linq;

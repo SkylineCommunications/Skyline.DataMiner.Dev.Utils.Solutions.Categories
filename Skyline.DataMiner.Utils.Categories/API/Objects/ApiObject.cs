@@ -1,13 +1,13 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
-	public abstract class ApiObject<T> : IApiObjectReference, IEquatable<ApiObject<T>>
+	public abstract class ApiObject<T> : IIdentifiable, IEquatable<ApiObject<T>>
 		where T : ApiObject<T>
 	{
-		internal ApiObject(DomInstanceBase domInstance)
+		private protected ApiObject(DomInstanceBase domInstance)
 		{
 			DomInstance = domInstance ?? throw new ArgumentNullException(nameof(domInstance));
 		}

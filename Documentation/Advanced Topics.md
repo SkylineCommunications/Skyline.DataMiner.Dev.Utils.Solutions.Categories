@@ -16,8 +16,8 @@ The caching system consists of two main components:
 The simplest way to use caching is with the static cache:
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API.Caching;
-using Skyline.DataMiner.Utils.Categories.API.Extensions;
+using Skyline.DataMiner.Solutions.Categories.API.Caching;
+using Skyline.DataMiner.Solutions.Categories.API.Extensions;
 
 // Get or create the static cache
 var staticCache = connection.GetStaticCategoriesCache();
@@ -230,9 +230,9 @@ The `CategoriesCache` is thread-safe for read operations and updates. Internal l
 ### Example: Complete Caching Setup
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API;
-using Skyline.DataMiner.Utils.Categories.API.Caching;
-using Skyline.DataMiner.Utils.Categories.API.Extensions;
+using Skyline.DataMiner.Solutions.Categories.API;
+using Skyline.DataMiner.Solutions.Categories.API.Caching;
+using Skyline.DataMiner.Solutions.Categories.API.Extensions;
 
 public class CategoryService
 {
@@ -403,7 +403,7 @@ api.Categories.Delete(categories);
 Exposers provide strongly-typed access to fields for filtering and sorting:
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API.Objects;
+using Skyline.DataMiner.Solutions.Categories.API.Objects;
 
 // Filter using exposers
 var filter = CategoryExposers.Scope.Equal(scopeId)

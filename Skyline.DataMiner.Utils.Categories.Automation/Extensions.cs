@@ -1,14 +1,13 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Automation
+﻿namespace Skyline.DataMiner.Solutions.Categories.Automation
 {
 	using System;
 
 	using Skyline.DataMiner.Automation;
-	using Skyline.DataMiner.Utils.Categories.API;
-	using Skyline.DataMiner.Utils.Categories.API.Caching;
+	using Skyline.DataMiner.Solutions.Categories.API;
 
 	public static class Extensions
 	{
-		public static CategoriesApi GetCategoriesApi(this IEngine engine)
+		public static ICategoriesApi GetCategoriesApi(this IEngine engine)
 		{
 			if (engine is null)
 			{

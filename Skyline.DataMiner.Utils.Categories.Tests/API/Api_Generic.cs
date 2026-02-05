@@ -1,9 +1,9 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.Tests.API
+﻿namespace Skyline.DataMiner.Solutions.Categories.Tests.API
 {
 	using FluentAssertions;
 
-	using Skyline.DataMiner.Utils.Categories.API;
-	using Skyline.DataMiner.Utils.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.API;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
 	using Skyline.DataMiner.Utils.DOM.UnitTesting;
 
 	[TestClass]
@@ -25,7 +25,7 @@
 		public void Api_Version()
 		{
 			var api = new CategoriesApiMock();
-			var version = api.GetVersion();
+			api.IsInstalled(out var version);
 
 			version.Should().NotBeNullOrEmpty();
 		}

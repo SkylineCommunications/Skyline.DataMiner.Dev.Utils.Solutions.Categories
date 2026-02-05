@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Repositories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
@@ -6,15 +6,13 @@
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Tools;
-	using Skyline.DataMiner.Utils.Categories.DOM.Helpers;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
-	public class CategoryItemRepository : Repository<CategoryItem>
+	internal class CategoryItemRepository : Repository<CategoryItem>, ICategoryItemRepository
 	{
 		internal CategoryItemRepository(SlcCategoriesHelper helper, Net.IConnection connection) : base(helper, connection)
 		{
@@ -213,7 +211,7 @@
 			Delete(existingItems);
 		}
 
-		protected internal override CategoryItem CreateInstance(DomInstance domInstance)
+		public override CategoryItem CreateInstance(DomInstance domInstance)
 		{
 			return new CategoryItem(domInstance);
 		}

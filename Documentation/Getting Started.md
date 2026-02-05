@@ -7,7 +7,7 @@ This guide will help you get started with the Skyline Categories API, a hierarch
 Add the NuGet package to your project:
 
 ```bash
-dotnet add package Skyline.DataMiner.Utils.Categories
+dotnet add package Skyline.DataMiner.Solutions.Categories
 ```
 
 ## Basic Concepts
@@ -21,8 +21,8 @@ The Categories API provides three main entities:
 ## Creating Your First Scope and Category
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API;
-using Skyline.DataMiner.Utils.Categories.API.Objects;
+using Skyline.DataMiner.Solutions.Categories.API;
+using Skyline.DataMiner.Solutions.Categories.API.Objects;
 
 // Initialize the API
 var api = new CategoriesApi(connection);

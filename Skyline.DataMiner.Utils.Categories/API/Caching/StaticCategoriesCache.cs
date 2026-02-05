@@ -1,11 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Caching
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Threading;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
-	using Skyline.DataMiner.Utils.Categories.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Tools;
 
 	public sealed class StaticCategoriesCache : IDisposable
 	{

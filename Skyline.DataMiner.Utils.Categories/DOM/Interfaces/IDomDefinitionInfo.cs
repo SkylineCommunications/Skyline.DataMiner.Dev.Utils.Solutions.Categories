@@ -1,11 +1,11 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.DOM.Interfaces
+﻿namespace Skyline.DataMiner.Solutions.Categories.DOM.Interfaces
 {
 	using System.Collections.Generic;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Sections;
 
-	public interface IDomDefinitionInfo
+	internal interface IDomDefinitionInfo
 	{
 		DomDefinition Definition { get; }
 

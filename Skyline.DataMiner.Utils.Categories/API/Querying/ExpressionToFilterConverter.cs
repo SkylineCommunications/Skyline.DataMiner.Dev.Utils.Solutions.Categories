@@ -1,12 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Querying
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Linq.Expressions;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Repositories;
 
 	internal class ExpressionToFilterConverter<T>
 		where T : ApiObject<T>

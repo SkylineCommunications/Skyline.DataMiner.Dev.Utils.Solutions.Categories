@@ -1,10 +1,10 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Objects
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	public class CategoryItem : ApiObject<CategoryItem>
 	{

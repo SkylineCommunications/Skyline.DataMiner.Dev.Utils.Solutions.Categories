@@ -1,4 +1,4 @@
-# Skyline.DataMiner.Utils.Categories
+# Skyline.DataMiner.Solutions.Categories
 
 The Categories API provides a flexible way to organize and categorize items using a hierarchical tree structure.
 This API is part of the [DataMiner Categories](https://catalog.dataminer.services/details/c9666f3a-be26-42fd-83f2-6ee7fab4f11e) application, and can be used by other solutions to manage categories via code.
@@ -26,8 +26,7 @@ This API is part of the [DataMiner Categories](https://catalog.dataminer.service
 ## Quick Start
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API;
-using Skyline.DataMiner.Utils.Categories.API.Objects;
+using Skyline.DataMiner.Solutions.Categories.API;
 
 // Initialize the API
 var api = new CategoriesApi(connection);
@@ -65,7 +64,7 @@ var results = api.Categories.Query()
 ## Installation
 
 ```bash
-dotnet add package Skyline.DataMiner.Utils.Categories
+dotnet add package Skyline.DataMiner.Dev.Utils.Solutions.Categories
 ```
 
 ## Basic Examples
@@ -100,9 +99,9 @@ var path = api.Categories.GetAncestorPath(category);
 ### Using Cache for Performance
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API.Extensions;
+using Skyline.DataMiner.Solutions.Categories.API;
 
-var cache = connection.GetStaticCategoriesCache().Cache;
+var cache =  StaticCategoriesCache.GetOrCreate(connection);
 
 // Fast O(1) lookup by name
 var scope = cache.GetScope("Network Devices");

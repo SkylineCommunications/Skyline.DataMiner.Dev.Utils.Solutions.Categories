@@ -1,4 +1,4 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Repositories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Collections.Generic;
@@ -7,18 +7,14 @@
 	using Skyline.DataMiner.Net;
 	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
-	using Skyline.DataMiner.Utils.Categories.API.Querying;
-	using Skyline.DataMiner.Utils.Categories.API.Subscriptions;
-	using Skyline.DataMiner.Utils.Categories.API.Tools;
-	using Skyline.DataMiner.Utils.Categories.DOM.Tools;
-	using Skyline.DataMiner.Utils.Categories.Extensions;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
+	using Skyline.DataMiner.Solutions.Categories.Extensions;
 	using Skyline.DataMiner.Utils.DOM.Extensions;
 
 	using SLDataGateway.API.Querying;
 	using SLDataGateway.API.Types.Querying;
 
-	public abstract class Repository<T> where T : ApiObject<T>
+	internal abstract class Repository<T> : IRepository<T> where T : ApiObject<T>
 	{
 		private const int _defaultPageSize = 500;
 
@@ -34,41 +30,41 @@
 			_queryProvider = new ApiRepositoryQueryProvider<T>(this);
 		}
 
-		protected internal DomHelper Helper { get; }
+		public DomHelper Helper { get; }
 
-		protected internal IConnection Connection { get; }
+		public IConnection Connection { get; }
 
 		protected internal abstract DomDefinitionId DomDefinition { get; }
 
-		protected internal abstract T CreateInstance(DomInstance domInstance);
+		public abstract T CreateInstance(DomInstance domInstance);
 
 		protected abstract void ValidateBeforeSave(ICollection<T> instances);
 
 		protected abstract void ValidateBeforeDelete(ICollection<T> instances);
 
-		public virtual T Create(T instance)
+		public virtual T Create(T oToCreate)
 		{
-			if (instance == null)
+			if (oToCreate == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToCreate));
 			}
 
-			ValidateBeforeSave(new[] { instance });
+			ValidateBeforeSave(new[] { oToCreate });
 
-			var newInstance = Helper.DomInstances.Create(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Create(oToCreate.DomInstance);
 			return CreateInstance(newInstance);
 		}
 
-		public virtual T Update(T instance)
+		public virtual T Update(T oToUpdate)
 		{
-			if (instance == null)
+			if (oToUpdate == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToUpdate));
 			}
 
-			ValidateBeforeSave(new[] { instance });
+			ValidateBeforeSave(new[] { oToUpdate });
 
-			var newInstance = Helper.DomInstances.Update(instance.DomInstance);
+			var newInstance = Helper.DomInstances.Update(oToUpdate.DomInstance);
 			return CreateInstance(newInstance);
 		}
 
@@ -101,24 +97,24 @@
 			return CreateOrUpdate(new[] { instance }).FirstOrDefault();
 		}
 
-		public virtual void Delete(T instance)
+		public virtual void Delete(T oToDelete)
 		{
-			if (instance == null)
+			if (oToDelete == null)
 			{
-				throw new ArgumentNullException(nameof(instance));
+				throw new ArgumentNullException(nameof(oToDelete));
 			}
 
-			Delete([instance]);
+			Delete([oToDelete]);
 		}
 
-		public virtual void Delete(IEnumerable<T> instances)
+		public virtual void Delete(IEnumerable<T> oToDelete)
 		{
-			if (instances == null)
+			if (oToDelete == null)
 			{
-				throw new ArgumentNullException(nameof(instances));
+				throw new ArgumentNullException(nameof(oToDelete));
 			}
 
-			var instanceCollection = instances as ICollection<T> ?? instances.ToList();
+			var instanceCollection = oToDelete as ICollection<T> ?? oToDelete.ToList();
 
 			ValidateBeforeDelete(instanceCollection);
 

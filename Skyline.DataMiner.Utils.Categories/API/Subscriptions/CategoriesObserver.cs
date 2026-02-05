@@ -1,10 +1,7 @@
-﻿namespace Skyline.DataMiner.Utils.Categories.API.Subscriptions
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 	using System.Linq;
-
-	using Skyline.DataMiner.Utils.Categories.API.Caching;
-	using Skyline.DataMiner.Utils.Categories.API.Objects;
 
 	public class CategoriesObserver : IDisposable
 	{
@@ -22,7 +19,7 @@
 		/// </summary>
 		/// <param name="api">The categories API to use for subscriptions.</param>
 		/// <param name="cache">The cache to update when changes occur.</param>
-		public CategoriesObserver(CategoriesApi api, CategoriesCache cache)
+		internal CategoriesObserver(CategoriesApi api, CategoriesCache cache)
 		{
 			Api = api ?? throw new ArgumentNullException(nameof(api));
 			Cache = cache ?? throw new ArgumentNullException(nameof(cache));
@@ -35,7 +32,7 @@
 		/// It raises events when scopes or categories change.
 		/// </summary>
 		/// <param name="api">The categories API to use for subscriptions.</param>
-		public CategoriesObserver(CategoriesApi api)
+		internal CategoriesObserver(CategoriesApi api)
 			: this(api, new CategoriesCache())
 		{
 		}
@@ -96,7 +93,7 @@
 			}
 		}
 
-		public void LoadInitialData()
+		internal void LoadInitialData()
 		{
 			lock (_lock)
 			{

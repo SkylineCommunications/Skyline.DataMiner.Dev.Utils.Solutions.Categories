@@ -219,7 +219,7 @@ Guid id = ref.ID;
 ## Exposers
 
 ```csharp
-using Skyline.DataMiner.Utils.Categories.API.Objects;
+using Skyline.DataMiner.Solutions.Categories.API.Objects;
 
 // Available exposers
 ScopeExposers.ID
