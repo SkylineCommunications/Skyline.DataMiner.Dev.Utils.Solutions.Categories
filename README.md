@@ -64,7 +64,7 @@ var results = api.Categories.Query()
 ## Installation
 
 ```bash
-dotnet add package Skyline.DataMiner.Dev.Utils.Categories
+dotnet add package Skyline.DataMiner.Dev.Utils.Solutions.Categories
 ```
 
 ## Basic Examples

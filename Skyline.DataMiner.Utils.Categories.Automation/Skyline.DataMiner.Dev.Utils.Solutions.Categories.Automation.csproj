@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFramework>net48</TargetFramework>
+		<PlatformTarget>anycpu</PlatformTarget>
 		<LangVersion>latest</LangVersion>
 		<OutputType>Library</OutputType>
 		<AssemblyTitle>Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation</AssemblyTitle>
 		<Product>Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation</Product>
-		<Copyright>Copyright © 2025</Copyright>
 		<AssemblyName>Skyline.DataMiner.Dev.Utils.Solutions.Categories.Automation</AssemblyName>
 		<RootNamespace>Skyline.DataMiner.Solutions.Categories.Automation</RootNamespace>
 
@@ -20,7 +20,7 @@
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>SkylineCommunications</Authors>
 		<Company>Skyline Communications</Company>
-		<Description>Provides an API and helper classes for the Categories DataMiner low-code application.</Description>
+		<Description>Provides an API and helper classes for the Categories DataMiner Standard Solution.</Description>
 		<RepositoryType>git</RepositoryType>
 		<RepositoryUrl>https://github.com/SkylineCommunications/Skyline.DataMiner.Utils.Categories</RepositoryUrl>
 		<GitVersion>false</GitVersion>
