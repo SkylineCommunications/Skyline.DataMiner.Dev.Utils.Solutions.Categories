@@ -83,6 +83,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public bool HasChildCategories(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> categoryId) { }
         public bool HasChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> categoryId) { }
         public bool HasDescendantItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> categoryId) { }
+        public void LoadInitialData(Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi api) { }
         public bool TryGetCategory(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> id, out Skyline.DataMiner.Solutions.Categories.API.Category category) { }
         public bool TryGetCategoryItem(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.CategoryItem> id, out Skyline.DataMiner.Solutions.Categories.API.CategoryItem categoryItem) { }
         public bool TryGetScope(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Scope> scopeId, out Skyline.DataMiner.Solutions.Categories.API.Scope scope) { }
@@ -93,6 +94,8 @@ namespace Skyline.DataMiner.Solutions.Categories.API
     }
     public class CategoriesObserver : System.IDisposable
     {
+        public CategoriesObserver(Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi api) { }
+        public CategoriesObserver(Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi api, Skyline.DataMiner.Solutions.Categories.API.CategoriesCache cache) { }
         public Skyline.DataMiner.Solutions.Categories.API.CategoriesCache Cache { get; }
         public bool IsSubscribed { get; }
         public event System.EventHandler<Skyline.DataMiner.Solutions.Categories.API.ApiObjectsChangedEvent<Skyline.DataMiner.Solutions.Categories.API.Category>> CategoriesChanged;
@@ -262,6 +265,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public string Name { get; set; }
         public System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetCategories(Skyline.DataMiner.Solutions.Categories.API.ICategoryRepository categoryRepository) { }
         public Skyline.DataMiner.Solutions.Categories.API.CategoryNode GetCategoriesTree(Skyline.DataMiner.Solutions.Categories.API.ICategoryRepository categoryRepository) { }
+        public Skyline.DataMiner.Solutions.Categories.API.ValidationResult Validate() { }
     }
     public static class ScopeExposers
     {
