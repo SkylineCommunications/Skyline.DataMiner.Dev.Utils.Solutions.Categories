@@ -308,6 +308,14 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public void ThrowIfInvalid() { }
     }
 }
+namespace Skyline.DataMiner.Solutions.Categories
+{
+    public static class IConnectionExtensions
+    {
+        public static Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi GetCategoriesApi(this Skyline.DataMiner.Net.IConnection connection) { }
+        public static Skyline.DataMiner.Solutions.Categories.API.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Net.IConnection connection) { }
+    }
+}
 namespace Skyline.DataMiner.Solutions.Categories.Logging
 {
     public interface ILogger
