@@ -314,7 +314,7 @@
 			}
 		}
 
-		internal void LoadInitialData(CategoriesApi api)
+		public void LoadInitialData(ICategoriesApi api)
 		{
 			if (api is null)
 			{

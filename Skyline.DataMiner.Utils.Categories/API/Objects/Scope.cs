@@ -59,7 +59,7 @@
 			return categoryRepository.GetTree(this);
 		}
 
-		internal ValidationResult Validate()
+		public ValidationResult Validate()
 		{
 			var result = new ValidationResult();
 
