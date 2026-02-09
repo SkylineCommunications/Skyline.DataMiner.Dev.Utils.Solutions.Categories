@@ -227,6 +227,11 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         void RemoveChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Solutions.Categories.API.CategoryItemIdentifier> items);
         void ReplaceChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Solutions.Categories.API.CategoryItemIdentifier> items);
     }
+    public static class IConnectionExtensions
+    {
+        public static Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi GetCategoriesApi(this Skyline.DataMiner.Net.IConnection connection) { }
+        public static Skyline.DataMiner.Solutions.Categories.API.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Net.IConnection connection) { }
+    }
     public interface IIdentifiable
     {
         System.Guid ID { get; }
@@ -306,14 +311,6 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public Skyline.DataMiner.Solutions.Categories.API.ValidationResult ForProperty<T>(T instance, System.Linq.Expressions.Expression<System.Func<T, object>> expression) { }
         public void Merge(Skyline.DataMiner.Solutions.Categories.API.ValidationResult result) { }
         public void ThrowIfInvalid() { }
-    }
-}
-namespace Skyline.DataMiner.Solutions.Categories
-{
-    public static class IConnectionExtensions
-    {
-        public static Skyline.DataMiner.Solutions.Categories.API.ICategoriesApi GetCategoriesApi(this Skyline.DataMiner.Net.IConnection connection) { }
-        public static Skyline.DataMiner.Solutions.Categories.API.StaticCategoriesCache GetStaticCategoriesCache(this Skyline.DataMiner.Net.IConnection connection) { }
     }
 }
 namespace Skyline.DataMiner.Solutions.Categories.Logging
