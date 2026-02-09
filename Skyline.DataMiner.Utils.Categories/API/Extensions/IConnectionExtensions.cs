@@ -1,9 +1,8 @@
-﻿namespace Skyline.DataMiner.Solutions.Categories
+﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Solutions.Categories.API;
 
 	/// <summary>
 	/// Provides extension methods for the <see cref="IConnection"/> interface to work with categories.
