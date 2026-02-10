@@ -8,7 +8,7 @@
 		<Product>Skyline.DataMiner.Dev.Utils.Solutions.Categories</Product>
 		<AssemblyName>Skyline.DataMiner.Dev.Utils.Solutions.Categories</AssemblyName>
 		<RootNamespace>Skyline.DataMiner.Solutions.Categories</RootNamespace>
-		
+
 		<PackageId>Skyline.DataMiner.Dev.Utils.Solutions.Categories</PackageId>
 		<PackageTags>Skyline;DataMiner</PackageTags>
 		<PackageProjectUrl>https://skyline.be</PackageProjectUrl>
@@ -33,9 +33,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<InternalsVisibleTo Include="$(MSBuildProjectName).UnitTesting" />
-		<InternalsVisibleTo Include="$(MSBuildProjectName).Automation" />
-		<InternalsVisibleTo Include="$(MSBuildProjectName).Protocol" />
-		<InternalsVisibleTo Include="$(MSBuildProjectName).GQI" />
 		<InternalsVisibleTo Include="$(MSBuildProjectName).Tests" />
 	</ItemGroup>
 	<ItemGroup>

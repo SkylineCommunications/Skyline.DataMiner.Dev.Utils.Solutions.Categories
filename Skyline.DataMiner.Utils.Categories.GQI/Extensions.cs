@@ -14,7 +14,7 @@
 				throw new ArgumentNullException(nameof(gqiDms));
 			}
 
-			return new CategoriesApi(gqiDms.GetConnection());
+			return gqiDms.GetConnection().GetCategoriesApi();
 		}
 
 		public static StaticCategoriesCache GetStaticCategoriesCache(this GQIDMS gqiDms)

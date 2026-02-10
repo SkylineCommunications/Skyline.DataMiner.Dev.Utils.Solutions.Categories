@@ -14,7 +14,7 @@
 				throw new ArgumentNullException(nameof(engine));
 			}
 
-			return new CategoriesApi(engine.GetUserConnection());
+			return engine.GetUserConnection().GetCategoriesApi();
 		}
 
 		public static StaticCategoriesCache GetStaticCategoriesCache(this IEngine engine)

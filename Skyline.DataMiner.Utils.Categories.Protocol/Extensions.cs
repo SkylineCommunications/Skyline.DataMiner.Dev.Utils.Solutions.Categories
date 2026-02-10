@@ -14,7 +14,7 @@
 				throw new ArgumentNullException(nameof(protocol));
 			}
 
-			return new CategoriesApi(protocol.GetUserConnection());
+			return protocol.GetUserConnection().GetCategoriesApi();
 		}
 
 		public static StaticCategoriesCache GetStaticCategoriesCache(this SLProtocol protocol)
