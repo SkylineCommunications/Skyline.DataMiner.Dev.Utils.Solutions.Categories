@@ -40,8 +40,8 @@
 		<PackageReference Include="Skyline.DataMiner.Dev.Automation" Version="10.5.9.2" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Common" Version="10.5.9.2" />
 		<PackageReference Include="Skyline.DataMiner.Dev.Utils.SDM.Abstractions" Version="1.0.1" />
+		<PackageReference Include="Skyline.DataMiner.SDM.Registration.Common" Version="2.0.0" />
 		<PackageReference Include="Skyline.DataMiner.Utils.DOM" Version="10.5.2.5" />
-		<PackageReference Include="GitInfo" Version="3.6.0" PrivateAssets="all" />
 	</ItemGroup>
 
 	<Target Name="CopyNuGetPackage" AfterTargets="Pack" Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
