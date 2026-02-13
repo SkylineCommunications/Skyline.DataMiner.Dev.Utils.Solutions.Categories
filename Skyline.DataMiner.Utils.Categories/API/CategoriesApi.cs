@@ -4,10 +4,10 @@
 	using System.Linq;
 
 	using Skyline.DataMiner.Net;
-	using Skyline.DataMiner.Net.ManagerStore;
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
+	using Skyline.DataMiner.SDM.Registration;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Definitions;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
-	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 	using Skyline.DataMiner.Solutions.Categories.Logging;
 
@@ -52,15 +52,16 @@
 
 		public bool IsInstalled(out string version)
 		{
-#pragma warning disable CS0618 // Type or member is obsolete
-			version = !String.IsNullOrWhiteSpace(ThisAssembly.Git.Tag) ? ThisAssembly.Git.Tag : $"{ThisAssembly.Git.SemVer.Major}.{ThisAssembly.Git.SemVer.Minor}.{ThisAssembly.Git.SemVer.Patch}{ThisAssembly.Git.SemVer.DashLabel}";
-#pragma warning restore CS0618 // Type or member is obsolete
+			var registrar = Connection.GetSdmRegistrar();
+			var categoriesRegistration = registrar.Solutions.Read(SolutionRegistrationExposers.DisplayName.Equal("Categories")).First();
+			if (categoriesRegistration == null)
+			{
+				version = String.Empty;
+				return false;
+			}
 
-			var definitions = SlcCategoriesHelper.DomHelper.DomDefinitions.ReadAll();
-
-			return definitions
-				.Select(x => x.ID)
-				.Contains(SlcCategoriesIds.Definitions.Category);
+			version = categoriesRegistration.Version;
+			return true;
 		}
 
 		public bool IsInstalled()
