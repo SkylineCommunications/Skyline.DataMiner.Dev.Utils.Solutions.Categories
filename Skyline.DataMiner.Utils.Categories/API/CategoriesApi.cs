@@ -53,7 +53,7 @@
 		public bool IsInstalled(out string version)
 		{
 			var registrar = Connection.GetSdmRegistrar();
-			var categoriesRegistration = registrar.Solutions.Read(SolutionRegistrationExposers.DisplayName.Equal("Categories")).First();
+			var categoriesRegistration = registrar.Solutions.Read(SolutionRegistrationExposers.ID.Equal("standard_solution_categories")).FirstOrDefault();
 			if (categoriesRegistration == null)
 			{
 				version = String.Empty;
