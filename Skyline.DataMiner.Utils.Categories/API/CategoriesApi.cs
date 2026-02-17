@@ -13,6 +13,8 @@
 
 	internal class CategoriesApi : ICategoriesApi
 	{
+		private const string CatalogItemId = "c9666f3a-be26-42fd-83f2-6ee7fab4f11e";
+
 		private readonly Lazy<CategoryRepository> lazyCategoryRepository;
 		private readonly Lazy<CategoryItemRepository> lazyCategoryItemRepository;
 		private readonly Lazy<ScopeRepository> lazyScopeRepository;
@@ -53,7 +55,7 @@
 		public bool IsInstalled(out string version)
 		{
 			var registrar = Connection.GetSdmRegistrar();
-			var categoriesRegistration = registrar.Solutions.Read(SolutionRegistrationExposers.ID.Equal("standard_solution_categories")).FirstOrDefault();
+			var categoriesRegistration = registrar.Solutions.Read(SolutionRegistrationExposers.ID.Equal(CatalogItemId)).FirstOrDefault();
 			if (categoriesRegistration == null)
 			{
 				version = String.Empty;
