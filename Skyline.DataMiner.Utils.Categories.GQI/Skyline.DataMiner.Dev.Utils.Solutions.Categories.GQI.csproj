@@ -22,7 +22,7 @@
 		<Company>Skyline Communications</Company>
 		<Description>Provides an API and helper classes for the Categories DataMiner Standard Solution.</Description>
 		<RepositoryType>git</RepositoryType>
-		<RepositoryUrl>https://github.com/SkylineCommunications/Skyline.DataMiner.Utils.Categories</RepositoryUrl>
+		<RepositoryUrl>https://github.com/SkylineCommunications/Skyline.DataMiner.Dev.Utils.Solutions.Categories</RepositoryUrl>
 		<GitVersion>false</GitVersion>
 	</PropertyGroup>
 
