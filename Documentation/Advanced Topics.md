@@ -16,8 +16,8 @@ The caching system consists of two main components:
 The simplest way to use caching is with the static cache:
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Caching;
-using Skyline.DataMiner.Solutions.Categories.API.Extensions;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Caching;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Extensions;
 
 // Get or create the static cache
 var staticCache = connection.GetStaticCategoriesCache();
@@ -69,18 +69,18 @@ observer.Subscribe();
 // Handle events (optional)
 observer.ScopesChanged += (sender, e) =>
 {
-	Console.WriteLine($"Scopes changed: {e.Created.Count} created, " +
-		$"{e.Updated.Count} updated, {e.Deleted.Count} deleted");
+    Console.WriteLine($"Scopes changed: {e.Created.Count} created, " +
+        $"{e.Updated.Count} updated, {e.Deleted.Count} deleted");
 };
 
 observer.CategoriesChanged += (sender, e) =>
 {
-	Console.WriteLine($"Categories changed: {e.Created.Count} created");
+    Console.WriteLine($"Categories changed: {e.Created.Count} created");
 };
 
 observer.CategoryItemsChanged += (sender, e) =>
 {
-	Console.WriteLine($"Items changed: {e.Created.Count} created");
+    Console.WriteLine($"Items changed: {e.Created.Count} created");
 };
 
 // Don't forget to dispose when done
@@ -192,7 +192,7 @@ cache.UpdateCategoryItems(updated, deleted);
 Using the cache provides significant performance improvements:
 
 | Operation | Without Cache | With Cache |
-|-----------|---------------|------------|
+| --------- | ------------- | ---------- |
 | Get scope by name | Database query | O(1) dictionary lookup |
 | Get child categories | Database query | O(1) dictionary lookup |
 | Get descendant items | Multiple queries | In-memory traversal |
@@ -201,24 +201,28 @@ Using the cache provides significant performance improvements:
 ### Caching Best Practices
 
 1. **Use the Static Cache** for most scenarios:
+
    ```csharp
    var cache = connection.GetStaticCategoriesCache();
    ```
 
-2. **Subscribe to updates** if data changes frequently:
+1. **Subscribe to updates** if data changes frequently:
+
    ```csharp
    var observer = new CategoriesObserver(api, cache);
    observer.Subscribe();
    ```
 
-3. **Dispose properly** to avoid memory leaks:
+1. **Dispose properly** to avoid memory leaks:
+
    ```csharp
    using var staticCache = connection.GetStaticCategoriesCache();
    // Use cache
    // Automatically disposed at end of scope
    ```
 
-4. **Load initial data** when creating your own cache:
+1. **Load initial data** when creating your own cache:
+
    ```csharp
    cache.LoadInitialData(api);
    ```
@@ -230,9 +234,9 @@ The `CategoriesCache` is thread-safe for read operations and updates. Internal l
 ### Example: Complete Caching Setup
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API;
-using Skyline.DataMiner.Solutions.Categories.API.Caching;
-using Skyline.DataMiner.Solutions.Categories.API.Extensions;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Caching;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Extensions;
 
 public class CategoryService
 {
@@ -250,13 +254,13 @@ public class CategoryService
     
     public CategoryNode GetTree(string scopeName)
     {
-    	if (_cache.TryGetScope(scopeName, out var scope))
-		{
-			var categories = _cache.GetCategoriesForScope(scope);
-			return categories.ToTree();
-		}
+        if (_cache.TryGetScope(scopeName, out var scope))
+        {
+            var categories = _cache.GetCategoriesForScope(scope);
+            return categories.ToTree();
+        }
 
-		return null;
+        return null;
     }
 }
 ```
@@ -271,15 +275,15 @@ using var subscription = api.Categories.Subscribe();
 
 subscription.Changed += (sender, e) =>
 {
-	Console.WriteLine($"Categories changed:");
-	Console.WriteLine($"  Created: {e.Created.Count}");
-	Console.WriteLine($"  Updated: {e.Updated.Count}");
-	Console.WriteLine($"  Deleted: {e.Deleted.Count}");
-	
-	foreach (var category in e.Created)
-	{
-		Console.WriteLine($"  New category: {category.Name}");
-	}
+    Console.WriteLine($"Categories changed:");
+    Console.WriteLine($"  Created: {e.Created.Count}");
+    Console.WriteLine($"  Updated: {e.Updated.Count}");
+    Console.WriteLine($"  Deleted: {e.Deleted.Count}");
+    
+    foreach (var category in e.Created)
+    {
+        Console.WriteLine($"  New category: {category.Name}");
+    }
 };
 
 // Keep subscription alive
@@ -297,7 +301,7 @@ using var subscription = api.Categories.Subscribe(filter);
 
 subscription.Changed += (sender, e) =>
 {
-	// Handle changes for this scope only
+    // Handle changes for this scope only
 };
 ```
 
@@ -316,18 +320,18 @@ var result = category.Validate();
 
 if (!result.IsValid)
 {
-	// Get all errors
-	foreach (var error in result.Errors)
-	{
-		Console.WriteLine($"{error.PropertyName}: {error.Message}");
-	}
-	
-	// Get errors for specific property
-	var nameErrors = result.ForProperty(c => c.Name);
-	if (!nameErrors.IsValid)
-	{
-		Console.WriteLine($"Name is invalid: {nameErrors.Errors.First().Message}");
-	}
+    // Get all errors
+    foreach (var error in result.Errors)
+    {
+        Console.WriteLine($"{error.PropertyName}: {error.Message}");
+    }
+    
+    // Get errors for specific property
+    var nameErrors = result.ForProperty(c => c.Name);
+    if (!nameErrors.IsValid)
+    {
+        Console.WriteLine($"Name is invalid: {nameErrors.Errors.First().Message}");
+    }
 }
 ```
 
@@ -336,15 +340,18 @@ if (!result.IsValid)
 The API enforces these validation rules:
 
 **Scope:**
+
 - Name is required
 - Name must be unique
 
 **Category:**
+
 - Name is required
 - Scope is required
 - Category names must be unique within the same parent
 
 **Category Item:**
+
 - Category is required
 - ModuleId is required
 
@@ -403,7 +410,7 @@ api.Categories.Delete(categories);
 Exposers provide strongly-typed access to fields for filtering and sorting:
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Objects;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Objects;
 
 // Filter using exposers
 var filter = CategoryExposers.Scope.Equal(scopeId)
@@ -493,37 +500,37 @@ try
 }
 catch (InvalidOperationException ex)
 {
-	Console.WriteLine($"Validation error: {ex.Message}");
+    Console.WriteLine($"Validation error: {ex.Message}");
 }
 
 try
 {
-	// Duplicate name error
-	api.Categories.CreateOrUpdate([category1, category2]);
+    // Duplicate name error
+    api.Categories.CreateOrUpdate([category1, category2]);
 }
 catch (InvalidOperationException ex)
 {
-	Console.WriteLine($"Duplicate names: {ex.Message}");
+    Console.WriteLine($"Duplicate names: {ex.Message}");
 }
 
 try
 {
-	// Cannot delete scope with categories
-	api.Scopes.Delete(scope);
+    // Cannot delete scope with categories
+    api.Scopes.Delete(scope);
 }
 catch (InvalidOperationException ex)
 {
-	Console.WriteLine($"Cannot delete: {ex.Message}");
+    Console.WriteLine($"Cannot delete: {ex.Message}");
 }
 
 try
 {
-	// Item not found
-	var category = cache.GetCategory(nonExistentId);
+    // Item not found
+    var category = cache.GetCategory(nonExistentId);
 }
 catch (ArgumentException ex)
 {
-	Console.WriteLine($"Not found: {ex.Message}");
+    Console.WriteLine($"Not found: {ex.Message}");
 }
 ```
 

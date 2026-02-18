@@ -10,24 +10,24 @@ The Categories API is built around three main entities that work together to cre
 
 ```mermaid
 erDiagram
-	"Scope" {
-		string Name
-	}
-	"Category" {
-		string Name
-		Category ParentCategory
-		Scope Scope
-	}
-	"Category Item" {
-		Category Category
-		string ModuleID
-		string InstanceID
-	}
+    "Scope" {
+        string Name
+    }
+    "Category" {
+        string Name
+        Category ParentCategory
+        Scope Scope
+    }
+    "Category Item" {
+        Category Category
+        string ModuleID
+        string InstanceID
+    }
 
-	"Scope" ||--o{ "Category" : ""
-	"Category" ||--o{ "Category" : ""
-	"Category" ||--o{ "Category Item" : ""
-	"Category Item" |o..o| "Object" : "external module,<br/>maintained elsewhere"
+    "Scope" ||--o{ "Category" : ""
+    "Category" ||--o{ "Category" : ""
+    "Category" ||--o{ "Category Item" : ""
+    "Category Item" |o..o| "Object" : "external module,<br/>maintained elsewhere"
 ```
 
 ### Scope
@@ -39,6 +39,7 @@ var scope = new Scope { Name = "Network Infrastructure" };
 ```
 
 **Properties:**
+
 - `Name` (string) - Unique name of the scope
 
 ### Category
@@ -61,12 +62,14 @@ var childCategory = new Category
 ```
 
 **Properties:**
+
 - `Name` (string) - Name of the category
 - `Scope` (ApiObjectReference<Scope>) - The scope this category belongs to
 - `ParentCategory` (ApiObjectReference<Category>?) - Reference to parent category (null for root categories)
 - `IsRootCategory` (bool) - Whether this is a root category (has no parent)
 
 **Key Methods:**
+
 - `GetChildCategories()` - Get direct children
 - `GetDescendantCategories()` - Get all descendants
 - `GetAncestorPath()` - Get path from root to this category
@@ -86,6 +89,7 @@ var item = new CategoryItem
 ```
 
 **Properties:**
+
 - `Category` (ApiObjectReference<Category>) - The category this item belongs to
 - `ModuleId` (string) - External module identifier
 - `InstanceId` (string) - External instance identifier

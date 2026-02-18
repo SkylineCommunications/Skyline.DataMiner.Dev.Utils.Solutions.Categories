@@ -12,7 +12,7 @@ var api = connection.GetCategoriesApi();
 // Check installation
 if (!api.IsInstalled())
 {
-	api.InstallDomModules();
+    api.InstallDomModules();
 }
 ```
 
@@ -25,24 +25,24 @@ var scope = new Scope { Name = "My Scope" };
 // Category (root)
 var category = new Category 
 { 
-	Name = "My Category", 
-	Scope = scope 
+    Name = "My Category", 
+    Scope = scope 
 };
 
 // Category (child)
 var child = new Category 
 { 
-	Name = "Child Category",
-	Scope = scope,
-	ParentCategory = category,
+    Name = "Child Category",
+    Scope = scope,
+    ParentCategory = category,
 };
 
 // Category Item
 var item = new CategoryItem
 {
-	Category = category,
-	ModuleId = "MyModule",
-	InstanceId = "Instance123"
+    Category = category,
+    ModuleId = "MyModule",
+    InstanceId = "Instance123"
 };
 
 // Save
@@ -74,10 +74,10 @@ var scopes = api.Scopes.Read(filter);
 
 // LINQ query
 var results = api.Categories.Query()
-	.Where(c => c.Name.StartsWith("A"))
-	.OrderBy(c => c.Name)
-	.Take(10)
-	.ToList();
+    .Where(c => c.Name.StartsWith("A"))
+    .OrderBy(c => c.Name)
+    .Take(10)
+    .ToList();
 ```
 
 ## Updating & Deleting
@@ -111,7 +111,7 @@ var tree = api.Categories.GetTree(scope);
 // Navigate tree
 foreach (var node in tree.ChildCategories)
 {
-	Console.WriteLine(node.Category.Name);
+    Console.WriteLine(node.Category.Name);
 }
 ```
 
@@ -121,8 +121,8 @@ foreach (var node in tree.ChildCategories)
 // Add items
 category.AddChildItems(api.CategoryItems, new[]
 {
-	new CategoryItemIdentifier("Module", "Instance1"),
-	new CategoryItemIdentifier("Module", "Instance2")
+    new CategoryItemIdentifier("Module", "Instance1"),
+    new CategoryItemIdentifier("Module", "Instance2")
 });
 
 // Remove items
@@ -166,7 +166,7 @@ bool containsItem = cache.ContainsItem(categoryId, itemIdentifier);
 using var subscription = api.Categories.Subscribe();
 subscription.Changed += (sender, e) => 
 {
-	// Handle changes
+    // Handle changes
 };
 
 // Subscribe with filter
@@ -181,10 +181,10 @@ using var subscription = api.Categories.Subscribe(filter);
 var result = category.Validate();
 if (!result.IsValid)
 {
-	foreach (var error in result.Errors)
-	{
-		Console.WriteLine(error.Message);
-	}
+    foreach (var error in result.Errors)
+    {
+        Console.WriteLine(error.Message);
+    }
 }
 
 // Automatic validation on save
@@ -219,7 +219,7 @@ Guid id = ref.ID;
 ## Exposers
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API.Objects;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Objects;
 
 // Available exposers
 ScopeExposers.ID
@@ -249,6 +249,7 @@ var query = new TRUEFilterElement<Category>().ToQuery()
 ## Common Patterns
 
 ### Check if exists before reading
+
 ```csharp
 if (cache.TryGetCategory(id, out var category))
 {
@@ -257,12 +258,14 @@ if (cache.TryGetCategory(id, out var category))
 ```
 
 ### Batch operations
+
 ```csharp
 var items = new[] { item1, item2, item3 };
 api.CategoryItems.CreateOrUpdate(items);
 ```
 
 ### Pagination
+
 ```csharp
 foreach (var page in api.Categories.ReadAllPaged(pageSize: 100))
 {
@@ -271,6 +274,7 @@ foreach (var page in api.Categories.ReadAllPaged(pageSize: 100))
 ```
 
 ### Safe parent access
+
 ```csharp
 if (category.ParentCategory != ApiObjectReference<Category>.Empty)
 {

@@ -7,7 +7,7 @@ This guide will help you get started with the Skyline Categories API, a hierarch
 Add the NuGet package to your project:
 
 ```bash
-dotnet add package Skyline.DataMiner.Solutions.Categories
+dotnet add package Skyline.DataMiner.Dev.Utils.Solutions.Categories
 ```
 
 ## Basic Concepts
@@ -21,8 +21,8 @@ The Categories API provides three main entities:
 ## Creating Your First Scope and Category
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API;
-using Skyline.DataMiner.Solutions.Categories.API.Objects;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Objects;
 
 // Initialize the API
 var api = new CategoriesApi(connection);
@@ -34,17 +34,17 @@ api.Scopes.CreateOrUpdate([scope]);
 // Create a root category
 var category = new Category 
 { 
-	Name = "Routers", 
-	Scope = scope 
+    Name = "Routers", 
+    Scope = scope 
 };
 api.Categories.CreateOrUpdate([category]);
 
 // Create a subcategory
 var subcategory = new Category 
 { 
-	Name = "Core Routers",
-	Scope = scope,
-	ParentCategory = category,
+    Name = "Core Routers",
+    Scope = scope,
+    ParentCategory = category,
 };
 api.Categories.CreateOrUpdate([subcategory]);
 ```
@@ -55,8 +55,8 @@ api.Categories.CreateOrUpdate([subcategory]);
 // Add items to a category
 var items = new[]
 {
-	new CategoryItemIdentifier("MyModule", "Instance1"),
-	new CategoryItemIdentifier("MyModule", "Instance2")
+    new CategoryItemIdentifier("MyModule", "Instance1"),
+    new CategoryItemIdentifier("MyModule", "Instance2")
 };
 
 category.AddChildItems(api.CategoryItems, items);
@@ -70,10 +70,9 @@ var categories = api.Categories.GetByScope(scope);
 
 // Query with LINQ
 var results = api.Categories.Query()
-	.Where(c => c.Name.Contains("Router"))
-	.ToList();
+    .Where(c => c.Name.Contains("Router"))
+    .ToList();
 
 // Get category hierarchy
 var tree = api.Categories.GetTree(scope);
 ```
-

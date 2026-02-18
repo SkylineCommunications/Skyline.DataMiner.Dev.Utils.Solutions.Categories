@@ -157,7 +157,7 @@ var results = api.Categories.Query()
 ### Using Filters
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API;
 
 // Filter by scope
 var categories = api.Categories.GetByScope(scope);
@@ -249,7 +249,7 @@ catch (Exception ex)
 ### Convert to Tree
 
 ```csharp
-using Skyline.DataMiner.Solutions.Categories.API;
+using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API;
 
 // Convert a list of categories to a tree structure
 var categories = api.Categories.GetByScope(scope);
@@ -283,12 +283,12 @@ api.Categories.Delete([category1, category2, category3]);
 // Can only delete scopes that have no categories
 try
 {
-	api.Scopes.Delete(scope);
+    api.Scopes.Delete(scope);
 }
 catch (InvalidOperationException ex)
 {
-	Console.WriteLine($"Cannot delete: {ex.Message}");
-	// First delete all categories in the scope
+    Console.WriteLine($"Cannot delete: {ex.Message}");
+    // First delete all categories in the scope
 }
 ```
 
@@ -303,7 +303,7 @@ var items = api.CategoryItems.GetChildItems(category);
 
 // Query items
 var items = api.CategoryItems.Query()
-	.Where(i => i.Category == category)
-	.Where(i => i.ModuleId == "My Module")
-	.ToList();
+    .Where(i => i.Category == category)
+    .Where(i => i.ModuleId == "My Module")
+    .ToList();
 ```
