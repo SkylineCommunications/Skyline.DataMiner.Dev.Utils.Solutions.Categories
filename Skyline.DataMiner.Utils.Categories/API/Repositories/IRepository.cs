@@ -1,5 +1,6 @@
 ﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
+	using System;
 	using System.Collections.Generic;
 	using System.Linq;
 
@@ -19,6 +20,12 @@
 		long CountAll();
 
 		IQueryable<T> Query();
+
+		T Read(Guid id);
+
+		T Read(string name);
+
+		IDictionary<string, T> Read(IEnumerable<string> names);
 
 		IEnumerable<T> ReadAll();
 
