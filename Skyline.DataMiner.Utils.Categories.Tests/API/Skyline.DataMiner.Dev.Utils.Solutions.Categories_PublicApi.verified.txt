@@ -242,6 +242,9 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         long CountAll();
         System.Collections.Generic.IEnumerable<T> CreateOrUpdate(System.Collections.Generic.IEnumerable<T> instances);
         System.Linq.IQueryable<T> Query();
+        System.Collections.Generic.IDictionary<string, T> Read(System.Collections.Generic.IEnumerable<string> names);
+        T Read(System.Guid id);
+        T Read(string name);
         System.Collections.Generic.IEnumerable<T> ReadAll();
         Skyline.DataMiner.Solutions.Categories.API.RepositorySubscription<T> Subscribe();
         Skyline.DataMiner.Solutions.Categories.API.RepositorySubscription<T> Subscribe(Skyline.DataMiner.Net.Messages.SLDataGateway.FilterElement<T> filter);
