@@ -156,5 +156,23 @@
 			api.Categories.ReadAll().Should().BeEmpty();
 			api.CategoryItems.ReadAll().Should().BeEmpty();
 		}
+
+		[TestMethod]
+		public void Api_Categories_DeleteMovesChildCategoriesToRoot()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category11 = new Category { Name = "Category 1.1", Scope = scope, ParentCategory = category1 };
+			api.Categories.CreateOrUpdate([category1, category11]);
+
+			api.Categories.Delete([category1]);
+
+			category11 = api.Categories.Read(category11.ID);
+			category11.ParentCategory.Should().BeNull();
+		}
 	}
 }

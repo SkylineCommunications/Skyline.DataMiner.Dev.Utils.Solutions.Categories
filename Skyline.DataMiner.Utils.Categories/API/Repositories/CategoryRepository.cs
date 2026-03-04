@@ -9,6 +9,7 @@
 	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Helpers;
 	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
+	using Skyline.DataMiner.Solutions.Categories.DOM.Tools;
 
 	using SLDataGateway.API.Types.Querying;
 
@@ -182,6 +183,9 @@
 			var childItems = ItemRepository.GetChildItems(instancesCollection.Select(x => x.Reference));
 			ItemRepository.Delete(childItems);
 
+			// Unlink child categories
+			UnlinkChildCategories(instancesCollection.Select(x => x.Reference));
+
 			// Then delete the categories themselves
 			base.Delete(instancesCollection);
 		}
@@ -270,6 +274,34 @@
 				var names = String.Join(", ", duplicateNames.OrderBy(x => x, new NaturalSortComparer()));
 
 				throw new InvalidOperationException($"Cannot save categories. The following names are already in use: {names}");
+			}
+		}
+
+		private void UnlinkChildCategories(IEnumerable<ApiObjectReference<Category>> categories)
+		{
+			if (categories is null)
+			{
+				throw new ArgumentNullException(nameof(categories));
+			}
+
+			static FilterElement<DomInstance> CreateFilter(ApiObjectReference<Category> parentCategory) =>
+				new ANDFilterElement<DomInstance>(
+					DomInstanceExposers.DomDefinitionId.Equal(SlcCategoriesIds.Definitions.Category.Id),
+					DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory).Equal(parentCategory.ID));
+
+			var categoriesToUpdate = new HashSet<Category>();
+
+			var childCategories = FilterQueryExecutor.RetrieveFilteredItems(categories, CreateFilter, Read);
+
+			foreach (var child in childCategories)
+			{
+				child.ParentCategory = null;
+				categoriesToUpdate.Add(child);
+			}
+
+			if (categoriesToUpdate.Count > 0)
+			{
+				CreateOrUpdate(categoriesToUpdate);
 			}
 		}
 	}
