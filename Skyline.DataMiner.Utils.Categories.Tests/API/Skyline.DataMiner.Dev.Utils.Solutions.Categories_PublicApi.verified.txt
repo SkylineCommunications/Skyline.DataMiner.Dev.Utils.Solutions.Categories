@@ -219,6 +219,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetAncestorPath(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category);
         System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetByScope(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Scope> scope);
         System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetChildCategories(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> parentCategory);
+        System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.CategoryItem> GetChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category);
         System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetDescendantCategories(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> parentCategory);
         Skyline.DataMiner.Solutions.Categories.API.CategoryNode GetTree();
         Skyline.DataMiner.Solutions.Categories.API.CategoryNode GetTree(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Scope> scope);

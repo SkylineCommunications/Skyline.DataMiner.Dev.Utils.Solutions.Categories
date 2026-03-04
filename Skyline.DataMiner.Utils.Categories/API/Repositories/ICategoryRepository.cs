@@ -4,10 +4,12 @@
 
 	public interface ICategoryRepository : IRepository<Category>
 	{
-		void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items);
+		// Tree retrieval
+		CategoryNode GetTree();
 
-		void ClearChildItems(ApiObjectReference<Category> category);
+		CategoryNode GetTree(ApiObjectReference<Scope> scope);
 
+		// Category retrieval
 		IEnumerable<Category> GetAncestorPath(ApiObjectReference<Category> category);
 
 		IEnumerable<Category> GetByScope(ApiObjectReference<Scope> scope);
@@ -16,9 +18,12 @@
 
 		IEnumerable<Category> GetDescendantCategories(ApiObjectReference<Category> parentCategory);
 
-		CategoryNode GetTree();
+		// Child items
+		IEnumerable<CategoryItem> GetChildItems(ApiObjectReference<Category> category);
 
-		CategoryNode GetTree(ApiObjectReference<Scope> scope);
+		void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items);
+
+		void ClearChildItems(ApiObjectReference<Category> category);
 
 		void RemoveChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items);
 

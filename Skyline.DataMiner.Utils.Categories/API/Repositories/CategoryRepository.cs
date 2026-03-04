@@ -120,6 +120,16 @@
 			return GetByScope(scope).ToTree();
 		}
 
+		public IEnumerable<CategoryItem> GetChildItems(ApiObjectReference<Category> category)
+		{
+			if (category == ApiObjectReference<Category>.Empty)
+			{
+				throw new ArgumentException("Category cannot be empty.", nameof(category));
+			}
+
+			return ItemRepository.GetChildItems(category);
+		}
+
 		public void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items)
 		{
 			if (category == ApiObjectReference<Category>.Empty)
