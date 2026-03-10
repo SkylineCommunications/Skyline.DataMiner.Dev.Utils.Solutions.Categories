@@ -22,6 +22,8 @@
 		public CategoriesApi(IConnection connection)
 		{
 			Connection = connection ?? throw new ArgumentNullException(nameof(connection));
+			ValidateConnection(connection);
+
 			SlcCategoriesHelper = new SlcCategoriesHelper(connection);
 
 			lazyCategoryItemRepository = new Lazy<CategoryItemRepository>(() => new CategoryItemRepository(SlcCategoriesHelper, connection));
@@ -69,6 +71,19 @@
 		public bool IsInstalled()
 		{
 			return IsInstalled(out _);
+		}
+
+		private void ValidateConnection(IConnection connection)
+		{
+			if (connection is null)
+			{
+				throw new ArgumentNullException(nameof(connection));
+			}
+
+			if (connection.IsShuttingDown)
+			{
+				throw new InvalidOperationException("The the provided connection is shutting down.");
+			}
 		}
 	}
 }
