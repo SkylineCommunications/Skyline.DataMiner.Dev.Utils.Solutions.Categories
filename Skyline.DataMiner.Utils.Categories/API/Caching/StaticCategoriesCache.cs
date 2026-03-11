@@ -9,7 +9,7 @@
 	public sealed class StaticCategoriesCache : IDisposable
 	{
 		private static readonly object _lock = new();
-		private static volatile StaticCategoriesCache _instance;
+		private static StaticCategoriesCache _instance;
 
 		private bool _disposed;
 
@@ -36,19 +36,18 @@
 				throw new ArgumentNullException(nameof(connectionFactory));
 			}
 
-			if (_instance == null)
+			lock (_lock)
 			{
-				lock (_lock)
-				{
-					if (_instance == null)
-					{
-						var connection = connectionFactory();
-						_instance = GetOrCreate(connection);
-					}
-				}
-			}
+				InvalidateIfConnectionDestroyed();
 
-			return _instance;
+				if (_instance == null)
+				{
+					var connection = connectionFactory();
+					_instance = GetOrCreate(connection);
+				}
+
+				return _instance;
+			}
 		}
 
 		public static StaticCategoriesCache GetOrCreate(IConnection baseConnection)
@@ -58,38 +57,34 @@
 				throw new ArgumentNullException(nameof(baseConnection));
 			}
 
-			if (_instance == null)
+			lock (_lock)
 			{
-				lock (_lock)
+				InvalidateIfConnectionDestroyed();
+
+				if (_instance == null)
 				{
-					if (_instance == null)
-					{
-						// Always clone the connection to ensure that the cache has its own dedicated connection.
-						// This prevents potential conflicts when the base connection would be closed or unsubscribed elsewhere.
-						var connection = CloneConnection(baseConnection);
+					// Always clone the connection to ensure that the cache has its own dedicated connection.
+					// This prevents potential conflicts when the base connection would be closed or unsubscribed elsewhere.
+					var connection = CloneConnection(baseConnection);
 
-						_instance = new StaticCategoriesCache(connection);
-					}
+					_instance = new StaticCategoriesCache(connection);
 				}
-			}
 
-			return _instance;
+				return _instance;
+			}
 		}
 
 		public static StaticCategoriesCache Get()
 		{
-			if (_instance == null)
+			lock (_lock)
 			{
-				lock (_lock)
+				if (_instance == null)
 				{
-					if (_instance == null)
-					{
-						throw new InvalidOperationException($"The instance has not been created yet. Please call {nameof(GetOrCreate)} first.");
-					}
+					throw new InvalidOperationException($"The instance has not been created yet. Please call {nameof(GetOrCreate)} first.");
 				}
-			}
 
-			return _instance;
+				return _instance;
+			}
 		}
 
 		/// <summary>
@@ -143,6 +138,29 @@
 
 			// Fall back to the original connection when cloning isn't supported
 			return baseConnection;
+		}
+
+		/// <summary>
+		/// Disposes and clears the singleton instance if its underlying connection has been destroyed.
+		/// </summary>
+		private static void InvalidateIfConnectionDestroyed()
+		{
+			if (_instance == null || !_instance.Connection.IsShuttingDown)
+			{
+				return;
+			}
+
+			// The connection is shutting down or already destroyed and can no longer be used.
+			try
+			{
+				_instance.Dispose();
+			}
+			catch (Exception)
+			{
+				// ignore
+			}
+
+			_instance = null;
 		}
 	}
 }
