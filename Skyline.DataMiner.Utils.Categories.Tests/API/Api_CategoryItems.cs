@@ -2,6 +2,7 @@
 {
 	using FluentAssertions;
 
+	using Skyline.DataMiner.Net.Messages.SLDataGateway;
 	using Skyline.DataMiner.Solutions.Categories.API;
 
 	[TestClass]
@@ -24,6 +25,29 @@
 
 			api.CategoryItems.Query().Single(x => x.ModuleId == "My Module" && x.InstanceId == "My Instance 1")
 				.Should().Be(item11);
+		}
+
+		[TestMethod]
+		public void Api_CategoryItems_ReadWithExposer()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope]);
+
+			var category1 = new Category { Name = "Category 1", Scope = scope };
+			var category2 = new Category { Name = "Category 2", Scope = scope };
+			api.Categories.CreateOrUpdate([category1, category2]);
+
+			var item11 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 1", Category = category1 };
+			var item12 = new CategoryItem { ModuleId = "My Module", InstanceId = "My Instance 2", Category = category1 };
+			api.CategoryItems.CreateOrUpdate([item11, item12]);
+
+			api.CategoryItems.Read(CategoryItemExposers.Category.UncheckedEqual(category1))
+				.Should().BeEquivalentTo([item11, item12]);
+
+			api.CategoryItems.Read(CategoryItemExposers.Category.UncheckedEqual(category2))
+				.Should().BeEmpty();
 		}
 
 		[TestMethod]
