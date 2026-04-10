@@ -4,6 +4,7 @@
 	using System.Threading;
 
 	using Skyline.DataMiner.Net;
+	using Skyline.DataMiner.Net.Exceptions;
 	using Skyline.DataMiner.Solutions.Categories.Tools;
 
 	public sealed class StaticCategoriesCache : IDisposable
@@ -131,13 +132,15 @@
 			}
 
 			// Attempt to clone; if it fails, use the original connection
-			if (ConnectionHelper.TryCloneConnection(baseConnection, "Categories - Connection", out var clonedConnection))
+			try
 			{
-				return clonedConnection;
+				return ConnectionHelper.CloneConnection(baseConnection, "Categories - Cache Connection");
 			}
-
-			// Fall back to the original connection when cloning isn't supported
-			return baseConnection;
+			catch (DataMinerException ex) when (ex.Message.Contains("Cannot clone non-authenticated or non-regular connections"))
+			{
+				// Fall back to the original connection when cloning isn't supported
+				return baseConnection;
+			}
 		}
 
 		/// <summary>
@@ -145,9 +148,22 @@
 		/// </summary>
 		private static void InvalidateIfConnectionDestroyed()
 		{
-			if (_instance == null || !_instance.Connection.IsShuttingDown)
+			if (_instance == null)
 			{
 				return;
+			}
+
+			try
+			{
+				// If this succeeds and connection is still active, nothing to do
+				if (!_instance.Connection.IsShuttingDown)
+				{
+					return;
+				}
+			}
+			catch
+			{
+				// Treat any exception as an inactive connection
 			}
 
 			// The connection is shutting down or already destroyed and can no longer be used.
@@ -155,7 +171,7 @@
 			{
 				_instance.Dispose();
 			}
-			catch (Exception)
+			catch
 			{
 				// ignore
 			}
