@@ -1,7 +1,6 @@
 ﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
 	using System;
-	using System.Collections;
 	using System.Collections.Generic;
 	using System.Linq;
 
