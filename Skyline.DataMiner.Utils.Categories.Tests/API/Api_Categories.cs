@@ -90,6 +90,38 @@
 		}
 
 		[TestMethod]
+		public void Api_Categories_ReadPagedWithEmptyFilter()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var category1_1 = new Category { Name = "Category 1.1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1.2", Scope = scope1 };
+			api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			CategoryRepository categoriesRepository = (CategoryRepository)api.Categories;
+			categoriesRepository.ReadPaged(new ORFilterElement<Category>()).Should().BeEmpty();
+		}
+
+		[TestMethod]
+		public void Api_Categories_ReadPagedWithEmptyQuery()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var category1_1 = new Category { Name = "Category 1.1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1.2", Scope = scope1 };
+			api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			CategoryRepository categoriesRepository = (CategoryRepository)api.Categories;
+			categoriesRepository.ReadPaged(new ORFilterElement<Category>().ToQuery()).Should().BeEmpty();
+		}
+
+		[TestMethod]
 		public void Api_Categories_GetByScope()
 		{
 			var api = new CategoriesApiMock();
