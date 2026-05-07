@@ -134,6 +134,11 @@
 				throw new ArgumentNullException(nameof(filter));
 			}
 
+			if (filter.isEmpty())
+			{
+				return 0;
+			}
+
 			var domFilter = TranslateFullFilter(filter);
 			domFilter = AddDomDefinitionFilter(domFilter);
 
@@ -269,6 +274,11 @@
 				throw new ArgumentNullException(nameof(filter));
 			}
 
+			if (filter.isEmpty())
+			{
+				return Enumerable.Empty<T>();
+			}
+
 			var domFilter = TranslateFullFilter(filter);
 
 			return Read(domFilter);
@@ -279,6 +289,11 @@
 			if (domFilter == null)
 			{
 				throw new ArgumentNullException(nameof(domFilter));
+			}
+
+			if (domFilter.isEmpty())
+			{
+				return Enumerable.Empty<T>();
 			}
 
 			domFilter = AddDomDefinitionFilter(domFilter);
@@ -293,6 +308,11 @@
 			if (query == null)
 			{
 				throw new ArgumentNullException(nameof(query));
+			}
+
+			if (query.Filter.isEmpty())
+			{
+				return Enumerable.Empty<T>();
 			}
 
 			var domFilter = TranslateFullFilter(query.Filter);
@@ -312,6 +332,11 @@
 				throw new ArgumentNullException(nameof(domQuery));
 			}
 
+			if (domQuery.Filter.isEmpty())
+			{
+				return Enumerable.Empty<T>();
+			}
+
 			var domFilter = AddDomDefinitionFilter(domQuery.Filter);
 
 			domQuery = domQuery.WithFilter(domFilter);
@@ -328,6 +353,11 @@
 				throw new ArgumentNullException(nameof(filter));
 			}
 
+			if (filter.isEmpty())
+			{
+				return Enumerable.Empty<IEnumerable<T>>();
+			}
+
 			var domFilter = TranslateFullFilter(filter);
 
 			return ReadPaged(domFilter, pageSize);
@@ -338,6 +368,11 @@
 			if (domFilter == null)
 			{
 				throw new ArgumentNullException(nameof(domFilter));
+			}
+
+			if (domFilter.isEmpty())
+			{
+				return Enumerable.Empty<IEnumerable<T>>();
 			}
 
 			domFilter = AddDomDefinitionFilter(domFilter);
@@ -352,6 +387,11 @@
 			if (query == null)
 			{
 				throw new ArgumentNullException(nameof(query));
+			}
+
+			if (query.Filter.isEmpty())
+			{
+				return Enumerable.Empty<IEnumerable<T>>();
 			}
 
 			var domFilter = TranslateFullFilter(query.Filter);
@@ -369,6 +409,11 @@
 			if (domQuery == null)
 			{
 				throw new ArgumentNullException(nameof(domQuery));
+			}
+
+			if (domQuery.Filter.isEmpty())
+			{
+				return Enumerable.Empty<IEnumerable<T>>();
 			}
 
 			var domFilter = AddDomDefinitionFilter(domQuery.Filter);
@@ -483,7 +528,7 @@
 			Helper.DomInstances.DeleteInBatches(domInstances).ThrowOnFailure();
 		}
 
-		protected internal virtual FilterElement<DomInstance> CreateFilter(string fieldName, Comparer comparer, object value)
+		protected internal virtual FilterElement<DomInstance> CreateFilter(string fieldName, Net.Messages.SLDataGateway.Comparer comparer, object value)
 		{
 			switch (fieldName)
 			{
