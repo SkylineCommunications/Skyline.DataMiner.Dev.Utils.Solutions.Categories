@@ -134,6 +134,11 @@
 				throw new ArgumentNullException(nameof(filter));
 			}
 
+			if (filter.isEmpty())
+			{
+				return 0;
+			}
+
 			var domFilter = TranslateFullFilter(filter);
 			domFilter = AddDomDefinitionFilter(domFilter);
 
