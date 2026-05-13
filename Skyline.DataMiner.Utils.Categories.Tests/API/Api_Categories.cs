@@ -11,20 +11,138 @@
 	public sealed class Api_Categories
 	{
 		[TestMethod]
+		public void Api_Categories_Exposers_ReadFromRoot()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var group1 = new Category { Name = "Group 1", Scope = scope1 };
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1 };
+
+			api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
+
+			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.ParentCategory.Equal(null))).Should().BeEquivalentTo([category1_2]);
+		}
+
+		[TestMethod]
+		public void Api_Categories_Exposers_ReadFromParent()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var group1 = new Category { Name = "Group 1", Scope = scope1 };
+			var group2 = new Category { Name = "Group 2", Scope = scope1 };
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group2 };
+
+			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]);
+
+			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.ParentCategory.Equal(group1))).SingleOrDefault().Should().BeEquivalentTo([category1_1]);
+		}
+
+		[TestMethod]
 		public void Api_Categories_Query()
 		{
 			var api = new CategoriesApiMock();
 
 			var scope1 = new Scope { Name = "Scope 1" };
 			var scope2 = new Scope { Name = "Scope 2" };
-			api.Scopes.CreateOrUpdate([scope1]);
+			api.Scopes.CreateOrUpdate([scope1, scope2]);
 
 			var category1_1 = new Category { Name = "Category 1", Scope = scope1 };
 			var category1_2 = new Category { Name = "Category 1", Scope = scope2 };
 			api.Categories.CreateOrUpdate([category1_1, category1_2]);
 
-			api.Categories.Query().Single(x => x.Name == "Category 1" && x.Scope == scope1)
-				.Should().Be(category1_1);
+			api.Categories.Query().Single(x => x.Name == "Category 1" && x.Scope == scope2)
+				.Should().Be(category1_2);
+		}
+
+		[TestMethod]
+		public void Api_Categories_ReadByName()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			var scope2 = new Scope { Name = "Scope 2" };
+			api.Scopes.CreateOrUpdate([scope1, scope2]);
+
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope2 };
+			api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			api.Categories.Read("Category 1").Should().NotBeNull();
+		}
+
+		[TestMethod]
+		public void Api_Categories_CreateWithDuplicateNameInSameScopeAndRoot()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1 };
+
+			try
+			{
+				api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			}
+			catch (InvalidOperationException exception)
+			{
+				exception.Message.Should().Contain("The following names are already in use: Category 1");
+				return;
+			}
+
+			Assert.Fail();
+		}
+
+		[TestMethod]
+		public void Api_Categories_CreateWithDuplicateNameInSameScopeAndSameParent()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var group1 = new Category { Name = "Group 1", Scope = scope1 };
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+
+			try
+			{
+				api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
+
+			}
+			catch (InvalidOperationException exception)
+			{
+				exception.Message.Should().Contain("The following names are already in use: Category 1");
+				return;
+			}
+
+			Assert.Fail();
+		}
+
+		[TestMethod]
+		public void Api_Categories_CreateWithDuplicateNameInSameScopeAndDifferentParent()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var group1 = new Category { Name = "Group 1", Scope = scope1 };
+			var group2 = new Category { Name = "Group 2", Scope = scope1 };
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group2 };
+
+			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]);
 		}
 
 		[TestMethod]
