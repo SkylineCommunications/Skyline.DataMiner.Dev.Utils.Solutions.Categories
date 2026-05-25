@@ -18,11 +18,12 @@ jobs:
 
 # Note: Tagging will push the nupackage to nuget.org using the provided NUGETAPIKEY. You can tag both a prerelease version (a.b.c-xxxx) or a stable release (a.b.c).
   CICD:
-    uses: SkylineCommunications/_ReusableWorkflows/.github/workflows/NuGet Solution Master Workflow.yml@main
+    uses: SkylineCommunications/_ReusableWorkflows/.github/workflows/Master Workflow.yml@main
     with:
-      sonarCloudProjectName: SkylineCommunications_Skyline.DataMiner.Utils.Categories
+      sonarcloud-project-name: SkylineCommunications_Skyline.DataMiner.Utils.Categories
+      nuget-push-source: "https://api.nuget.org/v3/index.json"
     secrets:
       # sonarCloudToken: ${{ secrets.SONAR_TOKEN }} # Not needed anymore for SkylineCommunications organization
       # pfx: ${{ secrets.PFX }}  # Not needed anymore for SkylineCommunications organization
       # pfxPassword: ${{ secrets.PFXPASSWORD }}  # Not needed anymore for SkylineCommunications organization
-      nugetApiKey: ${{ secrets.NUGETAPIKEY }}
+      NUGET_API_KEY: ${{ secrets.NUGETAPIKEY }}
