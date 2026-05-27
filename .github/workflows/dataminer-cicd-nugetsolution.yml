@@ -2,28 +2,53 @@ name: DataMiner CICD NuGet Solution
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events.
-  push:
-    branches:
-      - '**'
-    tags:
-      - "[0-9]+.[0-9]+.[0-9]+.[0-9]+"
-      - "[0-9]+.[0-9]+.[0-9]+"
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  push:
+    branches: 
+     - 'main'
+     - '*.*.X'
+    tags:
+      - "[0-9]+.[0-9]+.[0-9]+"
+      - "[0-9]+.[0-9]+.[0-9]+-**"
+  pull_request:
+    branches: 
+     - '**'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  #https://github.com/NuGet/Home/issues/7575#issuecomment-443801131
+  NUGET_RESTORE_MSBUILD_ARGS: /p:Configuration=Release
+
 jobs:
+  nuget_validation:
+    name: Validate NuGets
+    runs-on: ubuntu-latest
 
-# Note: Tagging will push the nupackage to nuget.org using the provided NUGETAPIKEY. You can tag both a prerelease version (a.b.c-xxxx) or a stable release (a.b.c).
-  CICD:
+    steps:
+     - uses: actions/checkout@v4
+
+     - name: Install dotnet-consolidate
+       run: dotnet tool install -g dotnet-consolidate
+
+     - name: Run dotnet consolidate
+       run: dotnet consolidate -s Skyline.DataMiner.Utils.Categories.sln
+
+  internal_release:
+    name: Internal Release
+    if: github.ref_type == 'branch' || (github.ref_type == 'tag' && contains(github.ref, '-')) #Trigger on branch changes or on prerelease tags (e.g. 1.2.3-something)
+    needs: nuget_validation
     uses: SkylineCommunications/_ReusableWorkflows/.github/workflows/Master Workflow.yml@main
     with:
       sonarcloud-project-name: SkylineCommunications_Skyline.DataMiner.Utils.Categories
+    secrets:
+      NUGET_API_KEY: ${{ secrets.NUGETAPIKEY_GITHUB }}
+
+  public_release:
+    name: Public Release
+    if: github.ref_type == 'tag' && !contains(github.ref_name, '-') #Stable tags (e.g. 1.2.3)
+    needs: nuget_validation
+    uses: SkylineCommunications/_ReusableWorkflows/.github/workflows/Master Workflow.yml@main
+    with:
+      sonarCloudProjectName: SkylineCommunications_Skyline.DataMiner.Utils.Categories
       nuget-push-source: "https://api.nuget.org/v3/index.json"
     secrets:
-      # sonarCloudToken: ${{ secrets.SONAR_TOKEN }} # Not needed anymore for SkylineCommunications organization
-      # pfx: ${{ secrets.PFX }}  # Not needed anymore for SkylineCommunications organization
-      # pfxPassword: ${{ secrets.PFXPASSWORD }}  # Not needed anymore for SkylineCommunications organization
-      NUGET_API_KEY: ${{ secrets.NUGETAPIKEY }}
+      nugetApiKey: ${{ secrets.NUGETAPIKEY }}
