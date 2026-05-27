@@ -109,6 +109,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public static readonly Skyline.DataMiner.Solutions.Categories.API.Category DefaultRootCategory;
         public Category() { }
         public Category(System.Guid id) { }
+        public bool HasParentCategory { get; }
         public bool IsRootCategory { get; }
         public string Name { get; set; }
         public Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category>? ParentCategory { get; set; }
@@ -125,6 +126,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
     }
     public static class CategoryExposers
     {
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, bool> HasParentCategory;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, System.Guid> ID;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, string> Name;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category>?> ParentCategory;
@@ -230,6 +232,8 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         System.Collections.Generic.IEnumerable<Skyline.DataMiner.Solutions.Categories.API.Category> GetDescendantCategories(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> parentCategory);
         Skyline.DataMiner.Solutions.Categories.API.CategoryNode GetTree();
         Skyline.DataMiner.Solutions.Categories.API.CategoryNode GetTree(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Scope> scope);
+        System.Collections.Generic.IDictionary<string, System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Solutions.Categories.API.Category>> Read(Skyline.DataMiner.Solutions.Categories.API.Scope scope, System.Collections.Generic.IEnumerable<string> names);
+        System.Collections.Generic.IReadOnlyCollection<Skyline.DataMiner.Solutions.Categories.API.Category> Read(Skyline.DataMiner.Solutions.Categories.API.Scope scope, string name);
         void RemoveChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Solutions.Categories.API.CategoryItemIdentifier> items);
         void ReplaceChildItems(Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category> category, System.Collections.Generic.ICollection<Skyline.DataMiner.Solutions.Categories.API.CategoryItemIdentifier> items);
     }
