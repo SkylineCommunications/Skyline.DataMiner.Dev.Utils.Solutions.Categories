@@ -25,6 +25,21 @@
 			api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
 
 			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.HasParentCategory.Equal(false))).Should().BeEquivalentTo([category1_2]);
+		}
+
+		[TestMethod]
+		public void Api_Categories_Exposers_HasParentCategory()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			api.Scopes.CreateOrUpdate([scope1]);
+
+			var group1 = new Category { Name = "Group 1", Scope = scope1 };
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope1 };
+
+			api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
 
 			api.Categories.Read(CategoryExposers.HasParentCategory.Equal(false)).Should().BeEquivalentTo([group1, category1_2]);
 			api.Categories.Read(CategoryExposers.HasParentCategory.Equal(true)).Should().BeEquivalentTo([category1_1]);
@@ -46,6 +61,29 @@
 			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]);
 
 			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.ParentCategory.Equal(group1))).SingleOrDefault().Should().BeEquivalentTo(category1_1);
+
+			api.Categories.Read(CategoryExposers.ParentCategory.Equal(group1)).Should().BeEquivalentTo([category1_1]);
+			api.Categories.Read(CategoryExposers.ParentCategory.Equal(group1.ID)).Should().BeEquivalentTo([category1_1]);
+		}
+
+		[TestMethod]
+		public void Api_Categories_ReadFromScope()
+		{
+			var api = new CategoriesApiMock();
+
+			var scope1 = new Scope { Name = "Scope 1" };
+			var scope2 = new Scope { Name = "Scope 2" };
+			api.Scopes.CreateOrUpdate([scope1, scope2]);
+
+			var category1_1 = new Category { Name = "Category 1", Scope = scope1 };
+			var category1_2 = new Category { Name = "Category 1", Scope = scope2 };
+			api.Categories.CreateOrUpdate([category1_1, category1_2]);
+
+			api.Categories.Read(CategoryExposers.Scope.Equal(scope1)).Should().BeEquivalentTo([category1_1]);
+			api.Categories.Read(CategoryExposers.Scope.Equal(scope1.ID)).Should().BeEquivalentTo([category1_1]);
+
+			api.Categories.Read(CategoryExposers.Scope.Equal(scope2)).Should().BeEquivalentTo([category1_2]);
+			api.Categories.Read(CategoryExposers.Scope.Equal(scope2.ID)).Should().BeEquivalentTo([category1_2]);
 		}
 
 		[TestMethod]
