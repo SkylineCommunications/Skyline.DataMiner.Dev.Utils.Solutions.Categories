@@ -142,7 +142,7 @@
 			var category1_1 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group1 };
 			var category1_2 = new Category { Name = "Category 1", Scope = scope1, ParentCategory = group2 };
 
-			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]);
+			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]).Should().HaveCount(4);
 		}
 
 		[TestMethod]

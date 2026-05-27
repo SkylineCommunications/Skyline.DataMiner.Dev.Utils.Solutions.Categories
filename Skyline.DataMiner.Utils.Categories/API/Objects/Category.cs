@@ -219,17 +219,6 @@
 		}
 
 		/// <summary>
-		/// Creates a filter that checks if the exposed field does not equal the category.
-		/// </summary>
-		/// <param name="exposer">The exposer that identifies the field to filter on.</param>
-		/// <param name="value">The value to compare against.</param>
-		/// <returns>A ManagedFilter configured for equality comparison.</returns>
-		public static ManagedFilter<Category, ApiObjectReference<Category>?> NotEqual(this Exposer<Category, ApiObjectReference<Category>?> exposer, ApiObjectReference<Category>? value)
-		{
-			return exposer.UncheckedNotEqual(value);
-		}
-
-		/// <summary>
 		/// Creates a filter that checks if the exposed field equals the scope.
 		/// </summary>
 		/// <param name="exposer">The exposer that identifies the field to filter on.</param>
@@ -238,6 +227,17 @@
 		public static ManagedFilter<Category, ApiObjectReference<Scope>?> Equal(this Exposer<Category, ApiObjectReference<Scope>?> exposer, ApiObjectReference<Scope>? value)
 		{
 			return exposer.UncheckedEqual(value);
+		}
+
+		/// <summary>
+		/// Creates a filter that checks if the exposed field does not equal the category.
+		/// </summary>
+		/// <param name="exposer">The exposer that identifies the field to filter on.</param>
+		/// <param name="value">The value to compare against.</param>
+		/// <returns>A ManagedFilter configured for equality comparison.</returns>
+		public static ManagedFilter<Category, ApiObjectReference<Category>?> NotEqual(this Exposer<Category, ApiObjectReference<Category>?> exposer, ApiObjectReference<Category>? value)
+		{
+			return exposer.UncheckedNotEqual(value);
 		}
 
 		/// <summary>
