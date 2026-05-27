@@ -48,7 +48,7 @@ jobs:
     needs: nuget_validation
     uses: SkylineCommunications/_ReusableWorkflows/.github/workflows/Master Workflow.yml@main
     with:
-      sonarCloudProjectName: SkylineCommunications_Skyline.DataMiner.Utils.Categories
+      sonarcloud-project-name: SkylineCommunications_Skyline.DataMiner.Utils.Categories
       nuget-push-source: "https://api.nuget.org/v3/index.json"
     secrets:
       nugetApiKey: ${{ secrets.NUGETAPIKEY }}
