@@ -51,4 +51,4 @@ jobs:
       sonarcloud-project-name: SkylineCommunications_Skyline.DataMiner.Utils.Categories
       nuget-push-source: "https://api.nuget.org/v3/index.json"
     secrets:
-      nugetApiKey: ${{ secrets.NUGETAPIKEY }}
+      NUGET_API_KEY: ${{ secrets.NUGETAPIKEY }}
