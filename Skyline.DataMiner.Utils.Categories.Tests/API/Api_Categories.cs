@@ -42,7 +42,7 @@
 
 			api.Categories.CreateOrUpdate([group1, group2, category1_1, category1_2]);
 
-			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.ParentCategory.Equal(group1))).SingleOrDefault().Should().BeEquivalentTo([category1_1]);
+			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.ParentCategory.Equal(group1))).SingleOrDefault().Should().BeEquivalentTo(category1_1);
 		}
 
 		[TestMethod]
