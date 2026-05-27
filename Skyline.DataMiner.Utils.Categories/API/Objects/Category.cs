@@ -61,6 +61,8 @@
 			}
 		}
 
+		public bool HasParentCategory => _domInstance.CategoryInfo.ParentCategory != null;
+
 		public ApiObjectReference<Scope> Scope
 		{
 			get
@@ -199,6 +201,7 @@
 		public static readonly Exposer<Category, Guid> ID = new(x => x.ID, nameof(Category.ID));
 		public static readonly Exposer<Category, string> Name = new(x => x.Name, nameof(Category.Name));
 		public static readonly Exposer<Category, ApiObjectReference<Category>?> ParentCategory = new(x => x.ParentCategory, nameof(Category.ParentCategory));
+		public static readonly Exposer<Category, bool> HasParentCategory = new(x => x.HasParentCategory, nameof(Category.HasParentCategory));
 		public static readonly Exposer<Category, ApiObjectReference<Scope>?> Scope = new(x => x.Scope, nameof(Category.Scope));
 	}
 

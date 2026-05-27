@@ -1,6 +1,11 @@
 ﻿namespace Skyline.DataMiner.Solutions.Categories.API
 {
+	using System;
 	using System.Collections.Generic;
+
+	using Skyline.DataMiner.Net.Apps.DataMinerObjectModel;
+
+	using Skyline.DataMiner.Solutions.Categories.DOM.Model;
 
 	public interface ICategoryRepository : IRepository<Category>
 	{
@@ -20,6 +25,10 @@
 
 		// Child items
 		IEnumerable<CategoryItem> GetChildItems(ApiObjectReference<Category> category);
+
+		IReadOnlyCollection<Category> Read(Scope scope, string name);
+
+		IDictionary<string, IReadOnlyCollection<Category>> Read(Scope scope, IEnumerable<string> names);
 
 		void AddChildItems(ApiObjectReference<Category> category, ICollection<CategoryItemIdentifier> items);
 
