@@ -247,11 +247,10 @@
 				x => Read(x));
 
 			return items
-				.GroupBy(c => c.Name, StringComparer.OrdinalIgnoreCase)
+				.GroupBy(c => c.Name)
 				.ToDictionary(
 					g => g.Key,
-					g => (IReadOnlyCollection<Category>)g.ToList(),
-					StringComparer.OrdinalIgnoreCase);
+					g => (IReadOnlyCollection<Category>)g.ToList());
 		}
 
 		protected override void ValidateBeforeSave(ICollection<Category> instances)
