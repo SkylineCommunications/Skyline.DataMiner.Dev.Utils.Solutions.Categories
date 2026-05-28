@@ -36,6 +36,8 @@
 
 		protected internal abstract DomDefinitionId DomDefinition { get; }
 
+		protected internal FilterElement<DomInstance> DomDefinitionFilter => _domDefinitionFilter;
+
 		public abstract T CreateInstance(DomInstance domInstance);
 
 		protected abstract void ValidateBeforeSave(ICollection<T> instances);

@@ -205,6 +205,54 @@
 			return new Category(domInstance);
 		}
 
+		public override Category Read(string name)
+		{
+			throw new NotSupportedException("Reading a single category by name is not supported. Use Read(Scope scope, string name) instead.");
+		}
+
+		public override IDictionary<string, Category> Read(IEnumerable<string> names)
+		{
+			throw new NotSupportedException("Reading categories by name is not supported. Use Read(Scope scope, IEnumerable<string> names) instead.");
+		}
+
+		public IReadOnlyCollection<Category> Read(Scope scope, string name)
+		{
+			if (name == null)
+			{
+				throw new ArgumentNullException(nameof(name));
+			}
+
+			var filter = DomDefinitionFilter
+				.AND(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope).Equal(scope.ID))
+				.AND(DomInstanceExposers.Name.Equal(name));
+
+			return Read(filter).ToList();
+		}
+
+		public virtual IDictionary<string, IReadOnlyCollection<Category>> Read(Scope scope, IEnumerable<string> names)
+		{
+			if (names == null)
+			{
+				throw new ArgumentNullException(nameof(names));
+			}
+
+			FilterElement<DomInstance> CreateFilter(string name) =>
+				DomDefinitionFilter
+				.AND(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope).Equal(scope.ID))
+				.AND(DomInstanceExposers.Name.Equal(name));
+
+			var items = FilterQueryExecutor.RetrieveFilteredItems(
+				names,
+				x => CreateFilter(x),
+				x => Read(x));
+
+			return items
+				.GroupBy(c => c.Name)
+				.ToDictionary(
+					g => g.Key,
+					g => (IReadOnlyCollection<Category>)g.ToList());
+		}
+
 		protected override void ValidateBeforeSave(ICollection<Category> instances)
 		{
 			foreach (var instance in instances)
@@ -230,6 +278,8 @@
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory), comparer, value);
 				case nameof(Category.Scope):
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope), comparer, value);
+				case nameof(Category.HasParentCategory):
+					return FilterElementFactory.Create(DomInstanceExposers.FieldValues.KeyExists(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory.Id.ToString()), comparer, value);
 			}
 
 			return base.CreateFilter(fieldName, comparer, value);
