@@ -232,7 +232,7 @@ CategoryExposers.ID
 CategoryExposers.Name
 CategoryExposers.Scope
 CategoryExposers.ParentCategory
-CategoryExposers.HasParentCategory
+CategoryExposers.IsRootCategory
 
 CategoryItemExposers.ID
 CategoryItemExposers.Category
@@ -244,10 +244,10 @@ var filter = CategoryExposers.Name.Contains("Router")
     .AND(CategoryExposers.Scope.Equal(scope));
     
 // Filter only root categories (no parent)
-var rootFilter = CategoryExposers.HasParentCategory.Equal(false);
+var rootFilter = CategoryExposers.IsRootCategory.Equal(true);
 
 // Filter only non-root categories
-var childFilter = CategoryExposers.HasParentCategory.Equal(true);
+var childFilter = CategoryExposers.IsRootCategory.Equal(false);
 
 var categories = api.Categories.Read(filter);
 

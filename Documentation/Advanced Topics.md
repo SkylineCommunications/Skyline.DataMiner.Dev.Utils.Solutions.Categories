@@ -418,9 +418,9 @@ var filter = CategoryExposers.Scope.Equal(scope)
 
 var categories = api.Categories.Read(filter);
 
-// Filter by HasParentCategory (new in 1.2.7)
-var rootCategories = api.Categories.Read(CategoryExposers.HasParentCategory.Equal(false));
-var childCategories = api.Categories.Read(CategoryExposers.HasParentCategory.Equal(true));
+// Filter by IsRootCategory (new in 1.2.7)
+var rootCategories = api.Categories.Read(CategoryExposers.IsRootCategory.Equal(true));
+var childCategories = api.Categories.Read(CategoryExposers.IsRootCategory.Equal(false));
 
 // Filter by ParentCategory
 var filter = CategoryExposers.ParentCategory.Equal(parentCategory)

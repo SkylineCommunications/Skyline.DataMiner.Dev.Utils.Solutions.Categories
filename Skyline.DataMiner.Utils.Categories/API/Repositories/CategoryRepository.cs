@@ -278,8 +278,8 @@
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory), comparer, value);
 				case nameof(Category.Scope):
 					return FilterElementFactory.Create<Guid>(DomInstanceExposers.FieldValues.DomInstanceField(SlcCategoriesIds.Sections.CategoryInfo.Scope), comparer, value);
-				case nameof(Category.HasParentCategory):
-					return FilterElementFactory.Create(DomInstanceExposers.FieldValues.KeyExists(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory.Id.ToString()), comparer, value);
+				case nameof(Category.IsRootCategory):
+					return FilterElementFactory.Create(DomInstanceExposers.FieldValues.KeyExists(SlcCategoriesIds.Sections.CategoryInfo.ParentCategory.Id.ToString()), comparer, !(bool)value);
 			}
 
 			return base.CreateFilter(fieldName, comparer, value);
