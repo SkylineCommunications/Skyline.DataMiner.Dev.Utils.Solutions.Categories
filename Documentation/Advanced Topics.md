@@ -296,7 +296,7 @@ Subscribe only to specific items:
 
 ```csharp
 // Subscribe to categories in a specific scope
-var filter = CategoryExposers.Scope.Equal(scopeId);
+var filter = CategoryExposers.Scope.Equal(scope);
 using var subscription = api.Categories.Subscribe(filter);
 
 subscription.Changed += (sender, e) =>
@@ -370,14 +370,14 @@ foreach (var page in api.Categories.ReadAllPaged(pageSize: 100))
 }
 
 // Paginate with a filter
-var filter = CategoryExposers.Scope.Equal(scopeId);
+var filter = CategoryExposers.Scope.Equal(scope);
 foreach (var page in api.Categories.ReadPaged(filter, pageSize: 50))
 {
     ProcessPage(page);
 }
 
 // Paginate with a query
-var query = CategoryExposers.Scope.Equal(scopeId).ToQuery()
+var query = CategoryExposers.Scope.Equal(scope).ToQuery()
     .OrderBy(CategoryExposers.Name.Ascending());
 
 foreach (var page in api.Categories.ReadPaged(query, pageSize: 50))
@@ -413,10 +413,18 @@ Exposers provide strongly-typed access to fields for filtering and sorting:
 using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Objects;
 
 // Filter using exposers
-var filter = CategoryExposers.Scope.Equal(scopeId)
+var filter = CategoryExposers.Scope.Equal(scope)
     .AND(CategoryExposers.Name.Contains("Router"));
 
 var categories = api.Categories.Read(filter);
+
+// Filter by IsRootCategory (new in 1.2.7)
+var rootCategories = api.Categories.Read(CategoryExposers.IsRootCategory.Equal(true));
+var childCategories = api.Categories.Read(CategoryExposers.IsRootCategory.Equal(false));
+
+// Filter by ParentCategory
+var filter = CategoryExposers.ParentCategory.Equal(parentCategory)
+    .AND(CategoryExposers.Scope.Equal(scope));
 
 // Sort using exposers
 var query = new TRUEFilterElement<Category>().ToQuery()

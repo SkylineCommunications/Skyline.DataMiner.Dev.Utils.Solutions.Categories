@@ -24,11 +24,11 @@
 
 			api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
 
-			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.HasParentCategory.Equal(false))).Should().BeEquivalentTo([category1_2]);
+			api.Categories.Read(CategoryExposers.Name.Equal("Category 1").AND(CategoryExposers.Scope.Equal(scope1)).AND(CategoryExposers.IsRootCategory.Equal(true))).Should().BeEquivalentTo([category1_2]);
 		}
 
 		[TestMethod]
-		public void Api_Categories_Exposers_HasParentCategory()
+		public void Api_Categories_Exposers_IsRootCategory()
 		{
 			var api = new CategoriesApiMock();
 
@@ -41,8 +41,8 @@
 
 			api.Categories.CreateOrUpdate([group1, category1_1, category1_2]);
 
-			api.Categories.Read(CategoryExposers.HasParentCategory.Equal(false)).Should().BeEquivalentTo([group1, category1_2]);
-			api.Categories.Read(CategoryExposers.HasParentCategory.Equal(true)).Should().BeEquivalentTo([category1_1]);
+			api.Categories.Read(CategoryExposers.IsRootCategory.Equal(true)).Should().BeEquivalentTo([group1, category1_2]);
+			api.Categories.Read(CategoryExposers.IsRootCategory.Equal(false)).Should().BeEquivalentTo([category1_1]);
 		}
 
 		[TestMethod]

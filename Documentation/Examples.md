@@ -119,8 +119,9 @@ var allCategories = api.Categories.ReadAll();
 // Get category by ID
 var category = api.Categories.Read(categoryId);
 
-// Get category by name
-var category = api.Categories.Read("Routers");
+// Get category by name (within a scope)
+var results = api.Categories.Read(scope, "Routers");
+var category = results.FirstOrDefault();
 
 // Get multiple by IDs
 var ids = new[] { id1, id2, id3 };
