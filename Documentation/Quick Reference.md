@@ -241,7 +241,7 @@ CategoryItemExposers.InstanceId
 
 // Usage in filters
 var filter = CategoryExposers.Name.Contains("Router")
-    .AND(CategoryExposers.Scope.Equal(scope));          // CategoryFilterExtensions.Equal
+    .AND(CategoryExposers.Scope.Equal(scope));
     
 // Filter only root categories (no parent)
 var rootFilter = CategoryExposers.HasParentCategory.Equal(false);
