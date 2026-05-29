@@ -67,6 +67,7 @@ var childCategory = new Category
 - `Scope` (ApiObjectReference<Scope>) - The scope this category belongs to
 - `ParentCategory` (ApiObjectReference<Category>?) - Reference to parent category (null for root categories)
 - `IsRootCategory` (bool) - Whether this is a root category (has no parent)
+- `HasParentCategory` (bool) - Whether this category has a parent category (inverse of `IsRootCategory`)
 
 **Key Methods:**
 

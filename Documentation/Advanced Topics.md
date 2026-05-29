@@ -296,7 +296,7 @@ Subscribe only to specific items:
 
 ```csharp
 // Subscribe to categories in a specific scope
-var filter = CategoryExposers.Scope.Equal(scopeId);
+var filter = CategoryExposers.Scope.Equal(scope);   // CategoryFilterExtensions.Equal
 using var subscription = api.Categories.Subscribe(filter);
 
 subscription.Changed += (sender, e) =>
@@ -370,14 +370,14 @@ foreach (var page in api.Categories.ReadAllPaged(pageSize: 100))
 }
 
 // Paginate with a filter
-var filter = CategoryExposers.Scope.Equal(scopeId);
+var filter = CategoryExposers.Scope.Equal(scope);   // CategoryFilterExtensions.Equal
 foreach (var page in api.Categories.ReadPaged(filter, pageSize: 50))
 {
     ProcessPage(page);
 }
 
 // Paginate with a query
-var query = CategoryExposers.Scope.Equal(scopeId).ToQuery()
+var query = CategoryExposers.Scope.Equal(scope).ToQuery()
     .OrderBy(CategoryExposers.Name.Ascending());
 
 foreach (var page in api.Categories.ReadPaged(query, pageSize: 50))
@@ -413,10 +413,18 @@ Exposers provide strongly-typed access to fields for filtering and sorting:
 using Skyline.DataMiner.Dev.Utils.Solutions.Categories.API.Objects;
 
 // Filter using exposers
-var filter = CategoryExposers.Scope.Equal(scopeId)
+var filter = CategoryExposers.Scope.Equal(scope)      // CategoryFilterExtensions.Equal
     .AND(CategoryExposers.Name.Contains("Router"));
 
 var categories = api.Categories.Read(filter);
+
+// Filter by HasParentCategory (new in 1.2.7)
+var rootCategories = api.Categories.Read(CategoryExposers.HasParentCategory.Equal(false));
+var childCategories = api.Categories.Read(CategoryExposers.HasParentCategory.Equal(true));
+
+// Filter by ParentCategory using CategoryFilterExtensions (new in 1.2.7)
+var filter = CategoryExposers.ParentCategory.Equal(parentCategory)
+    .AND(CategoryExposers.Scope.Equal(scope));
 
 // Sort using exposers
 var query = new TRUEFilterElement<Category>().ToQuery()
@@ -424,6 +432,20 @@ var query = new TRUEFilterElement<Category>().ToQuery()
     .ThenBy(CategoryExposers.ID.Ascending());
 
 var sorted = api.Categories.Read(query);
+```
+
+### CategoryFilterExtensions
+
+The `CategoryFilterExtensions` class (new in 1.2.7) provides `Equal` and `NotEqual` extension methods for `ApiObjectReference` exposers. These are required when filtering on `CategoryExposers.Scope` or `CategoryExposers.ParentCategory` because these fields hold object references rather than primitive values:
+
+```csharp
+// Using Equal/NotEqual with Scope
+var inScope = CategoryExposers.Scope.Equal(scope);
+var notInScope = CategoryExposers.Scope.NotEqual(scope);
+
+// Using Equal/NotEqual with ParentCategory
+var underParent = CategoryExposers.ParentCategory.Equal(parentCategory);
+var notUnderParent = CategoryExposers.ParentCategory.NotEqual(parentCategory);
 ```
 
 ## Installation Check

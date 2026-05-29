@@ -60,7 +60,10 @@ var category = api.Categories.Read(id);
 
 // By name
 var scope = api.Scopes.Read("My Scope");
-var category = api.Categories.Read("My Category");
+
+// Reading categories by name requires a scope (names are only unique within a scope)
+IReadOnlyCollection<Category> categories = api.Categories.Read(scope, "My Category");
+IDictionary<string, IReadOnlyCollection<Category>> byName = api.Categories.Read(scope, new[] { "My Category", "Other" });
 
 // Multiple by IDs
 var scopes = api.Scopes.Read(new[] { id1, id2, id3 });
@@ -229,6 +232,7 @@ CategoryExposers.ID
 CategoryExposers.Name
 CategoryExposers.Scope
 CategoryExposers.ParentCategory
+CategoryExposers.HasParentCategory
 
 CategoryItemExposers.ID
 CategoryItemExposers.Category
@@ -237,7 +241,13 @@ CategoryItemExposers.InstanceId
 
 // Usage in filters
 var filter = CategoryExposers.Name.Contains("Router")
-    .AND(CategoryExposers.Scope.Equal(scopeId));
+    .AND(CategoryExposers.Scope.Equal(scope));          // CategoryFilterExtensions.Equal
+    
+// Filter only root categories (no parent)
+var rootFilter = CategoryExposers.HasParentCategory.Equal(false);
+
+// Filter only non-root categories
+var childFilter = CategoryExposers.HasParentCategory.Equal(true);
 
 var categories = api.Categories.Read(filter);
 
