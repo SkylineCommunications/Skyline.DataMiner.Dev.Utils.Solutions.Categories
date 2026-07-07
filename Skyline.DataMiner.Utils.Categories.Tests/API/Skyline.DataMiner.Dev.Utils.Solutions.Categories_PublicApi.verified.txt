@@ -109,6 +109,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
         public static readonly Skyline.DataMiner.Solutions.Categories.API.Category DefaultRootCategory;
         public Category() { }
         public Category(System.Guid id) { }
+        public string Icon { get; set; }
         public bool IsRootCategory { get; }
         public string Name { get; set; }
         public Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category>? ParentCategory { get; set; }
@@ -126,6 +127,7 @@ namespace Skyline.DataMiner.Solutions.Categories.API
     public static class CategoryExposers
     {
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, System.Guid> ID;
+        public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, string> Icon;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, bool> IsRootCategory;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, string> Name;
         public static readonly Skyline.DataMiner.Net.Messages.SLDataGateway.Exposer<Skyline.DataMiner.Solutions.Categories.API.Category, Skyline.DataMiner.Solutions.Categories.API.ApiObjectReference<Skyline.DataMiner.Solutions.Categories.API.Category>?> ParentCategory;
