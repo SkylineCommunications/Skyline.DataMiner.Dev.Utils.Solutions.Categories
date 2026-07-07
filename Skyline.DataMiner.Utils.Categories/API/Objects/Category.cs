@@ -81,6 +81,19 @@
 
 		public bool IsRootCategory => ParentCategory == ApiObjectReference<Category>.Empty;
 
+		public string Icon
+		{
+			get
+			{
+				return _domInstance.CategoryInfo.Icon;
+			}
+
+			set
+			{
+				_domInstance.CategoryInfo.Icon = value;
+			}
+		}
+
 		public IEnumerable<Category> GetChildCategories(ICategoryRepository categoryRepository)
 		{
 			if (categoryRepository is null)
@@ -201,6 +214,7 @@
 		public static readonly Exposer<Category, ApiObjectReference<Category>?> ParentCategory = new(x => x.ParentCategory, nameof(Category.ParentCategory));
 		public static readonly Exposer<Category, bool> IsRootCategory = new(x => x.IsRootCategory, nameof(Category.IsRootCategory));
 		public static readonly Exposer<Category, ApiObjectReference<Scope>?> Scope = new(x => x.Scope, nameof(Category.Scope));
+		public static readonly Exposer<Category, string> Icon = new(x => x.Icon, nameof(Category.Icon));
 	}
 
 	/// <summary>
