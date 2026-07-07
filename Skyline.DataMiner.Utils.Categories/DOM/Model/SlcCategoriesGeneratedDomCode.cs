@@ -15,13 +15,13 @@ namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 	internal static class SlcCategoriesIds
 	{
 		public const string ModuleId = "(slc)categories";
-		internal static class Enums
+		public static class Enums
 		{
 		}
 
-		internal static class Sections
+		public static class Sections
 		{
-			internal static class CategoryItemInfo
+			public static class CategoryItemInfo
 			{
 				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("2ae55ec4-695d-4605-b4f4-a219ccfd1637"))
 				{ ModuleId = "(slc)categories" };
@@ -30,24 +30,25 @@ namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 				public static FieldDescriptorID InstanceID { get; } = new FieldDescriptorID(new Guid("cb6a5cae-5522-43e7-990f-493b4d77f9be"));
 			}
 
-			internal static class ScopeInfo
+			public static class ScopeInfo
 			{
 				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("63e9aabd-f09a-4c46-9dff-1167f6d456d3"))
 				{ ModuleId = "(slc)categories" };
 				public static FieldDescriptorID Name { get; } = new FieldDescriptorID(new Guid("5d75a4ad-05b8-4770-9266-97afddcb62bb"));
 			}
 
-			internal static class CategoryInfo
+			public static class CategoryInfo
 			{
 				public static SectionDefinitionID Id { get; } = new SectionDefinitionID(new Guid("5816d327-e025-4f2f-a404-fd0685a6d047"))
 				{ ModuleId = "(slc)categories" };
 				public static FieldDescriptorID Name { get; } = new FieldDescriptorID(new Guid("68bea0c6-e645-4605-ad7e-31ea31802d77"));
 				public static FieldDescriptorID ParentCategory { get; } = new FieldDescriptorID(new Guid("fdc3efdc-cd13-4e9e-bf31-7aeb58702813"));
 				public static FieldDescriptorID Scope { get; } = new FieldDescriptorID(new Guid("285f102e-7a6a-46b0-98ea-67d3affdb14c"));
+				public static FieldDescriptorID Icon { get; } = new FieldDescriptorID(new Guid("6344c6c5-3ae2-414f-80ec-91d373d198b3"));
 			}
 		}
 
-		internal static class Definitions
+		public static class Definitions
 		{
 			public static DomDefinitionId Category { get; } = new DomDefinitionId(new Guid("51561163-340a-4953-97e0-bec5418fb559"))
 			{ ModuleId = "(slc)categories" };
@@ -57,7 +58,7 @@ namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 			{ ModuleId = "(slc)categories" };
 		}
 
-		internal static class Behaviors
+		public static class Behaviors
 		{
 		}
 	}
@@ -599,6 +600,8 @@ namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 				throw new InvalidOperationException("'Category' is required. Please fill it in before saving, or mark it as optional with the DOM Editor.");
 			if (section.GetValue<String>(SlcCategoriesIds.Sections.CategoryItemInfo.ModuleID) == null)
 				throw new InvalidOperationException("'ModuleID' is required. Please fill it in before saving, or mark it as optional with the DOM Editor.");
+			if (section.GetValue<String>(SlcCategoriesIds.Sections.CategoryItemInfo.InstanceID) == null)
+				throw new InvalidOperationException("'InstanceID' is required. Please fill it in before saving, or mark it as optional with the DOM Editor.");
 			return section;
 		}
 	}
@@ -842,6 +845,49 @@ namespace Skyline.DataMiner.Solutions.Categories.DOM.Model
 				else
 				{
 					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryInfo.Scope, (Guid)value);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Gets or sets the Icon field of the DOM Instance.
+		/// </summary>
+		/// <remarks>
+		/// When retrieving the value:
+		/// <list type="bullet">
+		/// <item>If the field has been set, it will return the value.</item>
+		/// <item>If the field is not set it will return <see langword="null"/>.</item>
+		/// </list>
+		/// When setting the value:
+		/// <list type="bullet">
+		/// <item>- If <see langword="null"/> is assigned, the field will be removed from the section.</item>
+		/// <item>- If a valid value is assigned, the field value will be added or updated in the section.</item>
+		/// </list>
+		/// </remarks>
+		public String Icon
+		{
+			get
+			{
+				var wrapper = section.GetValue<String>(SlcCategoriesIds.Sections.CategoryInfo.Icon);
+				if (wrapper != null)
+				{
+					return (String)wrapper.Value;
+				}
+				else
+				{
+					return null;
+				}
+			}
+
+			set
+			{
+				if (value == null)
+				{
+					section.RemoveFieldValueById(SlcCategoriesIds.Sections.CategoryInfo.Icon);
+				}
+				else
+				{
+					section.AddOrUpdateValue(SlcCategoriesIds.Sections.CategoryInfo.Icon, (String)value);
 				}
 			}
 		}

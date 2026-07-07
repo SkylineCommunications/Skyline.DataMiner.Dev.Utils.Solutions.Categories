@@ -73,6 +73,15 @@
 					IsOptional = true,
 				});
 
+			sectionDefinition.AddOrReplaceFieldDescriptor(
+				new FieldDescriptor
+				{
+					FieldType = typeof(string),
+					ID = SlcCategoriesIds.Sections.CategoryInfo.Icon,
+					Name = "Icon",
+					IsOptional = true,
+				});
+
 			return sectionDefinition;
 		}
 	}
